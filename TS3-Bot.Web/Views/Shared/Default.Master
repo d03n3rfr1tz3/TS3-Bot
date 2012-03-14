@@ -1,0 +1,17 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title><asp:ContentPlaceHolder ID="TitleContent" runat="server" /></title>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="shortcut icon" type="image/gif" href="http://icons.d03n3r.de/favicon.gif" />
+
+    <asp:ContentPlaceHolder ID="HeaderContent" runat="server" />
+</head>
+<body>
+    <div>
+        <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+    </div>
+</body>
+</html>

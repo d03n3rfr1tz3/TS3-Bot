@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B4F2739D-7350-4F6C-B47F-100A1F6E9A86}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DirkSarodnick.TS3_Bot.Core</RootNamespace>
+    <AssemblyName>TS3-Bot.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TS3-Bot.Core.XmlSerializers">
+      <HintPath>..\SharedBinaries\TS3-Bot.Core.XmlSerializers.dll</HintPath>
+    </Reference>
+    <Reference Include="TS3QueryLib.Core.Framework, Version=0.100.26.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharedBinaries\TS3QueryLib.Core.Framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entity\ClientDatabaseEntity.cs" />
+    <Compile Include="BotInstance.cs" />
+    <Compile Include="Entity\CredentialEntity.cs" />
+    <Compile Include="Entity\AsyncDispatcher.cs" />
+    <Compile Include="Entity\Messages\UnstickMessage.cs" />
+    <Compile Include="Entity\Messages\StickMessage.cs" />
+    <Compile Include="Manager\Features\NickManager.cs" />
+    <Compile Include="Manager\Features\RecordManager.cs" />
+    <Compile Include="Repository\ChannelData.cs" />
+    <Compile Include="Manager\Connection\TeamSpeakManager.cs" />
+    <Compile Include="Manager\Features\AwayManager.cs" />
+    <Compile Include="Manager\Features\Base\DefaultManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Base\DefaultData.cs" />
+    <Compile Include="Repository\ClientData.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BotFactory.cs" />
+    <Compile Include="BotInstance.base.cs" />
+    <Compile Include="BotInstanceCollection.cs" />
+    <Compile Include="BotInstanceQueue.cs" />
+    <Compile Include="BotInstanceQueueHelper.cs" />
+    <Compile Include="Entity\ClientServerGroupList.cs" />
+    <Compile Include="Entity\ClientWarningEntity.cs" />
+    <Compile Include="Entity\VotedClientEntity.cs" />
+    <Compile Include="Entity\MessageContext.cs" />
+    <Compile Include="Entity\Messages\Message.cs" />
+    <Compile Include="Helper\ToMessageExtension.cs" />
+    <Compile Include="Manager\Connection\DynamicCredentialManager.cs" />
+    <Compile Include="Entity\FileEntity.cs" />
+    <Compile Include="Entity\SimpleClientEntity.cs" />
+    <Compile Include="Entity\SyncTcpDispatcher.cs" />
+    <Compile Include="Entity\StickyClientEntity.cs" />
+    <Compile Include="Entity\WarnType.cs" />
+    <Compile Include="Helper\BasicHelper.cs" />
+    <Compile Include="Helper\EqualsExtension.cs" />
+    <Compile Include="Helper\ForEachExtension.cs" />
+    <Compile Include="Service\SettingsDirectoryService.cs" />
+    <Compile Include="Service\LogService.cs" />
+    <Compile Include="Helper\MessageHelper.cs" />
+    <Compile Include="Entity\Messages\HelpMessage.cs" />
+    <Compile Include="Entity\Messages\FilesMessage.cs" />
+    <Compile Include="Entity\Messages\SeenMessage.cs" />
+    <Compile Include="Helper\PermissionHelper.cs" />
+    <Compile Include="Manager\Features\Base\ManagerFactory.cs" />
+    <Compile Include="Manager\Features\ChannelManager.cs" />
+    <Compile Include="Manager\Features\CompliantManager.cs" />
+    <Compile Include="Manager\Features\ControlManager.cs" />
+    <Compile Include="Manager\Features\EventManager.cs" />
+    <Compile Include="Manager\Features\MessageManager.cs" />
+    <Compile Include="Manager\Connection\CredentialManager.cs" />
+    <Compile Include="Repository\DataContainer.cs" />
+    <Compile Include="Repository\DataRepository.cs" />
+    <Compile Include="Repository\FileData.cs" />
+    <Compile Include="Repository\CompliantData.cs" />
+    <Compile Include="Repository\ServerData.cs" />
+    <Compile Include="Repository\StaticData.cs" />
+    <Compile Include="Service\SettingsService.cs" />
+    <Compile Include="Settings\SettingClasses\AwaySettings.cs" />
+    <Compile Include="Settings\SettingClasses\BadNicknameSettings.cs" />
+    <Compile Include="Settings\SettingClasses\ControlSettings.cs" />
+    <Compile Include="Settings\SettingClasses\ControlSetting\ControlSettingsBase.cs" />
+    <Compile Include="Settings\SettingClasses\ControlSetting\StickControlSettings.cs" />
+    <Compile Include="Settings\SettingClasses\ControlSetting\FilesControlSettings.cs" />
+    <Compile Include="Settings\SettingClasses\ControlSetting\HelpControlSettings.cs" />
+    <Compile Include="Settings\SettingClasses\ControlSetting\SeenControlSettings.cs" />
+    <Compile Include="Settings\SettingClasses\EventSettings.cs" />
+    <Compile Include="Settings\SettingClasses\EventSetting\BehaviorType.cs" />
+    <Compile Include="Settings\SettingClasses\EventSetting\EventBehavior.cs" />
+    <Compile Include="Settings\SettingClasses\GlobalSettings.cs" />
+    <Compile Include="Settings\SettingClasses\IdleSettings.cs" />
+    <Compile Include="Settings\ISettings.cs" />
+    <Compile Include="Settings\SettingClasses\EventSetting\EventDefinition.cs" />
+    <Compile Include="Settings\SettingClasses\MessageSettings.cs" />
+    <Compile Include="Settings\SettingClasses\MessageSetting\MessageType.cs" />
+    <Compile Include="Settings\SettingClasses\MessageSetting\MessageDefinition.cs" />
+    <Compile Include="Settings\PunishBehavior.cs" />
+    <Compile Include="Settings\SettingClasses\RecordSettings.cs" />
+    <Compile Include="Settings\SettingClasses\ServerSettings.cs" />
+    <Compile Include="Settings\InstanceSettings.cs" />
+    <Compile Include="Settings\SettingsBase.cs" />
+    <Compile Include="Settings\SettingClasses\TeamSpeakServerSettings.cs" />
+    <Compile Include="Settings\SettingClasses\StickySettings.cs" />
+    <Compile Include="Settings\SettingClasses\VoteSettings.cs" />
+    <Compile Include="Settings\SettingsManager.cs" />
+    <Compile Include="Settings\SettingsSerializer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Configuration\DefaultSettings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Configuration\Settings.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Configuration\Sample_en.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Configuration\Sample_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>"$(FrameworkSDKDir)Bin\NETFX 4.0 Tools\sgen.exe" /a:"$(TargetFileName)" /t:DirkSarodnick.TS3_Bot.Core.Settings.InstanceSettings /f /n /o:"$(SolutionDir)SharedBinaries"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

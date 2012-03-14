@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<InstanceSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://files.d03n3r.de/TS3bot_Settings_v1.xsd">
+
+    <Enabled>true</Enabled>
+
+    <Global>
+        <BotNickname>d03n3rb0t</BotNickname>
+        <Globalization>de-DE</Globalization>
+    </Global>
+
+    <Away Enabled="false" LogEnabled="false">
+        <Channel>0</Channel>
+		<MuteHeadphoneChannel>0</MuteHeadphoneChannel>
+		<MuteMicrophoneChannel>0</MuteMicrophoneChannel>
+        <Permitted/>
+        <Denied/>
+    </Away>
+
+    <BadNickname Enabled="true" LogEnabled="false">
+        <Blacklist>
+            <Entry>http:</Entry>
+            <Entry>ftp:</Entry>
+            <Entry>www.</Entry>
+        </Blacklist>
+        <KickMessage>Dieser Nickname ist nicht in Ordnung!</KickMessage>
+        <Permitted/>
+        <Denied/>
+    </BadNickname>
+
+    <Control>
+        <HelpMessage>
+            Es gibt folgende Befehle, die du in den globalen Chat schreiben kannst, um mich zu steuern:
+        </HelpMessage>
+        
+        <Help Enabled="false" LogEnabled="false">
+            <HelpMessage>
+                [B]!help[/B]
+                Öffnet diese Hilfe. Wer hätte es gedacht.
+            </HelpMessage>
+            <Permitted/>
+            <Denied/>
+        </Help>
+        
+        <Seen Enabled="false" LogEnabled="false">
+            <HelpMessage>
+                [B]!seen {Nickname|Datenbank ID}[/B]
+                Gibt dir Informationen, wann jemand zuletzt gesehen wurde. Es reicht einen Teil des Nicks anzugeben. Alternativ kann auch die Datenbank ID angegeben werden.
+                Beispiel: [I]!seen John[/I]
+            </HelpMessage>
+            <TextMessage>
+                Infos zu '[B][CLIENT_NICKNAME][/B]'(id:[CLIENT_ID]):
+                Zuletzt eingeloggt: [B][CLIENT_LASTLOGIN][/B]
+                Zuletzt gesehen: [B][CLIENT_LASTSEEN][/B]
+            </TextMessage>
+            <Permitted/>
+            <Denied/>
+        </Seen>
+        
+        <Files Enabled="false" LogEnabled="false">
+            <HelpMessage>
+                [B]!files[/B]
+                Gibt dir eine Auflistung aller Dateien in allen Räumen, gruppiert nach virtuellen Servern, wenn du Server-Administrator bist :-)
+            </HelpMessage>
+            <MessagePerServer>Dateien auf Server '[B][SERVER_NAME][/B]' (Id: [SERVER_ID], Port: [SERVER_PORT]):</MessagePerServer>
+            <MessageNoFilesFound>Es wurden keine Dateien gefunden.</MessageNoFilesFound>
+            <MessageFilesFound>Folgende Dateien wurden gefunden:</MessageFilesFound>
+            <MessageFile>'[B][CHANNEL_NAME][/B]'(id:[CHANNEL_ID]) > '[B][FILE_NAME][/B]' (Erstellt: [FILE_CREATED], Größe: [FILE_SIZE])</MessageFile>
+            <Permitted>
+                <Group>2</Group>
+                <Group>6</Group>
+            </Permitted>
+            <Denied/>
+        </Files>
+
+        <Stick Enabled="false" LogEnabled="false">
+            <HelpMessage>
+                [B]!stick {Nickname|Datenbank ID} {Channel ID} [StickTime][/B]
+                Gibt dem angegebenen Client im angegebenen Channel einen Sticky-Status. Die StickTime (optional) gibt die Dauer in Minuten an, die ein Client darin festgehalten wird.
+                Beispiel: [I]!stick 5[/I]
+
+                [B]!unstick {Nickname|Datenbank ID}[/B]
+                Löst vom angegebenen Client jeden Sticky-Status.
+                Beispiel: [I]!unstick 5[/I]
+            </HelpMessage>
+            <Permitted>
+                <Group>2</Group>
+                <Group>6</Group>
+            </Permitted>
+        </Stick>
+    </Control>
+    
+    <Event Enabled="false">
+        <Events>
+            <EventDefinition Enabled="false" LogEnabled="false">
+                <Name></Name>
+                <EventBehaviors>
+                    <EventBehavior>
+                        <Behavior>Poke</Behavior>
+                        <TextMessage>[EVENT_NAME]: Hallo [CLIENT_NICKNAME]</TextMessage>
+                    </EventBehavior>
+                </EventBehaviors>
+                <Interval>60</Interval>
+                <Permitted/>
+                <Denied/>
+            </EventDefinition>
+        </Events>
+    </Event>
+    
+    <Idle Enabled="false" LogEnabled="false">
+        <Channel>0</Channel>
+        <IdleTime>60</IdleTime>
+        <Permitted/>
+        <Denied/>
+    </Idle>
+
+    <Message Enabled="false">
+        <Messages>
+            <MessageDefinition Enabled="false" LogEnabled="false">
+                <MessageType>Advert</MessageType>
+                <TextMessage></TextMessage>
+                <Interval>60</Interval>
+            </MessageDefinition>
+
+            <MessageDefinition Enabled="false" LogEnabled="false">
+                <MessageType>Global</MessageType>
+                <TextMessage></TextMessage>
+                <Interval>60</Interval>
+            </MessageDefinition>
+            
+            <MessageDefinition Enabled="false" LogEnabled="false">
+                <MessageType>Welcome</MessageType>
+                <TextMessage></TextMessage>
+                <Channel>0</Channel>
+            </MessageDefinition>
+        </Messages>
+    </Message>
+    
+    <Record Enabled="false" LogEnabled="false">
+        <Behavior>Channel</Behavior>
+        <KickMessage>Aufnehmen ist verboten!</KickMessage>
+        <Permitted/>
+        <Denied/>
+    </Record>
+    
+    <Sticky Enabled="false" LogEnabled="false">
+        <Channel>0</Channel>
+        <StickTime>60</StickTime>
+        <Permitted/>
+        <Denied/>
+    </Sticky>
+    
+    <TeamSpeak>
+        <Host>127.0.0.1</Host>
+        <Username></Username>
+        <Password></Password>
+        <Instance>1</Instance>
+        <QueryPort>10011</QueryPort>
+        <GuestGroups>
+            <Group>8</Group>
+        </GuestGroups>
+    </TeamSpeak>
+    
+    <Vote Enabled="false" LogEnabled="false">
+        <NeededCompliants>4</NeededCompliants>
+        <Behavior>Sticky</Behavior>
+        <KickMessage>Gegen dich liegen Beschwerden vor!</KickMessage>
+        <Permitted/>
+        <Denied>
+            <Group>6</Group>
+        </Denied>
+    </Vote>
+
+</InstanceSettings>
