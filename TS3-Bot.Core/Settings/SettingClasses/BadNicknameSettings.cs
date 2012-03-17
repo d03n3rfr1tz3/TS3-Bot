@@ -1,5 +1,6 @@
 namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
 {
+    using System.ComponentModel.DataAnnotations;
     using System.Xml.Serialization;
 
     /// <summary>
@@ -18,6 +19,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
         /// Gets or sets the kick message.
         /// </summary>
         /// <value>The kick message.</value>
+        [DataType(DataType.MultilineText)]
         public string KickMessage { get; set; }
 
         /// <summary>

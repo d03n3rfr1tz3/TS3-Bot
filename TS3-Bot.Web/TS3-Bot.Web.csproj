@@ -35,6 +35,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -59,6 +62,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\SettingController.cs" />
     <Compile Include="Global.asax.cs">
@@ -107,6 +111,17 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Views\Setting\Edit.aspx" />
     <Content Include="Views\Setting\Index.aspx" />
+    <Content Include="Views\Setting\InstanceSetting\Away.ascx" />
+    <Content Include="Views\Setting\InstanceSetting\BadNickname.ascx" />
+    <Content Include="Views\Setting\InstanceSetting\Control.ascx" />
+    <Content Include="Views\Setting\InstanceSetting\Record.ascx" />
+    <Content Include="Views\Setting\InstanceSetting\Sticky.ascx" />
+    <Content Include="Views\Setting\InstanceSetting\Vote.ascx" />
+    <Content Include="Views\Setting\InstanceSetting\Event.ascx" />
+    <Content Include="Views\Setting\InstanceSetting\Global.ascx" />
+    <Content Include="Views\Setting\InstanceSetting\Idle.ascx" />
+    <Content Include="Views\Setting\InstanceSetting\Message.ascx" />
+    <Content Include="Views\Setting\InstanceSetting\TeamSpeak.ascx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

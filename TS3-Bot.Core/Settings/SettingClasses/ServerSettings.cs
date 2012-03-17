@@ -1,5 +1,7 @@
 namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class ServerSettings
     {
         /// <summary>
@@ -18,6 +20,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
         /// Gets or sets the password.
         /// </summary>
         /// <value>The password.</value>
+        [DataType(DataType.Password)]
         public string Password { get; set; }
     }
 }

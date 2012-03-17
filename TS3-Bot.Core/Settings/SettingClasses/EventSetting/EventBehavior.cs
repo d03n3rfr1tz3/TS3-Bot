@@ -1,5 +1,7 @@
 namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses.EventSetting
 {
+    using System.ComponentModel.DataAnnotations;
+
     /// <summary>
     /// Defines the EventBehaviorBase class.
     /// </summary>
@@ -15,6 +17,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses.EventSetting
         /// Gets or sets the message.
         /// </summary>
         /// <value>The message.</value>
+        [DataType(DataType.MultilineText)]
         public string TextMessage { get; set; }
     }
 }

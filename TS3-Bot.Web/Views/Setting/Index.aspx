@@ -12,7 +12,16 @@
     <tr>
         <th></th>
         <th>
-            FilePath
+            Nickname
+        </th>
+        <th>
+            Host
+        </th>
+        <th>
+            Instance
+        </th>
+        <th>
+            File
         </th>
         <th>
             Enabled
@@ -23,6 +32,15 @@
     <tr>
         <td>
             <%: Html.ActionLink("Edit", "Edit", new { id = item.Id }) %>
+        </td>
+        <td>
+            <%: Html.DisplayFor(m => item.Global.BotNickname) %>
+        </td>
+        <td>
+            <%: Html.DisplayFor(m => item.TeamSpeak.Host) %>
+        </td>
+        <td>
+            <%: Html.DisplayFor(m => item.TeamSpeak.Instance) %>
         </td>
         <td>
             <%: Html.DisplayFor(m => item.Id) %>

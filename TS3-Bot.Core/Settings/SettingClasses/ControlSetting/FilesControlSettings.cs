@@ -1,5 +1,7 @@
 namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses.ControlSetting
 {
+    using System.ComponentModel.DataAnnotations;
+
     /// <summary>
     /// Defines the FilesControlSettings class.
     /// </summary>
@@ -9,24 +11,28 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses.ControlSetting
         /// Gets or sets the message per server.
         /// </summary>
         /// <value>The message per server.</value>
+        [DataType(DataType.MultilineText)]
         public string MessagePerServer { get; set; }
 
         /// <summary>
         /// Gets or sets the message no files found.
         /// </summary>
         /// <value>The message no files found.</value>
+        [DataType(DataType.MultilineText)]
         public string MessageNoFilesFound { get; set; }
 
         /// <summary>
         /// Gets or sets the message files found.
         /// </summary>
         /// <value>The message files found.</value>
+        [DataType(DataType.MultilineText)]
         public string MessageFilesFound { get; set; }
 
         /// <summary>
         /// Gets or sets the message file.
         /// </summary>
         /// <value>The message file.</value>
+        [DataType(DataType.MultilineText)]
         public string MessageFile { get; set; }
 
         /// <summary>

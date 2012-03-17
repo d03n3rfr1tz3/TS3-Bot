@@ -16,49 +16,17 @@
     <% using (Html.BeginForm()) { %>
         <%: Html.ValidationSummary(true) %>
     
-        <div>
-            <%: Html.EditorFor(m => m.TeamSpeak) %>
-        </div>
-
-        <div>
-            <%: Html.EditorFor(m => m.Away) %>
-        </div>
-
-        <div>
-            <%: Html.EditorFor(m => m.BadNickname) %>
-        </div>
-
-        <div>
-            <%: Html.EditorFor(m => m.Control) %>
-        </div>
-
-        <div>
-            <%: Html.EditorFor(m => m.Event) %>
-        </div>
-
-        <div>
-            <%: Html.EditorFor(m => m.Global) %>
-        </div>
-
-        <div>
-            <%: Html.EditorFor(m => m.Idle) %>
-        </div>
-
-        <div>
-            <%: Html.EditorFor(m => m.Message) %>
-        </div>
-
-        <div>
-            <%: Html.EditorFor(m => m.Record) %>
-        </div>
-
-        <div>
-            <%: Html.EditorFor(m => m.Sticky) %>
-        </div>
-
-        <div>
-            <%: Html.EditorFor(m => m.Vote) %>
-        </div>
+        <div><%: Html.Partial("InstanceSetting/TeamSpeak", Model) %></div>
+        <div><%: Html.Partial("InstanceSetting/Away", Model)%></div>
+        <div><%: Html.Partial("InstanceSetting/BadNickname", Model)%></div>
+        <div><%: Html.Partial("InstanceSetting/Control", Model)%></div>
+        <div><%: Html.Partial("InstanceSetting/Event", Model)%></div>
+        <div><%: Html.Partial("InstanceSetting/Global", Model)%></div>
+        <div><%: Html.Partial("InstanceSetting/Idle", Model)%></div>
+        <div><%: Html.Partial("InstanceSetting/Message", Model)%></div>
+        <div><%: Html.Partial("InstanceSetting/Record", Model)%></div>
+        <div><%: Html.Partial("InstanceSetting/Sticky", Model)%></div>
+        <div><%: Html.Partial("InstanceSetting/Vote", Model)%></div>
 
         <p>
             <input type="submit" value="Save" />

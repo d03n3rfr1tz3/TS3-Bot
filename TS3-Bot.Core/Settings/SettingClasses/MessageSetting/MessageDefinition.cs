@@ -1,6 +1,7 @@
 namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses.MessageSetting
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
     using System.Xml.Serialization;
 
     /// <summary>
@@ -39,6 +40,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses.MessageSetting
         /// Gets or sets the message.
         /// </summary>
         /// <value>The message.</value>
+        [DataType(DataType.MultilineText)]
         public string TextMessage { get; set; }
 
         /// <summary>

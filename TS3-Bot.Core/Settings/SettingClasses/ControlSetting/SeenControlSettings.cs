@@ -1,5 +1,7 @@
 namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses.ControlSetting
 {
+    using System.ComponentModel.DataAnnotations;
+
     /// <summary>
     /// Defines the SeenControlSettings class.
     /// </summary>
@@ -9,6 +11,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses.ControlSetting
         /// Gets or sets the message.
         /// </summary>
         /// <value>The message.</value>
+        [DataType(DataType.MultilineText)]
         public string TextMessage { get; set; }
 
         /// <summary>

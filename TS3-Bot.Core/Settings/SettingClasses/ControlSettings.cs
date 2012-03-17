@@ -1,5 +1,6 @@
 namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
 {
+    using System.ComponentModel.DataAnnotations;
     using ControlSetting;
 
     /// <summary>
@@ -47,6 +48,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
         /// Gets or sets the help message.
         /// </summary>
         /// <value>The help message.</value>
+        [DataType(DataType.MultilineText)]
         public string HelpMessage { get; set; }
 
         /// <summary>
