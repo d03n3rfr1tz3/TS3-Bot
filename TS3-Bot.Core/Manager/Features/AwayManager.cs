@@ -56,9 +56,9 @@
         {
             if(!Repository.Settings.Away.Enabled) return;
 
-            var clientsAway = Repository.Client.GetClientList().Where(m => Repository.Settings.Away.Channel > 0 && m.IsClientAway.HasValue && m.IsClientAway.Value);
-            var clientsMicrophoneMuted = Repository.Client.GetClientList().Where(m => Repository.Settings.Away.MuteMicrophoneChannel > 0 && m.IsClientInputMuted.HasValue && m.IsClientInputMuted.Value).Except(clientsAway);
-            var clientsHeadphoneMuted = Repository.Client.GetClientList().Where(m => Repository.Settings.Away.MuteHeadphoneChannel > 0 && m.IsClientOutputMuted.HasValue && m.IsClientOutputMuted.Value).Except(clientsAway).Except(clientsMicrophoneMuted);
+            var clientsAway = Repository.Client.GetClientList().Where(m => Repository.Settings.Away.Channel > 0 && m.IsClientAway.HasValue && m.IsClientAway.Value).ToList();
+            var clientsMicrophoneMuted = Repository.Client.GetClientList().Where(m => Repository.Settings.Away.MuteMicrophoneChannel > 0 && m.IsClientInputMuted.HasValue && m.IsClientInputMuted.Value).Except(clientsAway).ToList();
+            var clientsHeadphoneMuted = Repository.Client.GetClientList().Where(m => Repository.Settings.Away.MuteHeadphoneChannel > 0 && m.IsClientOutputMuted.HasValue && m.IsClientOutputMuted.Value).Except(clientsAway).Except(clientsMicrophoneMuted).ToList();
 
             foreach (var client in clientsAway.Union(clientsMicrophoneMuted).Union(clientsHeadphoneMuted))
             {

@@ -51,7 +51,7 @@
         /// <param name="channelId">The channel id.</param>
         /// <param name="channelName">Name of the channel.</param>
         /// <returns>The file list</returns>
-        private List<FileEntity> GetFileListByChannel(uint serverId, uint channelId, string channelName)
+        private IEnumerable<FileEntity> GetFileListByChannel(uint serverId, uint channelId, string channelName)
         {
             var result = new List<FileEntity>();
             var files = DynamicQueryRunner(serverId).GetFileList(channelId, "/").ToList();
@@ -71,7 +71,7 @@
         /// <param name="channelName">Name of the channel.</param>
         /// <param name="path">The path.</param>
         /// <returns>The file list</returns>
-        private List<FileEntity> GetFileListByChannel(uint serverId, uint channelId, string channelName, string path)
+        private IEnumerable<FileEntity> GetFileListByChannel(uint serverId, uint channelId, string channelName, string path)
         {
             var result = new List<FileEntity>();
             var files = DynamicQueryRunner(serverId).GetFileList(channelId, path).ToList();

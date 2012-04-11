@@ -79,10 +79,10 @@
             {
                 var clientIds = Repository.Client.GetClientsFromDatabase()
                     .Where(m => m.NickName.ToLower().Contains(nickname.ToLower()))
-                    .Select(m => m.DatabaseId);
+                    .Select(m => m.DatabaseId).ToList();
                 if (clientIds.Any())
                 {
-                    ClientDatabaseIds = clientIds.ToList();
+                    ClientDatabaseIds = clientIds;
                 }
                 else
                 {

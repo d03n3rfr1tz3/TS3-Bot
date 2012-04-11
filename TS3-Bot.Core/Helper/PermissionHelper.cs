@@ -40,18 +40,18 @@ namespace DirkSarodnick.TS3_Bot.Core.Helper
         /// <returns>
         /// 	<c>true</c> if the specified setting is granted; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsGranted(ISettings setting, IEnumerable<uint> groups)
+        public static bool IsGranted(ISettings setting, List<uint> groups)
         {
             var result = true;
 
             if (setting.DeniedServerGroups.Any())
             {
-                result &= !setting.DeniedServerGroups.Any(g => groups.Contains(g));
+                result &= !setting.DeniedServerGroups.Any(groups.Contains);
             }
 
             if (setting.PermittedServerGroups.Any())
             {
-                result &= setting.PermittedServerGroups.Any(g => groups.Contains(g));
+                result &= setting.PermittedServerGroups.Any(groups.Contains);
             }
 
             return result;

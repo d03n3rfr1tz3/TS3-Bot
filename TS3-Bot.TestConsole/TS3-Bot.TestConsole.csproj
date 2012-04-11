@@ -8,7 +8,7 @@
     <ProjectGuid>{0DB0E1A0-29F4-4CB7-BC9A-826681D8B56F}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TS3_Bot.TestConsole</RootNamespace>
+    <RootNamespace>DirkSarodnick.TS3_Bot.TestConsole</RootNamespace>
     <AssemblyName>TS3-Bot.TestConsole</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>TS3-Bot.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -52,6 +55,9 @@
       <Project>{B4F2739D-7350-4F6C-B47F-100A1F6E9A86}</Project>
       <Name>TS3-Bot.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TS3-Bot.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

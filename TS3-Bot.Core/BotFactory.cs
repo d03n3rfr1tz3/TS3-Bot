@@ -1,8 +1,8 @@
-using System.IO;
 
 namespace DirkSarodnick.TS3_Bot.Core
 {
     using System;
+    using System.IO;
     using System.Threading;
     using Helper;
     using Service;
@@ -17,10 +17,11 @@ namespace DirkSarodnick.TS3_Bot.Core
 
         private static readonly object lockBots = new object();
         private static readonly object lockQueue = new object();
+
         private static BotInstanceCollection bots;
         private static BotInstanceQueue botQueue;
         private static FileSystemWatcher fileWatcher;
-        private static SynchronizationContext syncContext = new SynchronizationContext();
+        private static readonly SynchronizationContext SyncContext = new SynchronizationContext();
 
         /// <summary>
         /// Gets or sets the bots.
@@ -53,12 +54,7 @@ namespace DirkSarodnick.TS3_Bot.Core
             {
                 lock (lockQueue)
                 {
-                    if (botQueue == null)
-                    {
-                        botQueue = new BotInstanceQueue();
-                    }
-
-                    return botQueue;
+                    return botQueue ?? (botQueue = new BotInstanceQueue());
                 }
             }
         }
@@ -91,10 +87,10 @@ namespace DirkSarodnick.TS3_Bot.Core
         /// </summary>
         public static void Tick()
         {
-            if (SynchronizationContext.Current == null) SynchronizationContext.SetSynchronizationContext(syncContext);
+            if (SynchronizationContext.Current == null) SynchronizationContext.SetSynchronizationContext(SyncContext);
 
             ReCheck();
-            Bots.ForEach(bot => bot.Tick(syncContext));
+            Bots.ForEach(bot => bot.Tick(SyncContext));
         }
 
         /// <summary>

@@ -59,7 +59,7 @@
         /// </summary>
         /// <param name="groups">The server groups.</param>
         /// <returns>The Help Messages</returns>
-        public string GetHelpMessages(IEnumerable<uint> groups)
+        public string GetHelpMessages(List<uint> groups)
         {
             var helpMessages = new List<string>();
 

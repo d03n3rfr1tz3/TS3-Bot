@@ -11,7 +11,7 @@
     {
         private readonly object lockCredentialEntity = new object();
         private bool disposed;
-        private CredentialManager _credentialEntity;
+        private CredentialManager credentialEntity;
         private QueryRunner dynamicQueryRunner;
         private SyncTcpDispatcher dynamicTcpDispatcher;
 
@@ -55,20 +55,20 @@
             {
                 lock (lockCredentialEntity)
                 {
-                    if (_credentialEntity == null)
+                    if (credentialEntity == null)
                     {
-                        _credentialEntity = new CredentialManager(BotInstance);
-                        return _credentialEntity;
+                        credentialEntity = new CredentialManager(BotInstance);
+                        return credentialEntity;
                     }
 
-                    if (_credentialEntity.Fault)
+                    if (credentialEntity.Fault)
                     {
-                        _credentialEntity.Dispose();
-                        _credentialEntity = new CredentialManager(BotInstance);
-                        return _credentialEntity;
+                        credentialEntity.Dispose();
+                        credentialEntity = new CredentialManager(BotInstance);
+                        return credentialEntity;
                     }
 
-                    return _credentialEntity;
+                    return credentialEntity;
                 }
             }
         }

@@ -15,8 +15,8 @@ namespace DirkSarodnick.TS3_Bot.Core
     {
         private bool disposed;
 
-        protected int slowTick;
-        protected int keepTick;
+        protected int SlowTickCounter;
+        protected int KeepTickCounter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BotInstance"/> class.

@@ -26,13 +26,13 @@
         /// <value>The last connection error.</value>
         public DateTime LastConnectionError
         {
-            get { return Container.lastConnectionError; }
+            get { return Container.LastConnectionError; }
             set
             {
-                Container.lastConnectionError = value;
+                Container.LastConnectionError = value;
 
-                Container.lastConnectionWaiting = Container.lastConnectionWaiting*2;
-                if (Container.lastConnectionWaiting > 900) Container.lastConnectionWaiting = 900;
+                Container.LastConnectionWaiting = Container.LastConnectionWaiting*2;
+                if (Container.LastConnectionWaiting > 900) Container.LastConnectionWaiting = 900;
             }
         }
 
@@ -42,10 +42,7 @@
         /// <value>The next connection time.</value>
         public DateTime NextConnectionTime
         {
-            get
-            {
-                return LastConnectionError.AddSeconds(Container.lastConnectionWaiting);
-            }
+            get { return LastConnectionError.AddSeconds(Container.LastConnectionWaiting); }
         }
 
         /// <summary>
@@ -54,15 +51,7 @@
         /// <value>The random.</value>
         public Random Random
         {
-            get
-            {
-                if (random == null)
-                {
-                    random = new Random();
-                }
-
-                return random;
-            }
+            get { return random ?? (random = new Random()); }
         }
 
         /// <summary>
@@ -70,15 +59,7 @@
         /// </summary>
         public DateTimeFormatInfo DateTimeFormat
         {
-            get
-            {
-                if (dateTimeFormat == null)
-                {
-                    dateTimeFormat = new CultureInfo(Repository.Settings.Global.Globalization).DateTimeFormat;
-                }
-
-                return dateTimeFormat;
-            }
+            get { return dateTimeFormat ?? (dateTimeFormat = new CultureInfo(Repository.Settings.Global.Globalization).DateTimeFormat); }
         }
 
         /// <summary>
@@ -89,12 +70,12 @@
         {
             get
             {
-                if (Repository.Container.now == default(DateTime))
+                if (Repository.Container.Now == default(DateTime))
                 {
-                    Repository.Container.now = DateTime.Now;
+                    Repository.Container.Now = DateTime.Now;
                 }
 
-                return Repository.Container.now;
+                return Repository.Container.Now;
             }
         }
 

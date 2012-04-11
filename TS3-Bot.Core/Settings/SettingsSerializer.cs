@@ -17,15 +17,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings
         /// <value>The serializer.</value>
         private static XmlSerializer Serializer
         {
-            get
-            {
-                if (serializer == null)
-                {
-                    serializer = new InstanceSettingsSerializer();
-                }
-
-                return serializer;
-            }
+            get { return serializer ?? (serializer = new InstanceSettingsSerializer()); }
         }
 
         /// <summary>
@@ -61,7 +53,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings
         /// Writes the settings.
         /// </summary>
         /// <param name="settings">The settings.</param>
-        /// <param name="path">The path.</param>
+        /// <param name="stream">The stream.</param>
         public static void WriteSettings(InstanceSettings settings, Stream stream)
         {
             lock (Serializer)

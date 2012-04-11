@@ -12,51 +12,51 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
 
         #region Specified Data
 
-        public Dictionary<uint, uint> ClientLastChannelList = new Dictionary<uint, uint>();
-        public Dictionary<uint, ClientServerGroupList> ClientServerGroupList = new Dictionary<uint, ClientServerGroupList>();
-        public List<ClientWarningEntity> ClientWarningList = new List<ClientWarningEntity>();
-        public List<StickyClientEntity> StickyClientList = new List<StickyClientEntity>();
-        public List<VotedClientEntity> VotedClientList = new List<VotedClientEntity>();
-        public Dictionary<uint, DateTime> ClientLastSeen = new Dictionary<uint, DateTime>();
+        internal Dictionary<uint, uint> ClientLastChannelList = new Dictionary<uint, uint>();
+        internal Dictionary<uint, ClientServerGroupList> ClientServerGroupList = new Dictionary<uint, ClientServerGroupList>();
+        internal List<ClientWarningEntity> ClientWarningList = new List<ClientWarningEntity>();
+        internal List<StickyClientEntity> StickyClientList = new List<StickyClientEntity>();
+        internal List<VotedClientEntity> VotedClientList = new List<VotedClientEntity>();
+        internal Dictionary<uint, DateTime> ClientLastSeen = new Dictionary<uint, DateTime>();
 
         #endregion
 
         #region Basic Data
 
-        public DateTime now;
+        internal DateTime Now;
 
-        public int lastConnectionWaiting = 1;
-        public DateTime lastConnectionError = DateTime.Now;
+        internal int LastConnectionWaiting = 1;
+        internal DateTime LastConnectionError = DateTime.Now;
 
-        public List<ClientListEntry> ClientList;
-        public Dictionary<uint, ClientInfoResponse> ClientInfoList = new Dictionary<uint, ClientInfoResponse>();
-        public List<ChannelListEntry> ChannelList;
-        public Dictionary<uint, ChannelInfoResponse> ChannelInfoList = new Dictionary<uint, ChannelInfoResponse>();
-        public List<ClientDbEntry> ClientDatabaseList = new List<ClientDbEntry>();
-        public List<FileEntity> FileList = new List<FileEntity>();
-        public List<ComplainListEntry> CompliantList;
-        public List<ServerListItem> ServerList;
-        public Dictionary<Guid, DateTime> LastIntervalList = new Dictionary<Guid, DateTime>();
+        internal List<ClientListEntry> ClientList;
+        internal Dictionary<uint, ClientInfoResponse> ClientInfoList = new Dictionary<uint, ClientInfoResponse>();
+        internal List<ChannelListEntry> ChannelList;
+        internal Dictionary<uint, ChannelInfoResponse> ChannelInfoList = new Dictionary<uint, ChannelInfoResponse>();
+        internal List<ClientDbEntry> ClientDatabaseList = new List<ClientDbEntry>();
+        internal List<FileEntity> FileList = new List<FileEntity>();
+        internal List<ComplainListEntry> CompliantList;
+        internal List<ServerListItem> ServerList;
+        internal Dictionary<Guid, DateTime> LastIntervalList = new Dictionary<Guid, DateTime>();
 
         #endregion
 
         #region Locks
 
-        public readonly object lockNow = new object();
-        public readonly object lockGetClientInfo = new object();
-        public readonly object lockGetClientList = new object();
-        public readonly object lockGetClientsFromDatabase = new object();
-        public readonly object lockGetRawClientsFromDatabase = new object();
-        public readonly object lockGetChannelInfo = new object();
-        public readonly object lockGetChannelList = new object();
-        public readonly object lockGetClientServerGroups = new object();
-        public readonly object lockClientWarningList = new object();
-        public readonly object lockStickyClientList = new object();
-        public readonly object lockVotedClientList = new object();
-        public readonly object lockFileList = new object();
-        public readonly object lockGetCompliantList = new object();
-        public readonly object lockGetServerList = new object();
-        public readonly object lockLastEventList = new object();
+        internal readonly object lockNow = new object();
+        internal readonly object lockGetClientInfo = new object();
+        internal readonly object lockGetClientList = new object();
+        internal readonly object lockGetClientsFromDatabase = new object();
+        internal readonly object lockGetRawClientsFromDatabase = new object();
+        internal readonly object lockGetChannelInfo = new object();
+        internal readonly object lockGetChannelList = new object();
+        internal readonly object lockGetClientServerGroups = new object();
+        internal readonly object lockClientWarningList = new object();
+        internal readonly object lockStickyClientList = new object();
+        internal readonly object lockVotedClientList = new object();
+        internal readonly object lockFileList = new object();
+        internal readonly object lockGetCompliantList = new object();
+        internal readonly object lockGetServerList = new object();
+        internal readonly object lockLastEventList = new object();
 
         #endregion
 
@@ -67,7 +67,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         /// </summary>
         public void Clean()
         {
-            lock (lockNow) now = default(DateTime);
+            lock (lockNow) Now = default(DateTime);
             lock (lockGetClientList) ClientList = null;
             lock (lockGetChannelList) ChannelList = null;
             lock (lockGetCompliantList) CompliantList = null;

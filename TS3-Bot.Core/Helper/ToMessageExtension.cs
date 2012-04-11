@@ -1,5 +1,6 @@
 namespace DirkSarodnick.TS3_Bot.Core.Helper
 {
+    using System.Globalization;
     using System.Text;
     using System.Text.RegularExpressions;
     using Entity;
@@ -21,7 +22,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Helper
 
             if (context.ClientDatabaseId.HasValue)
             {
-                result.Replace("[CLIENT_ID]", context.ClientDatabaseId.Value.ToString());
+                result.Replace("[CLIENT_ID]", context.ClientDatabaseId.Value.ToString(CultureInfo.InvariantCulture));
             }
 
             if (context.ClientNickname != null)
@@ -41,7 +42,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Helper
 
             if (context.ChannelId.HasValue)
             {
-                result.Replace("[CHANNEL_ID]", context.ChannelId.Value.ToString());
+                result.Replace("[CHANNEL_ID]", context.ChannelId.Value.ToString(CultureInfo.InvariantCulture));
             }
 
             if (context.ChannelName != null)
@@ -51,7 +52,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Helper
 
             if (context.ServerId.HasValue)
             {
-                result.Replace("[SERVER_ID]", context.ServerId.Value.ToString());
+                result.Replace("[SERVER_ID]", context.ServerId.Value.ToString(CultureInfo.InvariantCulture));
             }
 
             if (context.ServerName != null)
@@ -61,7 +62,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Helper
 
             if (context.ServerPort.HasValue)
             {
-                result.Replace("[SERVER_PORT]", context.ServerPort.Value.ToString());
+                result.Replace("[SERVER_PORT]", context.ServerPort.Value.ToString(CultureInfo.InvariantCulture));
             }
 
             if (context.EventName != null)

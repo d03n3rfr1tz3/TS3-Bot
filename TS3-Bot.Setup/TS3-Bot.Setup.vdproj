@@ -39,12 +39,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_9C55B67471834F9485137B6E95079A78"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_C80A3833C97029211707EE32ACC4FA54"
         "OwnerKey" = "8:_0428FE8F9E8EC5518AF4B8F3BA822E75"
         "MsmSig" = "8:_UNDEFINED"
@@ -64,7 +58,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C80A3833C97029211707EE32ACC4FA54"
+        "OwnerKey" = "8:_0428FE8F9E8EC5518AF4B8F3BA822E75"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -76,7 +70,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0428FE8F9E8EC5518AF4B8F3BA822E75"
+        "OwnerKey" = "8:_C80A3833C97029211707EE32ACC4FA54"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -247,6 +241,11 @@
             "AssemblyAsmDisplayName" = "8:TS3-Bot.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_0428FE8F9E8EC5518AF4B8F3BA822E75"
+                    {
+                    "Name" = "8:TS3-Bot.Core.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:TS3-Bot.Core.dll"
             "TargetName" = "8:"
@@ -273,6 +272,11 @@
             "AssemblyAsmDisplayName" = "8:TS3QueryLib.Core.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_1E0CBFCD77B4BA68DE247ABD5FA0010D"
+                    {
+                    "Name" = "8:TS3QueryLib.Core.Framework.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:TS3QueryLib.Core.Framework.dll"
             "TargetName" = "8:"
@@ -292,26 +296,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9C55B67471834F9485137B6E95079A78"
-            {
-            "SourcePath" = "8:..\\TS3-Bot.Service\\TS3-Bot.ico"
-            "TargetName" = "8:TS3-Bot.ico"
-            "Tag" = "8:"
-            "Folder" = "8:_6FFD2CF946024D2F9D98CF7E626BA1CC"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C80A3833C97029211707EE32ACC4FA54"
             {
             "AssemblyRegister" = "3:1"
@@ -319,6 +303,11 @@
             "AssemblyAsmDisplayName" = "8:TS3-Bot.Core.XmlSerializers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_C80A3833C97029211707EE32ACC4FA54"
+                    {
+                    "Name" = "8:TS3-Bot.Core.XmlSerializers.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:TS3-Bot.Core.XmlSerializers.dll"
             "TargetName" = "8:"
@@ -395,7 +384,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TeamSpeak 3 Bot"
         "ProductCode" = "8:{1C45603C-232D-4A50-98EF-2F9EC133533C}"
-        "PackageCode" = "8:{51C27F38-642B-4C44-9532-36B5D1382996}"
+        "PackageCode" = "8:{4185FEDF-73D6-4D17-A4C7-A8CDC85D8DDB}"
         "UpgradeCode" = "8:{01D6B1B4-F9ED-4B1A-963D-119DE514A665}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -412,8 +401,8 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:http://www.d03n3r.de"
-        "ARPPRODUCTICON" = "8:_9C55B67471834F9485137B6E95079A78"
-        "ARPIconIndex" = "3:0"
+        "ARPPRODUCTICON" = "8:_33B9B4B69991410FA65242ACCA39E5C4"
+        "ARPIconIndex" = "3:32512"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:0"

@@ -27,11 +27,11 @@
 
                 ManagerFactory.Invoke();
 
-                if (slowTick > 5) SlowTick();
-                slowTick++;
+                if (SlowTickCounter > 5) SlowTick();
+                SlowTickCounter++;
 
-                if (keepTick > 28) KeepAlive();
-                keepTick++;
+                if (KeepTickCounter > 28) KeepAlive();
+                KeepTickCounter++;
             }
             catch (SocketException ex)
             {
@@ -60,7 +60,7 @@
         /// </summary>
         private void SlowTick()
         {
-            slowTick = 0;
+            SlowTickCounter = 0;
             ManagerFactory.Invoke();
         }
 
@@ -69,7 +69,7 @@
         /// </summary>
         private void KeepAlive()
         {
-            keepTick = 0;
+            KeepTickCounter = 0;
             Repository.KeepAlive();
         }
 

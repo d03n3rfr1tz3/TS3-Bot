@@ -1,7 +1,6 @@
 ﻿namespace DirkSarodnick.TS3_Bot.Core.Entity
 {
     using System;
-    using Helper;
 
     /// <summary>
     /// Defines the ClientWarningEntity class.

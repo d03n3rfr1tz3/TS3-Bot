@@ -74,6 +74,12 @@ namespace DirkSarodnick.TS3_Bot.Core.Entity
         /// <value>The server groups.</value>
         public List<uint> ServerGroups { get; set; }
 
+        /// <summary>
+        /// Gets or sets the channel id.
+        /// </summary>
+        /// <value>
+        /// The channel id.
+        /// </value>
         public uint? ChannelId { get; set; }
     }
 }

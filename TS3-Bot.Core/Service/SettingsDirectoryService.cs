@@ -4,8 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using Helper;
-    using DirkSarodnick.TS3_Bot.Core.Settings;
+    using Settings;
 
     /// <summary>
     /// Defines the SettingsDirectoryService class.
@@ -13,14 +12,14 @@
     public class SettingsDirectoryService : IDisposable
     {
         private bool disposed;
-        private List<InstanceSettings> settingsList;
+        private readonly List<InstanceSettings> settingsList;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingsDirectoryService"/> class.
         /// </summary>
         public SettingsDirectoryService(string path)
         {
-            this.settingsList = Directory.GetFiles(path, "*.xml").Select(file => SettingsManager.LoadSettings(file)).ToList();
+            this.settingsList = Directory.GetFiles(path, "*.xml").Select(SettingsManager.LoadSettings).ToList();
         }
 
         /// <summary>
@@ -49,7 +48,13 @@
         /// <returns></returns>
         public SettingsService GetService(string fileName)
         {
-            return new SettingsService(this.settingsList.SingleOrDefault(file => Path.GetFileName(file.FilePath) == fileName).FilePath);
+            var settings = this.settingsList.SingleOrDefault(file => Path.GetFileName(file.FilePath) == fileName);
+            if (settings != null)
+            {
+                return new SettingsService(settings.FilePath);
+            }
+
+            return null;
         }
 
         /// <summary>

@@ -26,10 +26,7 @@
         {
             lock (Container.lockGetServerList)
             {
-                if (Container.ServerList == null)
-                    Container.ServerList = QueryRunner.GetServerList().ToList();
-
-                return Container.ServerList.ToList();
+                return Container.ServerList ?? (Container.ServerList = QueryRunner.GetServerList().ToList());
             }
         }
     }

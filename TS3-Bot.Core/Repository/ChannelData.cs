@@ -112,6 +112,7 @@
         /// Removes the sticky clients.
         /// </summary>
         /// <param name="clientDatabaseId">The client database id.</param>
+        /// <param name="tempOnly">if set to <c>true</c> [temp only].</param>
         public void RemoveStickyClients(uint clientDatabaseId, bool tempOnly)
         {
             lock (Container.lockStickyClientList)
@@ -131,7 +132,6 @@
         /// Gets the client sticky.
         /// </summary>
         /// <param name="clientDatabaseId">The client database id.</param>
-        /// <param name="channelId">The channel id.</param>
         /// <returns></returns>
         public uint? GetClientSticky(uint clientDatabaseId)
         {
@@ -144,7 +144,7 @@
             {
                 if (Container.StickyClientList.Any(m => m.ClientDatabaseId == clientDatabaseId))
                 {
-                    return Container.StickyClientList.FirstOrDefault(m => m.ClientDatabaseId == clientDatabaseId).ChannelId;
+                    return Container.StickyClientList.First(m => m.ClientDatabaseId == clientDatabaseId).ChannelId;
                 }
             }
 

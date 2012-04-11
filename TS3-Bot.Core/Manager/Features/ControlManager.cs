@@ -1,6 +1,7 @@
 ﻿namespace DirkSarodnick.TS3_Bot.Core.Manager.Features
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using Base;
     using Connection;
@@ -200,7 +201,7 @@
             Log(Repository.Settings.Control.Seen,
                 string.Format("Client '{0}'(id:{1}) used !seen for clients '{2}'.",
                               senderClientEntry.Nickname, senderClientEntry.DatabaseId,
-                              string.Join("', '", message.ClientDatabaseIds.ConvertAll(i => i.ToString()).ToArray())));
+                              string.Join("', '", message.ClientDatabaseIds.ConvertAll(i => i.ToString(CultureInfo.InvariantCulture)).ToArray())));
         }
 
         /// <summary>

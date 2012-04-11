@@ -99,12 +99,7 @@
         /// </returns>
         private bool IsBadNickname(string nickname)
         {
-            foreach (var badNickname in Repository.Settings.BadNickname.BadNicknames)
-            {
-                if (nickname.ToLower().Contains(badNickname.ToLower()))
-                    return true;
-            }
-            return false;
+            return Repository.Settings.BadNickname.BadNicknames.Any(badNickname => nickname.ToLower().Contains(badNickname.ToLower()));
         }
 
         #endregion

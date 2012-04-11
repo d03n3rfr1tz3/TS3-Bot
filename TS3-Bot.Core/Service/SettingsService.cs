@@ -11,8 +11,8 @@
     public class SettingsService : IDisposable
     {
         private bool disposed;
-        private FileStream fileStream;
-        private StreamReader streamReader;
+        private readonly FileStream fileStream;
+        private readonly StreamReader streamReader;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingsService"/> class.
