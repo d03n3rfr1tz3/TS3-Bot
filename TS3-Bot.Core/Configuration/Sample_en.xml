@@ -216,7 +216,7 @@
                 <MessageType>Advert</MessageType>
 				
                 <!-- The message, which will be send. -->
-                <TextMessage>This is an advertising message.</TextMessage>
+                <TextMessage>This is an advertising message from the [url=http://www.d03n3r.de/Project/Detail/TS3-Bot.html]TS3-Bot[/url].</TextMessage>
                 
                 <!-- The interval in minutes in which this advert message will be repeated. -->
                 <Interval>60</Interval>
@@ -224,7 +224,7 @@
 
             <!-- Enabled: true/false    | Enables/Disables this Message, which is a Global Message. -->
             <!-- LogEnabled: true/false | Enables/Disables the Logging of this Message. -->
-            <MessageDefinition Enabled="true">
+            <MessageDefinition Enabled="false">
                 <!-- MessageType: Advert/Global/Welcome | Specifies the type of this Message. -->
                 <MessageType>Global</MessageType>
 				
