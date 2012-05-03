@@ -1,20 +1,61 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <InstanceSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://files.d03n3r.de/TS3bot_Settings_v1.xsd">
 
+    <!-- true/false | Aktiviert/Deaktiviert den gesamten Bot. -->
     <Enabled>false</Enabled>
 
+    <!-- Allgemeine Einstellungen des Bots. -->
     <Global>
+        <!-- Der Nickname des Bots. Ist sichtbar, wenn der Bot einem/einen Nutzer schreibt, verschiebt oder kickt. -->
         <BotNickname>Bot</BotNickname>
+        
+        <!-- Setzt die Kulturinformationen zur korrekten Formatierung von Zahlen und Datumsangaben. -->
         <Globalization>de-DE</Globalization>
     </Global>
 
+    <!-- Die TeamSpeak Einstellungen, welche zum Verbinden und Interagieren mit dem TeamSpeak Server genutzt werden. -->
+    <TeamSpeak>
+        <!-- Gib die IP oder den Host des TeamSpeak Servers an. -->
+        <Host>127.0.0.1</Host>
+        
+        <!-- Gib den Benutzername eines ServerQuery-Nutzers an. Stelle sicher, dass der verwendete Nutzer ausreichend Rechte besitzt, um die unten eingestellten Sachen zu tun. ;-) -->
+        <Username></Username>
+        
+        <!-- Gib das Passwort zum obenstehenden Benutzer an. -->
+        <Password></Password>
+        
+        <!-- Gib die Instanz-ID an. -->
+        <Instance>1</Instance>
+        
+        <!-- Gib den ServerQuery Port an, auf welchem der Bot sich Verbinden kann. -->
+        <QueryPort>10011</QueryPort>
+        
+        <!-- Gib die ID der Gast-Gruppe an. -->
+        <GuestGroups>
+            <Group>8</Group>
+        </GuestGroups>
+    </TeamSpeak>
+
+    <!-- Enabled: true/false    | Aktiviert/Deaktiviert den Away-Channel. -->
+    <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
     <Away Enabled="true">
+        <!-- Die ID des Away-Channels, in welchen ein Nutzer verschoben wird, wenn er Away ist. -->
         <Channel>2</Channel>
-		<MuteHeadphoneChannel>3</MuteHeadphoneChannel>
-		<MuteMicrophoneChannel>4</MuteMicrophoneChannel>
+        
+        <!-- Die ID des Away-Channels, in welchen ein Nutzer verschoben wird, wenn er seine Kopfhörer stumm schaltet. -->
+        <MuteHeadphoneChannel>3</MuteHeadphoneChannel>
+        
+        <!-- Die ID des Away-Channels, in welchen ein Nutzer verschoben wird, wenn er sein Mikrofon stumm schaltet -->
+        <MuteMicrophoneChannel>4</MuteMicrophoneChannel>
+        
+        <!-- Denied/Permitted-Tags können hier platziert werden. Weitere Details dazu sind unten im Abstimmungs-Feature zu finden.-->
     </Away>
 
+    <!-- Enabled: true/false    | Aktiviert/Deaktiviert den Bad-Nickname Filter. -->
+    <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
     <BadNickname Enabled="true" LogEnabled="true">
+        <!-- Eine Liste von Wörtern, welche in Nicknamen gesucht werden. -->
+        <!-- Sei vorsichtig bei der Wahl, da der Wert im gesamten Nickname gesucht wird. Demzufolge wird "sau" auch in Nicknamen wie "Saubermann" gefunden und der betreffende Nutzer gekickt. -->
         <Blacklist>
             <Entry>http:</Entry>
             <Entry>ftp:</Entry>
@@ -26,50 +67,83 @@
             <Entry>arsch</Entry>
             <Entry>fotze</Entry>
         </Blacklist>
+        
+        <!-- Die Nachricht, welche beim Kicken des betroffenen Nutzers angezeigt werden soll. -->
         <KickMessage>Nickname gefällt uns nicht!</KickMessage>
+        
+        <!-- Denied/Permitted-Tags können hier platziert werden. Weitere Details dazu sind unten im Abstimmungs-Feature zu finden.-->
     </BadNickname>
 
     <Control>
+        <!-- Der Anfang der Hilfenachricht, wenn jemand !help benutzt. -->
         <HelpMessage>
             Es gibt folgende Befehle, die du in den globalen Chat schreiben kannst, um mich zu steuern:
         </HelpMessage>
 
+        <!-- Enabled: true/false    | Aktiviert/Deaktiviert den !help-Befehl. -->
+        <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
         <Help Enabled="true">
+            <!-- Die Teil der Hilfenachricht, welcher den !help-Befehl erklärt. -->
             <HelpMessage>
                 [B]!help[/B]
                 Öffnet diese Hilfe. Wer hätte es gedacht.
             </HelpMessage>
+            
+            <!-- Denied/Permitted-Tags können hier platziert werden. Weitere Details dazu sind unten im Abstimmungs-Feature zu finden.-->
         </Help>
 
+        <!-- Enabled: true/false    | Aktiviert/Deaktiviert den !seen-Befehl. -->
+        <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
         <Seen Enabled="true">
+            <!-- Die Teil der Hilfenachricht, welcher den !seen-Befehl erklärt. -->
             <HelpMessage>
                 [B]!seen {Nickname|Datenbank ID}[/B]
                 Gibt dir Informationen, wann jemand zuletzt gesehen wurde. Es reicht einen Teil des Nicks anzugeben. Alternativ kann auch die Datenbank ID angegeben werden.
                 Beispiel: [I]!seen Stefan[/I]
             </HelpMessage>
+            
+            <!-- Die Nachricht, welche angezeigt wird, wenn jemand den !seen-Befehl benutzt. -->
             <TextMessage>
                 Infos zu '[B][CLIENT_NICKNAME][/B]'(id:[CLIENT_ID]):
                 Zuletzt eingeloggt: [B][CLIENT_LASTLOGIN][/B]
                 Zuletzt gesehen: [B][CLIENT_LASTSEEN][/B]
             </TextMessage>
+            
+            <!-- Denied/Permitted-Tags können hier platziert werden. Weitere Details dazu sind unten im Abstimmungs-Feature zu finden.-->
         </Seen>
 
+        <!-- Enabled: true/false    | Aktiviert/Deaktiviert den !files-Befehl. -->
+        <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
         <Files Enabled="true">
+            <!-- Die Teil der Hilfenachricht, welcher den !files-Befehl erklärt. -->
             <HelpMessage>
                 [B]!files[/B]
                 Gibt dir eine Auflistung aller Dateien in allen Räumen, gruppiert nach virtuellen Servern, wenn du Server-Administrator bist :-)
             </HelpMessage>
+            
+            <!-- Diese Nachricht wird für jeden Server wiederholt. -->
             <MessagePerServer>Dateien auf Server '[B][SERVER_NAME][/B]' (Id: [SERVER_ID], Port: [SERVER_PORT]):</MessagePerServer>
+            
+            <!-- Diese Nachricht wird angezeigt, wenn keine Dateien gefunden wurden. -->
             <MessageNoFilesFound>Es wurden keine Dateien gefunden.</MessageNoFilesFound>
+            
+            <!-- Diese Nachricht wird angezeigt, wenn Dateien gefunden wurden. -->
             <MessageFilesFound>Folgende Dateien wurden gefunden:</MessageFilesFound>
+            
+            <!-- Diese Nachricht wird für jede gefundene Datei wiederholt. -->
             <MessageFile>'[B][CHANNEL_NAME][/B]'(id:[CHANNEL_ID]) > '[B][FILE_NAME][/B]' (Erstellt: [FILE_CREATED], Größe: [FILE_SIZE])</MessageFile>
+            
+            <!-- Denied/Permitted-Tags können hier platziert werden. Weitere Details dazu sind unten im Abstimmungs-Feature zu finden.-->
             <Permitted>
                 <Group>2</Group>
                 <Group>6</Group>
             </Permitted>
         </Files>
 
+        <!-- Enabled: true/false    | Aktiviert/Deaktiviert den !stick- and !unstick-Befehl. -->
+        <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
         <Stick Enabled="true" LogEnabled="true">
+            <!-- Die Teil der Hilfenachricht, welcher die !stick- und !unstick-Befehle erklärt. -->
             <HelpMessage>
                 [B]!stick {Nickname|Datenbank ID} {Channel ID} [StickTime][/B]
                 Gibt dem angegebenen Client im angegebenen Channel einen Sticky-Status. Die StickTime (optional) gibt die Dauer in Minuten an, die ein Client darin festgehalten wird.
@@ -79,6 +153,8 @@
                 Löst vom angegebenen Client jeden Sticky-Status.
                 Beispiel: [I]!unstick 5[/I]
             </HelpMessage>
+            
+            <!-- Denied/Permitted-Tags können hier platziert werden. Weitere Details dazu sind unten im Abstimmungs-Feature zu finden.-->
             <Permitted>
                 <Group>2</Group>
                 <Group>6</Group>
@@ -86,17 +162,34 @@
         </Stick>
     </Control>
 
+    <!-- Enabled: true/false | Aktiviert/Deaktiviert das Random-Event-Messages Feature. -->
+    <!-- Dieses Feature wählt zufällig einen Nutzer aus der gesamten Nutzerliste und führt das entsprechende Event aus, wenn der Benutzer zudem online ist. -->
     <Event Enabled="true">
         <Events>
+            <!-- Enabled: true/false    | Aktiviert/Deaktiviert dieses Event. -->
+            <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
             <EventDefinition Enabled="false" LogEnabled="true">
+                <!-- Der Eventname -->
                 <Name>Zufall</Name>
+                
+                <!-- Die Liste von Behandlungen, welche aufgerufen werden sobald ein Nutzer gewählt und online ist. -->
                 <EventBehaviors>
                     <EventBehavior>
+                        <!-- Behavior: Poke/Message/Web | Die Behandlung, welche aufgerufen wird. -->
+                        <!-- Poke: Stupst den Nutzer an. -->
+                        <!-- Message: Sendet dem Nutzer eine private Nachricht. -->
+                        <!-- Web: Ruft eine Webseite mit Parametern im Hintergrund auf. -->
                         <Behavior>Poke</Behavior>
+                        
+                        <!-- Die Nachricht, welche verwendet wird, wenn die Behandlung ausgeführt wird. -->
                         <TextMessage>Hey [CLIENT_NICKNAME], du wurdest gerade vom [EVENT_NAME] auserwählt.</TextMessage>
                     </EventBehavior>
                 </EventBehaviors>
+                
+                <!-- Das Interval nach welchem das Event gefeuert wird. -->
                 <Interval>30</Interval>
+                
+                <!-- Denied/Permitted-Tags können hier platziert werden. Weitere Details dazu sind unten im Abstimmungs-Feature zu finden.-->
                 <Denied>
                     <Group>8</Group>
                 </Denied>
@@ -104,61 +197,116 @@
         </Events>
     </Event>
 
+    <!-- Enabled: true/false    | Aktiviert/Deaktiviert den Idle-Channel. -->
+    <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
     <Idle Enabled="true">
+        <!-- Die ID des Idle-Channel, in welchen ein Nutzer verschoben wird, wenn er Inaktiv ist. -->
         <Channel>3</Channel>
+        
+        <!-- Die Zeit in Sekunden, nach welchen der Nutzer als Inaktiv gilt. -->
         <IdleTime>300</IdleTime>
     </Idle>
 
+    <!-- Enabled: true/false | Aktiviert/Deaktiviert das Nachrichten Feature. -->
     <Message Enabled="true">
         <Messages>
+            <!-- Enabled: true/false    | Aktiviert/Deaktiviert diese Werbenachricht. -->
+            <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
             <MessageDefinition Enabled="true">
+                <!-- MessageType: Advert/Global/Welcome | Gibt den Typ der Nachricht an. -->
                 <MessageType>Advert</MessageType>
+                
+                <!-- Die Nachricht, welche versendet wird. -->
                 <TextMessage>Dies ist eine Werbenachricht.</TextMessage>
+                
+                <!-- Das Invertval in Minuten, nach welchem diese Werbenachricht versendet wird. -->
                 <Interval>60</Interval>
             </MessageDefinition>
 
+            <!-- Enabled: true/false    | Aktiviert/Deaktiviert diese globale Nachricht. -->
+            <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
             <MessageDefinition Enabled="true">
+                <!-- MessageType: Advert/Global/Welcome | Gibt den Typ der Nachricht an. -->
                 <MessageType>Global</MessageType>
+                
+                <!-- Die Nachricht, welche versendet wird. -->
                 <TextMessage>Dies ist eine globale Werbenachricht.</TextMessage>
+                
+                <!-- Das Invertval in Minuten, nach welchem diese globale Nachricht versendet wird. -->
                 <Interval>60</Interval>
             </MessageDefinition>
 
+            <!-- Enabled: true/false    | Aktiviert/Deaktiviert diese Willkommensnachricht. -->
+            <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
             <MessageDefinition Enabled="true">
+                <!-- MessageType: Advert/Global/Welcome | Gibt den Typ der Nachricht an. -->
                 <MessageType>Welcome</MessageType>
+                
+                <!-- Die Nachricht, welche versendet wird. -->
                 <TextMessage>Willkommen [B][CLIENT_NICKNAME][/B]!</TextMessage>
+                
+                <!-- Die ID des Standard-Channels. -->
                 <Channel>1</Channel>
             </MessageDefinition>
         </Messages>
     </Message>
 
+    <!-- Enabled: true/false    | Aktiviert/Deaktiviert die Aufnahmebehandlung. -->
+    <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
     <Record Enabled="true">
+        <!-- Behavior: Channel/Server/Sticky | Die Bestrafung, welche genutzt werden soll, wenn ein Nutzer versucht aufzunehmen. -->
+        <!-- Channel: Kickt den Nutzer vom Channel. -->
+        <!-- Server: Kickt den Nutzer vom Server. -->
+        <!-- Sticky: Verschiebt den Nutzer in den Sticky-Channel. -->
         <Behavior>Channel</Behavior>
+        
+        <!-- Die Nachricht, welche beim Kicken des betroffenen Nutzers angezeigt werden soll. -->
         <KickMessage>Du spinnst wohl? Aufnahme verboten!</KickMessage>
+        
+        <!-- Denied/Permitted-Tags können hier platziert werden. Weitere Details dazu sind unten im Abstimmungs-Feature zu finden.-->
     </Record>
 
+    <!-- Enabled: true/false    | Aktiviert/Deaktiviert den Sticky-Channel. -->
+    <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
     <Sticky Enabled="true">
+        <!-- Die ID des Sticky-Channels. -->
         <Channel>4</Channel>
+        
+        <!-- Die Zeit in Minuten, wie lange ein Nutzer im Sticky-Channel festgehalten wird. -->
         <StickTime>30</StickTime>
+        
+        <!-- Denied/Permitted-Tags können hier platziert werden. Weitere Details dazu sind unten im Abstimmungs-Feature zu finden.-->
     </Sticky>
 
-    <TeamSpeak>
-        <Host>127.0.0.1</Host>
-        <Username></Username>
-        <Password></Password>
-        <Instance>1</Instance>
-        <QueryPort>10011</QueryPort>
-        <GuestGroups>
-            <Group>8</Group>
-        </GuestGroups>
-    </TeamSpeak>
-
+    <!-- Enabled: true/false    | Aktiviert/Deaktiviert das Abstimmungs-Feature. -->
+    <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
     <Vote Enabled="true">
+        <!-- Die Anzahl an Beschwerden, welche benötigt werden, um den betroffenen Nutzer zu bestrafen. -->
         <NeededCompliants>4</NeededCompliants>
+        
+        <!-- Behavior: Channel/Server/Sticky | Die Bestrafung, welche genutzt werden soll. -->
+        <!-- Channel: Kickt den Nutzer vom Channel. -->
+        <!-- Server: Kickt den Nutzer vom Server. -->
+        <!-- Sticky: Verschiebt den Nutzer in den Sticky-Channel. -->
         <Behavior>Sticky</Behavior>
+        
+        <!-- Die Nachricht, welche angezeigt werden soll, wenn der Benutzer bestraft wird. -->
         <KickMessage>Gegen dich liegen Beschwerden vor!</KickMessage>
+        
+        <!-- Permitted-Tag: Benutze Group-Tags um IDs von Gruppen anzugeben, welchen es erlaubt ist, dieses Feature zu nutzen oder von diesem Feature betroffen zu sein. -->
+        <!-- Denied-Tag: Benutze Group-Tags um IDs von Gruppen anzugeben, welchen es nicht erlaubt ist, dieses Feature zu nutzen oder von diesem Feature betroffen zu sein. -->
+        <!-- NOTE: Nur ein Permitted- ODER Denied-Tag ist nötig, da diese sich gegenseitig Ausschließen. -->
+        <Permitted>
+            <!-- Gruppe 3 (Server Normal), 4 (Server Gast), 7 (Channel Voice) und 8 (Channel Gast) können von diesem Feature betroffen sein. -->
+            <Group>3</Group>
+            <Group>4</Group>
+            <Group>7</Group>
+            <Group>8</Group>
+        </Permitted>
         <Denied>
+            <!-- Gruppe 2 (Server Admin) und 5 (Channel Admin) können nicht von diesem Feature betroffen sein, um zu verhindern, dass Admins gekickt werden. Nur normale Benutzer können andere Benutzer durch Abstimmung kicken. -->
             <Group>2</Group>
-            <Group>6</Group>
+            <Group>5</Group>
         </Denied>
     </Vote>
 
