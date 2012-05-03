@@ -15,19 +15,13 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_0428FE8F9E8EC5518AF4B8F3BA822E75"
-        "OwnerKey" = "8:_33B9B4B69991410FA65242ACCA39E5C4"
+        "MsmKey" = "8:_1105039A486C94CD14C739374826A6E1"
+        "OwnerKey" = "8:_A72C7A3F7BB92E7D11364B61B668C923"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_1E0CBFCD77B4BA68DE247ABD5FA0010D"
-        "OwnerKey" = "8:_0428FE8F9E8EC5518AF4B8F3BA822E75"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_1E0CBFCD77B4BA68DE247ABD5FA0010D"
+        "MsmKey" = "8:_1105039A486C94CD14C739374826A6E1"
         "OwnerKey" = "8:_33B9B4B69991410FA65242ACCA39E5C4"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -39,13 +33,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C80A3833C97029211707EE32ACC4FA54"
-        "OwnerKey" = "8:_0428FE8F9E8EC5518AF4B8F3BA822E75"
+        "MsmKey" = "8:_920722F522E917685264D1F092A0BFA9"
+        "OwnerKey" = "8:_A72C7A3F7BB92E7D11364B61B668C923"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_C80A3833C97029211707EE32ACC4FA54"
+        "MsmKey" = "8:_920722F522E917685264D1F092A0BFA9"
+        "OwnerKey" = "8:_33B9B4B69991410FA65242ACCA39E5C4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A72C7A3F7BB92E7D11364B61B668C923"
         "OwnerKey" = "8:_33B9B4B69991410FA65242ACCA39E5C4"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -58,19 +58,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0428FE8F9E8EC5518AF4B8F3BA822E75"
+        "OwnerKey" = "8:_A72C7A3F7BB92E7D11364B61B668C923"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1E0CBFCD77B4BA68DE247ABD5FA0010D"
+        "OwnerKey" = "8:_1105039A486C94CD14C739374826A6E1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C80A3833C97029211707EE32ACC4FA54"
+        "OwnerKey" = "8:_920722F522E917685264D1F092A0BFA9"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -186,7 +186,7 @@
             "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_71A5BF3B1E234DC58471073C236FB3D9"
             {
             "Name" = "8:Primäre Ausgabe from TS3-Bot.Service (Active)"
-            "Condition" = "8:"
+            "Condition" = "8:Not (Installed OR PREVIOUSVERSIONSINSTALLED)"
             "Object" = "8:_33B9B4B69991410FA65242ACCA39E5C4"
             "FileType" = "3:2"
             "InstallAction" = "3:1"
@@ -200,7 +200,7 @@
             "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_B10F0B2FF5A54DED9257D6688101B7F5"
             {
             "Name" = "8:Primäre Ausgabe from TS3-Bot.Service (Active)"
-            "Condition" = "8:"
+            "Condition" = "8:Not (Installed OR PREVIOUSVERSIONSINSTALLED)"
             "Object" = "8:_33B9B4B69991410FA65242ACCA39E5C4"
             "FileType" = "3:2"
             "InstallAction" = "3:2"
@@ -234,45 +234,14 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0428FE8F9E8EC5518AF4B8F3BA822E75"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:TS3-Bot.Core, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_0428FE8F9E8EC5518AF4B8F3BA822E75"
-                    {
-                    "Name" = "8:TS3-Bot.Core.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:TS3-Bot.Core.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_6FFD2CF946024D2F9D98CF7E626BA1CC"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1E0CBFCD77B4BA68DE247ABD5FA0010D"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1105039A486C94CD14C739374826A6E1"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:TS3QueryLib.Core.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_1E0CBFCD77B4BA68DE247ABD5FA0010D"
+                    "_1105039A486C94CD14C739374826A6E1"
                     {
                     "Name" = "8:TS3QueryLib.Core.Framework.dll"
                     "Attributes" = "3:512"
@@ -296,20 +265,51 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C80A3833C97029211707EE32ACC4FA54"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_920722F522E917685264D1F092A0BFA9"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:TS3-Bot.Core.XmlSerializers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:TS3-Bot.Core.XmlSerializers, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_C80A3833C97029211707EE32ACC4FA54"
+                    "_920722F522E917685264D1F092A0BFA9"
                     {
                     "Name" = "8:TS3-Bot.Core.XmlSerializers.dll"
                     "Attributes" = "3:512"
                     }
                 }
             "SourcePath" = "8:TS3-Bot.Core.XmlSerializers.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6FFD2CF946024D2F9D98CF7E626BA1CC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A72C7A3F7BB92E7D11364B61B668C923"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:TS3-Bot.Core, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_A72C7A3F7BB92E7D11364B61B668C923"
+                    {
+                    "Name" = "8:TS3-Bot.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:TS3-Bot.Core.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_6FFD2CF946024D2F9D98CF7E626BA1CC"
@@ -384,7 +384,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TeamSpeak 3 Bot"
         "ProductCode" = "8:{9B6E6DCE-350D-4DF1-9623-3B6604899389}"
-        "PackageCode" = "8:{892BC9F5-0E29-477A-BE05-F19828716302}"
+        "PackageCode" = "8:{66FDED1E-0539-4F5E-A2D3-D35433219451}"
         "UpgradeCode" = "8:{01D6B1B4-F9ED-4B1A-963D-119DE514A665}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -905,7 +905,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_33B9B4B69991410FA65242ACCA39E5C4"
             {
-            "SourcePath" = "8:..\\TS3-Bot.Service\\obj\\Debug\\TS3-Bot.Service.exe"
+            "SourcePath" = "8:..\\TS3-Bot.Service\\obj\\Release\\TS3-Bot.Service.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_6FFD2CF946024D2F9D98CF7E626BA1CC"

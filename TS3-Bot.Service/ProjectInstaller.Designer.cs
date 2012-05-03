@@ -43,6 +43,7 @@
             this.ServiceInstaller.ServiceName = "TS3-Bot";
             this.ServiceInstaller.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             this.ServiceInstaller.Committed += new System.Configuration.Install.InstallEventHandler(this.ServiceInstaller_Committed);
+            this.ServiceInstaller.BeforeInstall += new System.Configuration.Install.InstallEventHandler(this.ServiceInstaller_BeforeInstall);
             // 
             // ProjectInstaller
             // 

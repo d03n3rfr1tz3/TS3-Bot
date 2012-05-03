@@ -66,7 +66,7 @@
         {
             get
             {
-                return Path.Combine(AppDomain.CurrentDomain.SetupInformation.PrivateBinPath, "Configuration");
+                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configuration");
             }
         }
 
