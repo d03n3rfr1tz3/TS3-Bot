@@ -172,7 +172,7 @@
                 <!-- The list of behaviors, which will be raised, when the random event is fired. -->
                 <EventBehaviors>
                     <EventBehavior>
-                        <!-- Behavior: Poke/Message/Web | The bevaior, which will be raised -->
+                        <!-- Behavior: Poke/Message/Web | The behavior, which will be raised -->
                         <!-- Poke: Pokes the picked user. -->
                         <!-- Message: Sends a private message to the picked user. -->
                         <!-- Web: Silently calls a web page with some arguments. -->
@@ -231,7 +231,7 @@
                 <!-- The message, which will be send. -->
                 <TextMessage>This is a global advertising message.</TextMessage>
 				
-                <!-- The interval in minutes in which this advert message will be repeated. -->
+                <!-- The interval in minutes in which this global message will be repeated. -->
                 <Interval>60</Interval>
             </MessageDefinition>
 
