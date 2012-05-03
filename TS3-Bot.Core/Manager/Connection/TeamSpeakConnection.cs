@@ -2,6 +2,7 @@
 {
     using System;
     using Entity;
+    using Settings;
     using TS3QueryLib.Core.Query;
 
     /// <summary>
@@ -22,6 +23,16 @@
         public TeamSpeakConnection(BotInstance instanceBase)
         {
             BotInstance = instanceBase;
+            Settings = instanceBase.Settings;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TeamSpeakConnection"/> class.
+        /// </summary>
+        /// <param name="instanceSettings">The instance settings.</param>
+        public TeamSpeakConnection(InstanceSettings instanceSettings)
+        {
+            Settings = instanceSettings;
         }
 
         /// <summary>
@@ -44,6 +55,11 @@
         /// </summary>
         /// <value>The bot instance.</value>
         public BotInstance BotInstance { get; private set; }
+
+        /// <summary>
+        /// Gets the settings.
+        /// </summary>
+        public InstanceSettings Settings { get; private set; }
 
         /// <summary>
         /// Gets the credential entity.

@@ -9,11 +9,11 @@ namespace DirkSarodnick.TS3_Bot.Service
         /// </summary>
         static void Main()
         {
-            var ServicesToRun = new ServiceBase[]
-                                    {
-                                        new Service()
-                                    };
-            ServiceBase.Run(ServicesToRun);
+            var servicesToRun = new ServiceBase[]
+            {
+                new Service()
+            };
+            ServiceBase.Run(servicesToRun);
         }
     }
 }

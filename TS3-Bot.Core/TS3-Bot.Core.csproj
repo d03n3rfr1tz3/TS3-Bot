@@ -94,7 +94,7 @@
     <Compile Include="Manager\Features\NickManager.cs" />
     <Compile Include="Manager\Features\RecordManager.cs" />
     <Compile Include="Repository\ChannelData.cs" />
-    <Compile Include="Manager\Connection\TeamSpeakManager.cs" />
+    <Compile Include="Manager\Connection\TeamSpeakConnection.cs" />
     <Compile Include="Manager\Features\AwayManager.cs" />
     <Compile Include="Manager\Features\Base\DefaultManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -122,6 +122,7 @@
     <Compile Include="Helper\BasicHelper.cs" />
     <Compile Include="Helper\EqualsExtension.cs" />
     <Compile Include="Helper\ForEachExtension.cs" />
+    <Compile Include="Service\DataService.cs" />
     <Compile Include="Service\SettingsDirectoryService.cs" />
     <Compile Include="Service\LogService.cs" />
     <Compile Include="Helper\MessageHelper.cs" />
