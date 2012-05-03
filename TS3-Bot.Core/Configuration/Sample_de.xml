@@ -217,7 +217,7 @@
                 <MessageType>Advert</MessageType>
                 
                 <!-- Die Nachricht, welche versendet wird. -->
-                <TextMessage>Dies ist eine Werbenachricht.</TextMessage>
+                <TextMessage>Dies ist eine Werbenachricht des [url=http://www.d03n3r.de/Project/Detail/TS3-Bot.html]TS3-Bot[/url].</TextMessage>
                 
                 <!-- Das Invertval in Minuten, nach welchem diese Werbenachricht versendet wird. -->
                 <Interval>60</Interval>
@@ -225,7 +225,7 @@
 
             <!-- Enabled: true/false    | Aktiviert/Deaktiviert diese globale Nachricht. -->
             <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
-            <MessageDefinition Enabled="true">
+            <MessageDefinition Enabled="false">
                 <!-- MessageType: Advert/Global/Welcome | Gibt den Typ der Nachricht an. -->
                 <MessageType>Global</MessageType>
                 
