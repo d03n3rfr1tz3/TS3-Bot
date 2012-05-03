@@ -292,12 +292,11 @@
         <!-- The Message that will be shown, when someone get punished by this feature. -->
         <KickMessage>There are complains against you!</KickMessage>
         
-        <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
         <!-- Permitted-Tag: Use Group-Tags to specify IDs of groups, that are permitted to use or get handled by this feature. -->
         <!-- Denied-Tag: Use Group-Tags to specify IDs of groups, that are denied to use or get handled by this feature. -->
         <!-- NOTE: Only one Permitted OR Denied-Tag is necessary, cause they rule out each other. -->
         <Permitted>
-            <!-- Group 3 (Server Normal), 4 (Server Guest), 7 (Channel Voice) and 8 (Channel Guest) only not be punished by vote. -->
+            <!-- Group 3 (Server Normal), 4 (Server Guest), 7 (Channel Voice) and 8 (Channel Guest) can only be punished by vote. -->
             <Group>3</Group>
             <Group>4</Group>
             <Group>7</Group>
