@@ -7,15 +7,15 @@
 <font size="2" style="font-size: 11pt">**Installation**</font>
 
 -   <font size="2">Just click you through the Setup or extract the
-    �Console� folder in any directory you like</font>
+    ?Console? folder in any directory you like</font>
 
--   <font size="2">Make sure the windows service �TeamSpeak 3 Bot� is
+-   <font size="2">Make sure the windows service ?TeamSpeak 3 Bot? is
     running, if you choosed the Setup variant</font>
 
 <font size="2" style="font-size: 11pt">**Configuration**</font>
 
 -   <font size="2"><span lang>Open the Configuration in the
-    �Configuration� folder, which is in the Installation folder  
+    ?Configuration? folder, which is in the Installation folder  
     (default is "</span></font><font size="2"><span lang>*C:\\Program
     Files\\Dirk Sarodnick\\TeamSpeak 3
     Bot\\Configuration\\")*</span></font>
@@ -39,38 +39,38 @@
     Guest groups, which will filter some logical things</font>
 
 -   <font size="2">Then just search for the first \<Enabled\>-Node in
-    your Configuration and set the value to �true� instead of �false�.
+    your Configuration and set the value to ?true? instead of ?false?.
     More details are described in the Configuration itself.</font>
 
 <font size="2">Now your bot is configured and will automatically try to
 connect to your TeamSpeak server. The bot will not be visible for you as
-a normal connecting user, so don�t panic. Just type !help into the
+a normal connecting user, so don?t panic. Just type !help into the
 global chat and the bot should answer you with a private message. Look
 into the Troubleshooting section if anything goes wrong here.</font>
 
 <font size="2">Make sure you add the IP on which the Bot is running into
-your �query\_ip\_whitelist.txt� file of your TeamSpeak server. Otherwise
+your ?query\_ip\_whitelist.txt? file of your TeamSpeak server. Otherwise
 the Bot will be banned after a few seconds from the antispam
 mechanism.</font>
 
 <font size="2" style="font-size: 11pt">**Troubleshooting**</font>
 
-<font size="2">The Bot is a service, so you don�t see a black console
+<font size="2">The Bot is a service, so you don?t see a black console
 with some debug or error information. Of course, there is a log! Because
 we are in the windows world, the bot is logging into the windows event
-log. You find this under your �Control Panel� \> �Administrative Tools�
-\> �Event Viewer�. Just look into the �Application Log� (in Windows 7/
-Windows 2008 under �Windows Protocols� \> �Application�) and there you
-find a lot of information. The Bot logs with the Source �TS3-Bot� for
+log. You find this under your ?Control Panel? \> ?Administrative Tools?
+\> ?Event Viewer?. Just look into the ?Application Log? (in Windows 7/
+Windows 2008 under ?Windows Protocols? \> ?Application?) and there you
+find a lot of information. The Bot logs with the Source ?TS3-Bot? for
 which you can filter. In most cases there are connection problems or
 corrupt configurations, which you can identify here.</font>
 
-<font size="2">It�s also possible to start the bot with the console-app
-�TS3-Bot.Console.exe�. Here are all errors additionally visible in the
+<font size="2">It?s also possible to start the bot with the console-app
+?TS3-Bot.Console.exe?. Here are all errors additionally visible in the
 pretty black window.</font>
 
-<font size="2">Do not hesitate to contact me, if you can�t get it to
-work. Just email me, but don�t forget to add some details and all recent
+<font size="2">Do not hesitate to contact me, if you can?t get it to
+work. Just email me, but don?t forget to add some details and all recent
 log entries from the TS3-Bot.</font>
 
 <font size="2" style="font-size: 11pt">**Contact**</font>
