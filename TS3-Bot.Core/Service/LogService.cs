@@ -8,20 +8,56 @@ namespace DirkSarodnick.TS3_Bot.Core.Service
     /// </summary>
     public class LogService
     {
+        public delegate void LogHandler(EventLogEntryType type, string message);
+        public static event LogHandler Log;
+
+        /// <summary>
+        /// Called when [log].
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="message">The message.</param>
+        public static void OnLog(EventLogEntryType type, string message)
+        {
+            LogHandler handler = Log;
+            if (handler != null) handler(type, message);
+
+            try
+            {
+                var log = new EventLog { Log = "Application", Source = "TS3-Bot" };
+                log.WriteEntry(message, type);
+                log.Close();
+            }
+            catch
+            { }
+        }
+
+        /// <summary>
+        /// Called when [log].
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="exception">The exception.</param>
+        public static void OnLog(EventLogEntryType type, Exception exception)
+        {
+            LogHandler handler = Log;
+            if (handler != null) handler(type, exception.Message);
+
+            try
+            {
+                var log = new EventLog { Log = "Application", Source = "TS3-Bot" };
+                log.WriteEntry(exception.ToString(), type);
+                log.Close();
+            }
+            catch
+            { }
+        }
+
         /// <summary>
         /// Errors the specified message.
         /// </summary>
         /// <param name="message">The message.</param>
         public static void Error(string message)
         {
-            try
-            {
-                var log = new EventLog { Log = "Application", Source = "TS3-Bot" };
-                log.WriteEntry(message, EventLogEntryType.Error);
-                log.Close();
-            }
-            catch
-            { }
+            OnLog(EventLogEntryType.Error, message);
         }
 
         /// <summary>
@@ -30,7 +66,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Service
         /// <param name="exception">The exception.</param>
         public static void Error(Exception exception)
         {
-            Error(exception.ToString());
+            OnLog(EventLogEntryType.Error, exception);
         }
 
         /// <summary>
@@ -39,14 +75,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Service
         /// <param name="message">The message.</param>
         public static void Warning(string message)
         {
-            try
-            {
-                var log = new EventLog { Log = "Application", Source = "TS3-Bot" };
-                log.WriteEntry(message, EventLogEntryType.Warning);
-                log.Close();
-            }
-            catch
-            { }
+            OnLog(EventLogEntryType.Warning, message);
         }
 
         /// <summary>
@@ -55,14 +84,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Service
         /// <param name="message">The message.</param>
         public static void Debug(string message)
         {
-            try
-            {
-                var log = new EventLog { Log = "Application", Source = "TS3-Bot" };
-                log.WriteEntry(message, EventLogEntryType.Information);
-                log.Close();
-            }
-            catch
-            { }
+            OnLog(EventLogEntryType.Information, message);
         }
     }
 }

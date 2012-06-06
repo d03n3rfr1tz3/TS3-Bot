@@ -16,21 +16,21 @@
     <!-- The TeamSpeak settings, which will be used to connect and interact with the TeamSpeak Server. -->
     <TeamSpeak>
         <!-- Specify the IP or Host of your TeamSpeak Server. -->
-	<Host>127.0.0.1</Host>
+        <Host>127.0.0.1</Host>
 		
-	<!-- Specify the Username of any ServerQuery-User. Be sure that this account has enough rights to do, what you configure below ;-) -->
+        <!-- Specify the Username of any ServerQuery-User. Be sure that this account has enough rights to do, what you configure below ;-) -->
         <Username></Username>
 		
-	<!-- Specify the Password for the Username above. -->
+        <!-- Specify the Password for the Username above. -->
         <Password></Password>
 		
-	<!-- Specify the Server Instance ID, on which this Bot will be running. -->
+        <!-- Specify the Server Instance ID, on which this Bot will be running. -->
         <Instance>1</Instance>
 		
-	<!-- Specify the Server Query Port, on which this Bot has to connect. -->
+        <!-- Specify the Server Query Port, on which this Bot has to connect. -->
         <QueryPort>10011</QueryPort>
 		
-	<!-- Specify the ID of the Guest Group. -->
+        <!-- Specify the ID of the Guest Group. -->
         <GuestGroups>
             <Group>8</Group>
         </GuestGroups>

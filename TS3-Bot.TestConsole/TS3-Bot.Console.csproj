@@ -9,7 +9,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DirkSarodnick.TS3_Bot.TestConsole</RootNamespace>
-    <AssemblyName>TS3-Bot.TestConsole</AssemblyName>
+    <AssemblyName>TS3-Bot.Console</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>

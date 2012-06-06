@@ -1,8 +1,10 @@
 ﻿namespace DirkSarodnick.TS3_Bot.TestConsole
 {
     using System;
+    using System.Diagnostics;
     using System.Timers;
     using Core;
+    using Core.Service;
 
     /// <summary>
     /// Defines the Program class.
@@ -21,6 +23,7 @@
             Timer.Interval = 800;
             Timer.Enabled = true;
             Timer.Start();
+            LogService.Log += LogServiceOnLog;
             Console.Read();
         }
 
@@ -32,6 +35,16 @@
         private static void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             BotFactory.Tick();
+        }
+
+        /// <summary>
+        /// Logs the service on log.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="message">The message.</param>
+        private static void LogServiceOnLog(EventLogEntryType type, string message)
+        {
+            Console.WriteLine("{0}: {1}", type, message);
         }
     }
 }

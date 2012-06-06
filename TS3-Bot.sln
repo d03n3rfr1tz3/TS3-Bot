@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TS3-Bot.Service", "TS3-Bot.
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TS3-Bot.Setup", "TS3-Bot.Setup\TS3-Bot.Setup.vdproj", "{4635DF8E-A3BE-40D4-AE66-88E0084C02E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TS3-Bot.TestConsole", "TS3-Bot.TestConsole\TS3-Bot.TestConsole.csproj", "{0DB0E1A0-29F4-4CB7-BC9A-826681D8B56F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TS3-Bot.Console", "TS3-Bot.TestConsole\TS3-Bot.Console.csproj", "{0DB0E1A0-29F4-4CB7-BC9A-826681D8B56F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TS3-Bot.Web", "TS3-Bot.Web\TS3-Bot.Web.csproj", "{ECD1C143-F057-4863-AE6C-1AC174632059}"
 EndProject
