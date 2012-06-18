@@ -39,13 +39,13 @@
     <!-- Enabled: true/false    | Enables/Disables the Away-Channel. -->
     <!-- LogEnabled: true/false | Enables/Disables the Logging of this feature. -->
     <Away Enabled="true">
-        <!-- The ID of the away channel, where someone will be moved, when he/she is away. -->
+        <!-- The ID of the away channel, where someone will be moved, when he/she is away. An empty Value will also disable this. -->
         <Channel>2</Channel>
 		
-        <!-- The ID of the away channel, where someone will be moved, when he/she mutes his/her headphones. -->
+        <!-- The ID of the away channel, where someone will be moved, when he/she mutes his/her headphones. An empty Value will also disable this. -->
         <MuteHeadphoneChannel>3</MuteHeadphoneChannel>
 		
-        <!-- The ID of the away channel, where someone will be moved, when he/she mutes his/her microphone -->
+        <!-- The ID of the away channel, where someone will be moved, when he/she mutes his/her microphone. An empty Value will also disable this. -->
         <MuteMicrophoneChannel>4</MuteMicrophoneChannel>
 		
         <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
@@ -200,8 +200,8 @@
         <!-- The ID of the Idle-Channel, where the user will be moved, when idling. -->
         <Channel>3</Channel>
 		
-        <!-- The time in seconds, after which the user becomes idling. -->
-        <IdleTime>300</IdleTime>
+        <!-- The time in minutes, after which the user becomes idling. -->
+        <IdleTime>30</IdleTime>
 		
         <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
     </Idle>
