@@ -40,7 +40,9 @@
 
 -   <font size="2">Then just search for the first \<Enabled\>-Node in
     your Configuration and set the value to "true" instead of "false".
-    More details are described in the Configuration itself.</font>
+    More details are described in the Configuration itself. Only one
+    note: You can alway remove unused Elements to clean your configuration.
+    This will deactivate the removed features without an error.</font>
 
 <font size="2">Now your bot is configured and will automatically try to
 connect to your TeamSpeak server. The bot will not be visible for you as
