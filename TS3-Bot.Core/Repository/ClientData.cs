@@ -198,7 +198,10 @@
         /// </returns>
         public bool HasLastChannelByClientId(uint clientDatabaseId)
         {
-            return Container.ClientLastChannelList.ContainsKey(clientDatabaseId);
+            lock (Container.lockClientLastChannelList)
+            {
+                return Container.ClientLastChannelList.ContainsKey(clientDatabaseId);
+            }
         }
 
         /// <summary>
@@ -208,7 +211,10 @@
         /// <returns></returns>
         public uint GetLastChannelByClientId(uint clientDatabaseId)
         {
-            return Container.ClientLastChannelList[clientDatabaseId];
+            lock (Container.lockClientLastChannelList)
+            {
+                return Container.ClientLastChannelList[clientDatabaseId];
+            }
         }
 
         /// <summary>
@@ -218,8 +224,11 @@
         /// <param name="channelId">The channel id.</param>
         public void SetLastChannelByClientId(uint clientDatabaseId, uint channelId)
         {
-            if (!HasLastChannelByClientId(clientDatabaseId))
-                Container.ClientLastChannelList.Add(clientDatabaseId, channelId);
+            lock (Container.lockClientLastChannelList)
+            {
+                if (!HasLastChannelByClientId(clientDatabaseId))
+                    Container.ClientLastChannelList.Add(clientDatabaseId, channelId);
+            }
         }
 
         /// <summary>
@@ -228,7 +237,10 @@
         /// <param name="clientDatabaseId">The client database id.</param>
         public void RemoveLastChannelByClientId(uint clientDatabaseId)
         {
-            Container.ClientLastChannelList.Remove(clientDatabaseId);
+            lock (Container.lockClientLastChannelList)
+            {
+                Container.ClientLastChannelList.Remove(clientDatabaseId);
+            }
         }
 
         #endregion

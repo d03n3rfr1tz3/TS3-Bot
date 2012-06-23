@@ -24,13 +24,18 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
 
         #region Specified Data
 
-        internal Dictionary<uint, uint> ClientLastChannelList = new Dictionary<uint, uint>();
         internal Dictionary<uint, ClientServerGroupList> ClientServerGroupList = new Dictionary<uint, ClientServerGroupList>();
         internal List<ClientWarningEntity> ClientWarningList = new List<ClientWarningEntity>();
 
+        private PersistentDictionary<uint, uint> clientLastChannelList;
         private PersistentDictionary<Guid, StickyClientEntity> stickyClientList;
         private PersistentDictionary<Guid, VotedClientEntity> votedClientList;
         private PersistentDictionary<uint, DateTime> clientLastSeen;
+
+        internal PersistentDictionary<uint, uint> ClientLastChannelList
+        {
+            get { return this.clientLastChannelList ?? (this.clientLastChannelList = new PersistentDictionary<uint, uint>(string.Format(@"Data\{0}\LastChannel", name))); }
+        }
 
         internal PersistentDictionary<Guid, StickyClientEntity> StickyClientList
         {
@@ -79,6 +84,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         internal readonly object lockGetChannelList = new object();
         internal readonly object lockGetClientServerGroups = new object();
         internal readonly object lockClientWarningList = new object();
+        internal readonly object lockClientLastChannelList = new object();
         internal readonly object lockStickyClientList = new object();
         internal readonly object lockVotedClientList = new object();
         internal readonly object lockSeenClientList = new object();
@@ -105,6 +111,11 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
             lock (lockGetChannelInfo) ChannelInfoList.Clear();
 
             lock (lockClientWarningList) ClientWarningList.RemoveAll(m => m.Creation.AddMinutes(5) < DateTime.Now);
+
+            lock (lockClientLastChannelList)
+            {
+                if (clientLastChannelList != null) clientLastChannelList.Flush();
+            }
 
             lock (lockStickyClientList)
             {
@@ -144,6 +155,13 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
             if (disposed) return;
             disposed = true;
 
+            if (clientLastChannelList != null)
+            {
+                clientLastChannelList.Flush();
+                clientLastChannelList.Dispose();
+                this.clientLastChannelList = null;
+            }
+
             if (stickyClientList != null)
             {
                 stickyClientList.Flush();
@@ -174,7 +192,6 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
             CompliantList = null;
             ServerList = null;
             LastIntervalList = null;
-            ClientLastChannelList = null;
             ClientServerGroupList = null;
             ClientWarningList = null;
 
