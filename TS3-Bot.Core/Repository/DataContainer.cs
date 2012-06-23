@@ -2,22 +2,50 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Entity;
+    using Microsoft.Isam.Esent.Collections.Generic;
     using TS3QueryLib.Core.Query.HelperClasses;
     using TS3QueryLib.Core.Query.Responses;
 
     public class DataContainer : IDisposable
     {
         private bool disposed;
+        private readonly string name;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataContainer"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        public DataContainer(string name)
+        {
+            this.name = name;
+        }
 
         #region Specified Data
 
         internal Dictionary<uint, uint> ClientLastChannelList = new Dictionary<uint, uint>();
         internal Dictionary<uint, ClientServerGroupList> ClientServerGroupList = new Dictionary<uint, ClientServerGroupList>();
         internal List<ClientWarningEntity> ClientWarningList = new List<ClientWarningEntity>();
-        internal List<StickyClientEntity> StickyClientList = new List<StickyClientEntity>();
-        internal List<VotedClientEntity> VotedClientList = new List<VotedClientEntity>();
-        internal Dictionary<uint, DateTime> ClientLastSeen = new Dictionary<uint, DateTime>();
+
+        private PersistentDictionary<Guid, StickyClientEntity> stickyClientList;
+        private PersistentDictionary<Guid, VotedClientEntity> votedClientList;
+        private PersistentDictionary<uint, DateTime> clientLastSeen;
+
+        internal PersistentDictionary<Guid, StickyClientEntity> StickyClientList
+        {
+            get { return this.stickyClientList ?? (this.stickyClientList = new PersistentDictionary<Guid, StickyClientEntity>(string.Format(@"Data\{0}\Sticky", name))); }
+        }
+
+        internal PersistentDictionary<Guid, VotedClientEntity> VotedClientList
+        {
+            get { return this.votedClientList ?? (this.votedClientList = new PersistentDictionary<Guid, VotedClientEntity>(string.Format(@"Data\{0}\Voted", name))); }
+        }
+
+        internal PersistentDictionary<uint, DateTime> ClientLastSeen
+        {
+            get { return this.clientLastSeen ?? (this.clientLastSeen = new PersistentDictionary<uint, DateTime>(string.Format(@"Data\{0}\Seen", name))); }
+        }
 
         #endregion
 
@@ -53,6 +81,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         internal readonly object lockClientWarningList = new object();
         internal readonly object lockStickyClientList = new object();
         internal readonly object lockVotedClientList = new object();
+        internal readonly object lockSeenClientList = new object();
         internal readonly object lockFileList = new object();
         internal readonly object lockGetCompliantList = new object();
         internal readonly object lockGetServerList = new object();
@@ -76,8 +105,33 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
             lock (lockGetChannelInfo) ChannelInfoList.Clear();
 
             lock (lockClientWarningList) ClientWarningList.RemoveAll(m => m.Creation.AddMinutes(5) < DateTime.Now);
-            lock (lockStickyClientList) StickyClientList.RemoveAll(m => m.Creation.AddMinutes(m.StickTime) < DateTime.Now);
-            lock (lockVotedClientList) VotedClientList.RemoveAll(m => m.Creation.AddHours(1) < DateTime.Now);
+
+            lock (lockStickyClientList)
+            {
+                var entities = StickyClientList.Where(m => m.Value.Creation.AddMinutes(m.Value.StickTime) < DateTime.Now);
+                foreach (var entity in entities.ToList())
+                {
+                    StickyClientList.Remove(entity.Key);
+                }
+
+                if (stickyClientList != null) stickyClientList.Flush();
+            }
+
+            lock (lockVotedClientList)
+            {
+                var entities = VotedClientList.Where(m => m.Value.Creation.AddHours(1) < DateTime.Now);
+                foreach (var entity in entities.ToList())
+                {
+                    VotedClientList.Remove(entity.Key);
+                }
+
+                if (votedClientList != null) votedClientList.Flush();
+            }
+
+            lock (lockSeenClientList)
+            {
+                if (clientLastSeen != null) clientLastSeen.Flush();
+            }
         }
 
         #endregion
@@ -89,6 +143,27 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         {
             if (disposed) return;
             disposed = true;
+
+            if (stickyClientList != null)
+            {
+                stickyClientList.Flush();
+                stickyClientList.Dispose();
+                this.stickyClientList = null;
+            }
+
+            if (votedClientList != null)
+            {
+                votedClientList.Flush();
+                VotedClientList.Dispose();
+                this.votedClientList = null;
+            }
+
+            if (clientLastSeen != null)
+            {
+                clientLastSeen.Flush();
+                clientLastSeen.Dispose();
+                this.clientLastSeen = null;
+            }
 
             ClientList = null;
             ClientInfoList = null;
@@ -102,9 +177,6 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
             ClientLastChannelList = null;
             ClientServerGroupList = null;
             ClientWarningList = null;
-            StickyClientList = null;
-            VotedClientList = null;
-            ClientLastSeen = null;
 
             GC.SuppressFinalize(this);
         }

@@ -79,7 +79,7 @@
         /// <returns></returns>
         public List<StickyClientEntity> GetStickyClients()
         {
-            return Container.StickyClientList;
+            return Container.StickyClientList.Select(m => m.Value).ToList();
         }
 
         /// <summary>
@@ -92,19 +92,13 @@
         {
             lock (Container.lockStickyClientList)
             {
-                if (Container.StickyClientList.Any(c => c.ClientDatabaseId == clientDatabaseId && c.ChannelId == channelId))
+                if (Container.StickyClientList.Any(c => c.Value.ClientDatabaseId == clientDatabaseId && c.Value.ChannelId == channelId))
                 {
-                    var stickyClient = Container.StickyClientList.SingleOrDefault(c => c.ClientDatabaseId == clientDatabaseId && c.ChannelId == channelId);
-                    if (stickyClient != null)
-                    {
-                        stickyClient.Creation = DateTime.Now;
-                        stickyClient.StickTime = stickTime;
-                    }
+                    var entity = Container.StickyClientList.SingleOrDefault(c => c.Value.ClientDatabaseId == clientDatabaseId && c.Value.ChannelId == channelId);
+                    Container.StickyClientList.Remove(entity.Key);
                 }
-                else
-                {
-                    Container.StickyClientList.Add(new StickyClientEntity(clientDatabaseId, channelId, stickTime));
-                }
+
+                Container.StickyClientList.Add(Guid.NewGuid(), new StickyClientEntity(clientDatabaseId, channelId, stickTime));
             }
         }
 
@@ -117,13 +111,10 @@
         {
             lock (Container.lockStickyClientList)
             {
-                if (tempOnly)
+                var entities = tempOnly ? Container.StickyClientList.Where(m => m.Value.ClientDatabaseId == clientDatabaseId && m.Value.ChannelId != Repository.Settings.Sticky.Channel) : Container.StickyClientList.Where(m => m.Value.ClientDatabaseId == clientDatabaseId && m.Value.ChannelId == Repository.Settings.Sticky.Channel);
+                foreach (var entity in entities.ToList())
                 {
-                    Container.StickyClientList.RemoveAll(m => m.ClientDatabaseId == clientDatabaseId && m.ChannelId != Repository.Settings.Sticky.Channel);
-                }
-                else
-                {
-                    Container.StickyClientList.RemoveAll(m => m.ClientDatabaseId == clientDatabaseId && m.ChannelId == Repository.Settings.Sticky.Channel);
+                    Container.StickyClientList.Remove(entity.Key);
                 }
             }
         }
@@ -135,16 +126,16 @@
         /// <returns></returns>
         public uint? GetClientSticky(uint clientDatabaseId)
         {
-            if (Container.StickyClientList.Any(m => m.ClientDatabaseId == clientDatabaseId && m.ChannelId == Repository.Settings.Sticky.Channel))
+            if (Container.StickyClientList.Any(m => m.Value.ClientDatabaseId == clientDatabaseId && m.Value.ChannelId == Repository.Settings.Sticky.Channel))
             {
                 return Repository.Settings.Sticky.Channel;
             }
 
             lock (Container.lockStickyClientList)
             {
-                if (Container.StickyClientList.Any(m => m.ClientDatabaseId == clientDatabaseId))
+                if (Container.StickyClientList.Any(m => m.Value.ClientDatabaseId == clientDatabaseId))
                 {
-                    return Container.StickyClientList.First(m => m.ClientDatabaseId == clientDatabaseId).ChannelId;
+                    return Container.StickyClientList.First(m => m.Value.ClientDatabaseId == clientDatabaseId).Value.ChannelId;
                 }
             }
 

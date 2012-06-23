@@ -164,9 +164,12 @@
         /// <returns></returns>
         public DateTime GetLastSeen(uint clientDatabaseId)
         {
-            if (!Container.ClientLastSeen.ContainsKey(clientDatabaseId))
-                return default(DateTime);
-            return Container.ClientLastSeen[clientDatabaseId];
+            lock (Container.lockSeenClientList)
+            {
+                if (!Container.ClientLastSeen.ContainsKey(clientDatabaseId))
+                    return default(DateTime);
+                return Container.ClientLastSeen[clientDatabaseId];
+            }
         }
 
         /// <summary>
@@ -175,10 +178,13 @@
         /// <param name="clientDatabaseId">The client database id.</param>
         public void SetLastSeen(uint clientDatabaseId)
         {
-            if (Container.ClientLastSeen.ContainsKey(clientDatabaseId))
-                Container.ClientLastSeen[clientDatabaseId] = Repository.Static.Now;
-            else
-                Container.ClientLastSeen.Add(clientDatabaseId, Repository.Static.Now);
+            lock (Container.lockSeenClientList)
+            {
+                if (Container.ClientLastSeen.ContainsKey(clientDatabaseId))
+                    Container.ClientLastSeen[clientDatabaseId] = Repository.Static.Now;
+                else
+                    Container.ClientLastSeen.Add(clientDatabaseId, Repository.Static.Now);
+            }
         }
 
         #region Last Channel
@@ -308,7 +314,7 @@
         {
             lock (Container.lockVotedClientList)
             {
-                Container.VotedClientList.Add(votedClient);
+                Container.VotedClientList.Add(Guid.NewGuid(), votedClient);
             }
         }
 
@@ -320,7 +326,11 @@
         {
             lock (Container.lockVotedClientList)
             {
-                Container.VotedClientList.RemoveAll(m => m.ClientDatabaseId == clientDatabaseId);
+                var entities = Container.VotedClientList.Where(m => m.Value.ClientDatabaseId == clientDatabaseId);
+                foreach (var entity in entities.ToList())
+                {
+                    Container.VotedClientList.Remove(entity.Key);
+                }
             }
         }
 
@@ -335,7 +345,7 @@
         {
             lock (Container.lockVotedClientList)
             {
-                return Container.VotedClientList.Any(m => m.ClientDatabaseId == clientDatabaseId);
+                return Container.VotedClientList.Values.Any(m => m.ClientDatabaseId == clientDatabaseId);
             }
         }
 
@@ -348,7 +358,7 @@
         {
             lock (Container.lockVotedClientList)
             {
-                return Container.VotedClientList.FirstOrDefault(m => m.ClientDatabaseId == clientDatabaseId);
+                return Container.VotedClientList.Values.FirstOrDefault(m => m.ClientDatabaseId == clientDatabaseId);
             }
         }
 

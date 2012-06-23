@@ -1,6 +1,7 @@
 namespace DirkSarodnick.TS3_Bot.Core.Settings
 {
     using System;
+    using System.IO;
     using Helper;
     using SettingClasses;
 
@@ -41,6 +42,11 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings
         /// </summary>
         /// <value>The id.</value>
         public string Id { get; set; }
+
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
+        public string Name { get { return this.FilePath == null ? null : Path.GetFileNameWithoutExtension(this.FilePath); } }
 
         /// <summary>
         /// Gets or sets the file path.

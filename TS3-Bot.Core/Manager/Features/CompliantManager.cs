@@ -133,7 +133,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Features
             {
                 case PunishBehavior.KickFromChannel:
                     QueryRunner.KickClient(clientEntry.ClientId, KickReason.Channel, Repository.Settings.Vote.KickMessage.ToMessage(context));
-                    Repository.Client.AddVotedClients(new VotedClientEntity(clientEntry.ClientDatabaseId) { ChannelId = clientEntry.ChannelId });
+                    Repository.Client.AddVotedClients(new VotedClientEntity(clientEntry.ClientDatabaseId, clientEntry.ChannelId));
                     break;
                 case PunishBehavior.KickFromServer:
                     QueryRunner.KickClient(clientEntry.ClientId, KickReason.Server, Repository.Settings.Vote.KickMessage.ToMessage(context));
@@ -141,7 +141,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Features
                 case PunishBehavior.MoveToSticky:
                     QueryRunner.MoveClient(clientEntry.ClientId, Repository.Settings.Sticky.Channel);
                     Repository.Channel.AddStickyClients(clientEntry.ClientDatabaseId, Repository.Settings.Sticky.Channel, Repository.Settings.Sticky.StickTime);
-                    Repository.Client.AddVotedClients(new VotedClientEntity(clientEntry.ClientDatabaseId) { ChannelId = clientEntry.ChannelId });
+                    Repository.Client.AddVotedClients(new VotedClientEntity(clientEntry.ClientDatabaseId, clientEntry.ChannelId));
                     break;
             }
 

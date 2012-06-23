@@ -71,13 +71,13 @@
             {
                 lock (lockCredentialEntity)
                 {
-                    if (credentialEntity == null)
+                    if (credentialEntity == null && BotInstance.Settings.Enabled)
                     {
                         credentialEntity = new CredentialManager(BotInstance);
                         return credentialEntity;
                     }
 
-                    if (credentialEntity.Fault)
+                    if (credentialEntity != null && credentialEntity.Fault && BotInstance.Settings.Enabled)
                     {
                         credentialEntity.Dispose();
                         credentialEntity = new CredentialManager(BotInstance);
@@ -154,12 +154,12 @@
             if (disposed) return;
             disposed = true;
 
-            CredentialEntity.Dispose();
-            if (DynamicTcpDispatcher.IsConnected && !DynamicTcpDispatcher.IsDisposed)
+            if (credentialEntity != null) credentialEntity.Dispose();
+            if (dynamicTcpDispatcher != null && dynamicTcpDispatcher.IsConnected && !dynamicTcpDispatcher.IsDisposed)
             {
-                DynamicQueryRunner.Logout();
-                DynamicQueryRunner.Quit();
-                DynamicTcpDispatcher.Disconnect();
+                dynamicQueryRunner.Logout();
+                dynamicQueryRunner.Quit();
+                dynamicTcpDispatcher.Disconnect();
             }
 
             GC.SuppressFinalize(this);

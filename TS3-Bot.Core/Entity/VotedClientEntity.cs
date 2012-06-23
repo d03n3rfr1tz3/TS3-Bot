@@ -5,34 +5,37 @@
     /// <summary>
     /// Defines the StickyClientEntity class.
     /// </summary>
-    public class VotedClientEntity
+    [Serializable]
+    public struct VotedClientEntity
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="VotedClientEntity"/> class.
         /// </summary>
         /// <param name="clientDatabaseId">The client database id.</param>
-        public VotedClientEntity(uint clientDatabaseId)
+        /// <param name="channelId">The channel id.</param>
+        public VotedClientEntity(uint clientDatabaseId, uint? channelId)
         {
             Creation = DateTime.Now;
             ClientDatabaseId = clientDatabaseId;
+            ChannelId = channelId;
         }
 
         /// <summary>
         /// Gets or sets the creation.
         /// </summary>
         /// <value>The creation.</value>
-        public DateTime Creation { get; set; }
+        public DateTime Creation;
 
         /// <summary>
         /// Gets or sets the client database id.
         /// </summary>
         /// <value>The client database id.</value>
-        public uint ClientDatabaseId { get; set; }
+        public uint ClientDatabaseId;
 
         /// <summary>
         /// Gets or sets the channel id.
         /// </summary>
         /// <value>The channel id.</value>
-        public uint? ChannelId { get; set; }
+        public uint? ChannelId;
     }
 }

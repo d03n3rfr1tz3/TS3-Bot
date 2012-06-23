@@ -65,15 +65,19 @@ namespace DirkSarodnick.TS3_Bot.Core
         /// <param name="settings">The settings.</param>
         public void ChangeSettings(InstanceSettings settings)
         {
-            Repository.Connection.CredentialEntity.WorkerQueryRunner.AddLogEntry(new LogEntryLight(LogLevel.Info, string.Format("TS3-Bot '{0}' Configuration refreshing.", Repository.Settings.Global.BotNickname)));
+            if (Repository.Connection.CredentialEntity != null && Repository.Connection.CredentialEntity.WorkerQueryRunner != null)
+                Repository.Connection.CredentialEntity.WorkerQueryRunner.AddLogEntry(new LogEntryLight(LogLevel.Info, string.Format("TS3-Bot '{0}' Configuration refreshing.", Repository.Settings.Global.BotNickname)));
 
             var resetConnection = Settings.TeamSpeak.Hash != settings.TeamSpeak.Hash;
             Settings.ApplySettings(settings);
 
             if (resetConnection)
             {
-                Repository.Connection.CredentialEntity.WorkerQueryRunner.AddLogEntry(new LogEntryLight(LogLevel.Info, "TS3-Bot with new Connection recognized."));
-                Repository.Connection.CredentialEntity.Dispose();
+                if (Repository.Connection.CredentialEntity != null && Repository.Connection.CredentialEntity.WorkerQueryRunner != null)
+                {
+                    Repository.Connection.CredentialEntity.WorkerQueryRunner.AddLogEntry(new LogEntryLight(LogLevel.Info, "TS3-Bot with new Connection recognized."));
+                    Repository.Connection.CredentialEntity.Dispose();
+                }
             }
         }
 
@@ -85,9 +89,9 @@ namespace DirkSarodnick.TS3_Bot.Core
             if (disposed) return;
             disposed = true;
 
-            Connection.Dispose();
-            Repository.Dispose();
-            ManagerFactory.Dispose();
+            if (Connection != null) Connection.Dispose();
+            if (Repository != null) Repository.Dispose();
+            if (ManagerFactory != null) ManagerFactory.Dispose();
 
             GC.SuppressFinalize(this);
         }

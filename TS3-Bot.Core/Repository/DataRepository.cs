@@ -19,7 +19,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         {
             Connection = connection;
             Settings = settings;
-            Container = new DataContainer();
+            Container = new DataContainer(this.Settings.Name);
             Channel = new ChannelData(this);
             Client = new ClientData(this);
             Compliant = new CompliantData(this);

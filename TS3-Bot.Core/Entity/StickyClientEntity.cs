@@ -3,9 +3,10 @@
     using System;
 
     /// <summary>
-    /// Defines the StickyClientEntity class.
+    /// Defines the StickyClientEntity struct.
     /// </summary>
-    public class StickyClientEntity
+    [Serializable]
+    public struct StickyClientEntity
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StickyClientEntity"/> class.
@@ -25,19 +26,19 @@
         /// Gets or sets the creation.
         /// </summary>
         /// <value>The creation.</value>
-        public DateTime Creation { get; set; }
+        public DateTime Creation;
 
         /// <summary>
         /// Gets or sets the client database id.
         /// </summary>
         /// <value>The client database id.</value>
-        public uint ClientDatabaseId { get; set; }
+        public uint ClientDatabaseId;
 
         /// <summary>
         /// Gets or sets the channel id.
         /// </summary>
         /// <value>The channel id.</value>
-        public uint ChannelId { get; set; }
+        public uint ChannelId;
 
         /// <summary>
         /// Gets or sets the stick time.
@@ -45,6 +46,6 @@
         /// <value>
         /// The stick time.
         /// </value>
-        public uint StickTime { get; set; }
+        public uint StickTime;
     }
 }
