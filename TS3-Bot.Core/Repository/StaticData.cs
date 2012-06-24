@@ -72,7 +72,7 @@
             {
                 if (Repository.Container.Now == default(DateTime))
                 {
-                    Repository.Container.Now = DateTime.Now;
+                    Repository.Container.Now = DateTime.UtcNow;
                 }
 
                 return Repository.Container.Now;

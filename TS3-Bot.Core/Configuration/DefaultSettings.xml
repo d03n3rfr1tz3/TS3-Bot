@@ -154,6 +154,7 @@
         <Username></Username>
         <Password></Password>
         <Instance>1</Instance>
+        <InstancePort>9987</InstancePort>
         <QueryPort>10011</QueryPort>
         <GuestGroups>
             <Group>8</Group>

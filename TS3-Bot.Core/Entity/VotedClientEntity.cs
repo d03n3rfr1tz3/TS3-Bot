@@ -15,7 +15,7 @@
         /// <param name="channelId">The channel id.</param>
         public VotedClientEntity(uint clientDatabaseId, uint? channelId)
         {
-            Creation = DateTime.Now;
+            Creation = DateTime.UtcNow;
             ClientDatabaseId = clientDatabaseId;
             ChannelId = channelId;
         }

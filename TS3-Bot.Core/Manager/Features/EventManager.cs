@@ -28,7 +28,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Features
         /// Determines whether this instance can invoke.
         /// </summary>
         /// <returns>True or False</returns>
-        public override bool CanInvoke()
+        public override bool CanSlowInvoke()
         {
             return CanInvoke(new ISettings[]
                                  {
@@ -39,7 +39,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Features
         /// <summary>
         /// Invokes this instance.
         /// </summary>
-        public override void Invoke()
+        public override void SlowInvoke()
         {
             RandomEvent();
         }

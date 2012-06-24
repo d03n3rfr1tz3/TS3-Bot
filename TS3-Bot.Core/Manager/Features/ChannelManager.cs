@@ -25,7 +25,52 @@
         /// Determines whether this instance can invoke.
         /// </summary>
         /// <returns>True or False</returns>
-        public override bool CanInvoke()
+        public override bool CanSlowInvoke()
+        {
+            return CanInvoke(new ISettings[]
+                                 {
+                                     Repository.Settings.Sticky
+                                 });
+        }
+
+        /// <summary>
+        /// Determines whether this instance can invoke the specified e.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientMovedByClientEventArgs"/> instance containing the event data.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool CanInvoke(ClientMovedByClientEventArgs e)
+        {
+            return CanInvoke(new ISettings[]
+                                 {
+                                     Repository.Settings.Sticky
+                                 });
+        }
+
+        /// <summary>
+        /// Determines whether this instance can invoke the specified e.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientMovedEventArgs"/> instance containing the event data.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool CanInvoke(ClientMovedEventArgs e)
+        {
+            return CanInvoke(new ISettings[]
+                                 {
+                                     Repository.Settings.Sticky
+                                 });
+        }
+
+        /// <summary>
+        /// Determines whether this instance can invoke the specified e.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool CanInvoke(ClientJoinedEventArgs e)
         {
             return CanInvoke(new ISettings[]
                                  {
@@ -36,7 +81,7 @@
         /// <summary>
         /// Invokes this instance.
         /// </summary>
-        public override void Invoke()
+        public override void SlowInvoke()
         {
             StickyChannel();
         }

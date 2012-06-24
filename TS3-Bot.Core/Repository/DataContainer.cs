@@ -27,10 +27,14 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         internal Dictionary<uint, ClientServerGroupList> ClientServerGroupList = new Dictionary<uint, ClientServerGroupList>();
         internal List<ClientWarningEntity> ClientWarningList = new List<ClientWarningEntity>();
 
+        // Persistent Dictionaries
         private PersistentDictionary<uint, uint> clientLastChannelList;
         private PersistentDictionary<Guid, StickyClientEntity> stickyClientList;
         private PersistentDictionary<Guid, VotedClientEntity> votedClientList;
         private PersistentDictionary<uint, DateTime> clientLastSeen;
+        private PersistentDictionary<Guid, ModeratedClientEntity> moderatedClientList;
+        private PersistentDictionary<Guid, TimeClientEntity> timeClientList;
+        private PersistentDictionary<uint, string> previousServerGroupsList;
 
         internal PersistentDictionary<uint, uint> ClientLastChannelList
         {
@@ -52,6 +56,21 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
             get { return this.clientLastSeen ?? (this.clientLastSeen = new PersistentDictionary<uint, DateTime>(string.Format(@"Data\{0}\Seen", name))); }
         }
 
+        internal PersistentDictionary<Guid, ModeratedClientEntity> ModeratedClientList
+        {
+            get { return this.moderatedClientList ?? (this.moderatedClientList = new PersistentDictionary<Guid, ModeratedClientEntity>(string.Format(@"Data\{0}\Moderated", name))); }
+        }
+
+        internal PersistentDictionary<Guid, TimeClientEntity> TimeClientList
+        {
+            get { return this.timeClientList ?? (this.timeClientList = new PersistentDictionary<Guid, TimeClientEntity>(string.Format(@"Data\{0}\Time", name))); }
+        }
+
+        internal PersistentDictionary<uint, string> PreviousServerGroupsList
+        {
+            get { return this.previousServerGroupsList ?? (this.previousServerGroupsList = new PersistentDictionary<uint, string>(string.Format(@"Data\{0}\PrevServerGroups", name))); }
+        }
+
         #endregion
 
         #region Basic Data
@@ -59,7 +78,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         internal DateTime Now;
 
         internal int LastConnectionWaiting = 1;
-        internal DateTime LastConnectionError = DateTime.Now;
+        internal DateTime LastConnectionError = DateTime.UtcNow;
 
         internal List<ClientListEntry> ClientList;
         internal Dictionary<uint, ClientInfoResponse> ClientInfoList = new Dictionary<uint, ClientInfoResponse>();
@@ -84,10 +103,15 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         internal readonly object lockGetChannelList = new object();
         internal readonly object lockGetClientServerGroups = new object();
         internal readonly object lockClientWarningList = new object();
+
         internal readonly object lockClientLastChannelList = new object();
         internal readonly object lockStickyClientList = new object();
         internal readonly object lockVotedClientList = new object();
         internal readonly object lockSeenClientList = new object();
+        internal readonly object lockModeratedClientList = new object();
+        internal readonly object lockTimeClientList = new object();
+        internal readonly object lockPreviousServerGroupsList = new object();
+
         internal readonly object lockFileList = new object();
         internal readonly object lockGetCompliantList = new object();
         internal readonly object lockGetServerList = new object();
@@ -110,7 +134,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
             lock (lockGetClientInfo) ClientInfoList.Clear();
             lock (lockGetChannelInfo) ChannelInfoList.Clear();
 
-            lock (lockClientWarningList) ClientWarningList.RemoveAll(m => m.Creation.AddMinutes(5) < DateTime.Now);
+            lock (lockClientWarningList) ClientWarningList.RemoveAll(m => m.Creation.AddMinutes(5) < DateTime.UtcNow);
 
             lock (lockClientLastChannelList)
             {
@@ -119,7 +143,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
 
             lock (lockStickyClientList)
             {
-                var entities = StickyClientList.Where(m => m.Value.Creation.AddMinutes(m.Value.StickTime) < DateTime.Now);
+                var entities = StickyClientList.Where(m => m.Value.Creation.AddMinutes(m.Value.StickTime) < DateTime.UtcNow);
                 foreach (var entity in entities.ToList())
                 {
                     StickyClientList.Remove(entity.Key);
@@ -130,7 +154,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
 
             lock (lockVotedClientList)
             {
-                var entities = VotedClientList.Where(m => m.Value.Creation.AddHours(1) < DateTime.Now);
+                var entities = VotedClientList.Where(m => m.Value.Creation.AddHours(1) < DateTime.UtcNow);
                 foreach (var entity in entities.ToList())
                 {
                     VotedClientList.Remove(entity.Key);
@@ -142,6 +166,21 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
             lock (lockSeenClientList)
             {
                 if (clientLastSeen != null) clientLastSeen.Flush();
+            }
+
+            lock (lockModeratedClientList)
+            {
+                if (moderatedClientList != null) moderatedClientList.Flush();
+            }
+
+            lock (lockTimeClientList)
+            {
+                if (timeClientList != null) timeClientList.Flush();
+            }
+
+            lock (lockPreviousServerGroupsList)
+            {
+                if (previousServerGroupsList != null) previousServerGroupsList.Flush();
             }
         }
 
@@ -181,6 +220,27 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
                 clientLastSeen.Flush();
                 clientLastSeen.Dispose();
                 this.clientLastSeen = null;
+            }
+
+            if (moderatedClientList != null)
+            {
+                moderatedClientList.Flush();
+                moderatedClientList.Dispose();
+                this.moderatedClientList = null;
+            }
+
+            if (timeClientList != null)
+            {
+                timeClientList.Flush();
+                timeClientList.Dispose();
+                this.timeClientList = null;
+            }
+
+            if (previousServerGroupsList != null)
+            {
+                previousServerGroupsList.Flush();
+                previousServerGroupsList.Dispose();
+                this.previousServerGroupsList = null;
             }
 
             ClientList = null;

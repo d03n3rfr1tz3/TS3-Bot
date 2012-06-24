@@ -1,5 +1,6 @@
 namespace DirkSarodnick.TS3_Bot.Core.Entity
 {
+    using System;
     using System.Collections.Generic;
     using TS3QueryLib.Core.Query.HelperClasses;
     using TS3QueryLib.Core.Query.Notification.EventArgs;
@@ -21,6 +22,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Entity
             this.Nickname = client.Nickname;
             this.ServerGroups = new List<uint>(client.ServerGroups);
             this.ChannelId = client.ChannelId;
+            this.Connected = client.ClientLastConnected;
         }
 
         /// <summary>
@@ -35,6 +37,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Entity
             this.Nickname = client.Nickname;
             this.ServerGroups = new List<uint>(client.ServerGroups);
             this.ChannelId = client.ChannelId;
+            this.Connected = client.LastConnected;
         }
 
         /// <summary>
@@ -48,6 +51,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Entity
             this.Nickname = client.Nickname;
             this.ServerGroups = new List<uint>(client.ServerGroups);
             this.ChannelId = client.ChannelId;
+            this.Connected = DateTime.UtcNow;
         }
 
         /// <summary>
@@ -81,5 +85,13 @@ namespace DirkSarodnick.TS3_Bot.Core.Entity
         /// The channel id.
         /// </value>
         public uint? ChannelId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the connected.
+        /// </summary>
+        /// <value>
+        /// The connected.
+        /// </value>
+        public DateTime? Connected { get; set; }
     }
 }

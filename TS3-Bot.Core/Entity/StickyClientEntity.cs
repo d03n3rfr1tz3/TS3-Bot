@@ -16,7 +16,7 @@
         /// <param name="stickTime">The stick time.</param>
         public StickyClientEntity(uint clientDatabaseId, uint channelId, uint stickTime)
         {
-            Creation = DateTime.Now;
+            Creation = DateTime.UtcNow;
             ClientDatabaseId = clientDatabaseId;
             ChannelId = channelId;
             StickTime = stickTime;

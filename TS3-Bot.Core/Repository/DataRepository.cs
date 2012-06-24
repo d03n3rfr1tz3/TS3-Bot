@@ -96,6 +96,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         /// </summary>
         public void KeepAlive()
         {
+            Client.CaptureTimes();
             Connection.CredentialEntity.NotificationQueryRunner.GetVersion();
             Connection.CredentialEntity.WorkerQueryRunner.UpdateCurrentQueryClient(new ClientModification { Nickname = Settings.Global.BotNickname });
         }

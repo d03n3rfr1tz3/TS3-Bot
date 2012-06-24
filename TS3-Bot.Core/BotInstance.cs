@@ -61,7 +61,7 @@
         private void SlowTick()
         {
             SlowTickCounter = 0;
-            ManagerFactory.Invoke();
+            ManagerFactory.SlowInvoke();
         }
 
         /// <summary>
@@ -125,6 +125,40 @@
         }
 
         /// <summary>
+        /// Handles the ClientDisconnect event of the Notifications control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientDisconnectEventArgs"/> instance containing the event data.</param>
+        public void Notifications_ClientDisconnect(object sender, ClientDisconnectEventArgs e)
+        {
+            try
+            {
+                ManagerFactory.Invoke(e);
+            }
+            catch (Exception ex)
+            {
+                LogService.Error(ex.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Handles the ClientConnectionLost event of the Notifications control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientConnectionLostEventArgs"/> instance containing the event data.</param>
+        public void Notifications_ClientConnectionLost(object sender, ClientConnectionLostEventArgs e)
+        {
+            try
+            {
+                ManagerFactory.Invoke(e);
+            }
+            catch (Exception ex)
+            {
+                LogService.Error(ex.ToString());
+            }
+        }
+
+        /// <summary>
         /// Handles the MessageReceived event of the Teamspeak Server.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -147,7 +181,7 @@
         /// <param name="syncContext">The sync context.</param>
         public void Tick(SynchronizationContext syncContext)
         {
-            ThreadPool.QueueUserWorkItem((context) => this.FastTick(context), syncContext);
+            ThreadPool.QueueUserWorkItem(this.FastTick, syncContext);
         }
     }
 }

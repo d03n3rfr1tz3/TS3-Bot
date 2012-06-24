@@ -24,8 +24,8 @@ namespace DirkSarodnick.TS3_Bot.Core
         /// </returns>
         public IEnumerable<string> GetQueue()
         {
-            var result = botQueue.Where(m => m.NextInit < DateTime.Now).ToList();
-            result.ForEach(m => m.LastInitError = DateTime.Now);
+            var result = botQueue.Where(m => m.NextInit < DateTime.UtcNow).ToList();
+            result.ForEach(m => m.LastInitError = DateTime.UtcNow);
             return result.Select(m => m.File);
         }
 

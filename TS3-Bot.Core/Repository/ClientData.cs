@@ -119,16 +119,42 @@
             lock (Container.lockGetClientServerGroups)
             {
                 if (!Container.ClientServerGroupList.ContainsKey(clientDatabaseId))
-                    Container.ClientServerGroupList.Add(clientDatabaseId,
-                        new ClientServerGroupList(QueryRunner.GetServerGroupsByClientId(clientDatabaseId).ToList()));
+                    Container.ClientServerGroupList.Add(clientDatabaseId, new ClientServerGroupList(QueryRunner.GetServerGroupsByClientId(clientDatabaseId).ToList()));
 
                 if (Container.ClientServerGroupList[clientDatabaseId].Creation.AddMinutes(1) < Repository.Static.Now)
                 {
-                    Container.ClientServerGroupList[clientDatabaseId] =
-                        new ClientServerGroupList(QueryRunner.GetServerGroupsByClientId(clientDatabaseId).ToList());
+                    Container.ClientServerGroupList[clientDatabaseId] = new ClientServerGroupList(QueryRunner.GetServerGroupsByClientId(clientDatabaseId).ToList());
                 }
 
                 return Container.ClientServerGroupList[clientDatabaseId].ServerGroups;
+            }
+        }
+
+        /// <summary>
+        /// Adds the client server groups.
+        /// </summary>
+        /// <param name="clientDatabaseId">The client database id.</param>
+        /// <param name="serverGroups">The server groups.</param>
+        public void AddClientServerGroups(uint clientDatabaseId, IEnumerable<uint> serverGroups)
+        {
+            lock (Container.lockGetClientServerGroups)
+            {
+                serverGroups.ForEach(m => QueryRunner.AddClientToServerGroup(m, clientDatabaseId));
+                Container.ClientServerGroupList.Remove(clientDatabaseId);
+            }
+        }
+
+        /// <summary>
+        /// Removes the client server groups.
+        /// </summary>
+        /// <param name="clientDatabaseId">The client database id.</param>
+        /// <param name="serverGroups">The server groups.</param>
+        public void RemoveClientServerGroups(uint clientDatabaseId, IEnumerable<uint> serverGroups)
+        {
+            lock (Container.lockGetClientServerGroups)
+            {
+                serverGroups.ForEach(m => QueryRunner.DeleteClientFromServerGroup(m, clientDatabaseId));
+                Container.ClientServerGroupList.Remove(clientDatabaseId);
             }
         }
 
@@ -371,6 +397,168 @@
             lock (Container.lockVotedClientList)
             {
                 return Container.VotedClientList.Values.FirstOrDefault(m => m.ClientDatabaseId == clientDatabaseId);
+            }
+        }
+
+        #endregion
+
+        #region Moderated
+
+        /// <summary>
+        /// Captures the moderation.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="moderatorDatabaseId">The moderator database id.</param>
+        /// <param name="clientDatabaseId">The client database id.</param>
+        /// <param name="serverGroupId">The server group id.</param>
+        public void CaptureModeration(ModerationType type, uint moderatorDatabaseId, uint clientDatabaseId, uint serverGroupId)
+        {
+            lock (Container.lockModeratedClientList)
+            {
+                if (!Container.ModeratedClientList.Any(m => m.Value.Type == type && m.Value.User == clientDatabaseId && m.Value.ServerGroup == serverGroupId))
+                    Container.ModeratedClientList.Add(Guid.NewGuid(), new ModeratedClientEntity(type, moderatorDatabaseId, clientDatabaseId, serverGroupId));
+            }
+        }
+
+        /// <summary>
+        /// Gets the moderation.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="moderatorDatabaseId">The moderator database id.</param>
+        /// <param name="fromDate">From date.</param>
+        /// <param name="toDate">To date.</param>
+        /// <returns></returns>
+        public IEnumerable<ModeratedClientEntity> GetModeration(ModerationType type, uint moderatorDatabaseId, DateTime? fromDate, DateTime? toDate)
+        {
+            lock (Container.lockModeratedClientList)
+            {
+                var entities = Container.ModeratedClientList.Where(m => m.Value.Type == type && m.Value.Moderator == moderatorDatabaseId).AsEnumerable();
+
+                if (fromDate.HasValue)
+                {
+                    entities = entities.Where(m => m.Value.Moderated > fromDate);
+                }
+
+                if (toDate.HasValue)
+                {
+                    entities = entities.Where(m => m.Value.Moderated < toDate);
+                }
+
+                return entities.Select(m => m.Value).ToList();
+            }
+        }
+
+        #endregion
+
+        #region Time
+
+        /// <summary>
+        /// Captures the times for all online clients.
+        /// </summary>
+        public void CaptureTimes()
+        {
+            Repository.Client.GetClientList().ForEach(m => this.CaptureTime(m.ClientDatabaseId, m.ClientLastConnected, null));
+        }
+
+        /// <summary>
+        /// Captures the time for specified client.
+        /// </summary>
+        /// <param name="clientDatabaseId">The client database id.</param>
+        /// <param name="connected">The connected.</param>
+        /// <param name="disconnected">The disconnected.</param>
+        public void CaptureTime(uint clientDatabaseId, DateTime? connected, DateTime? disconnected)
+        {
+            var lastConnected = connected ?? DateTime.UtcNow;
+            if (!connected.HasValue)
+            {
+                var entity = Repository.Client.GetClientSimple(clientDatabaseId);
+                if (entity != null && entity.Connected.HasValue) lastConnected = entity.Connected.Value;
+            }
+
+            lock (Container.lockTimeClientList)
+            {
+                var times = Container.TimeClientList.Where(m => m.Value.User == clientDatabaseId && m.Value.Joined == lastConnected);
+                if (times.Any())
+                {
+                    var time = times.Single();
+                    Container.TimeClientList[time.Key] = new TimeClientEntity(clientDatabaseId, lastConnected, disconnected);
+                }
+                else
+                {
+                    Container.TimeClientList.Add(Guid.NewGuid(), new TimeClientEntity(clientDatabaseId, lastConnected, disconnected));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the total time spended on TS3 for specified client.
+        /// </summary>
+        /// <param name="clientDatabaseId">The client database id.</param>
+        /// <param name="fromTime">From time.</param>
+        /// <param name="toTime">To time.</param>
+        /// <returns></returns>
+        public double GetTime(uint clientDatabaseId, DateTime? fromTime, DateTime? toTime)
+        {
+            IEnumerable<KeyValuePair<Guid, TimeClientEntity>> times;
+
+            lock (Container.lockTimeClientList)
+            {
+                times = Container.TimeClientList.Where(m => m.Value.User == clientDatabaseId).AsEnumerable();
+                
+                if (fromTime.HasValue)
+                {
+                    times = times.Where(m => m.Value.Disconnected > fromTime);
+                }
+
+                if (toTime.HasValue)
+                {
+                    times = times.Where(m => m.Value.Joined < toTime);
+                }
+
+                times = times.ToList();
+            }
+
+            return times.Sum(m => m.Value.GetTime(fromTime, toTime).TotalMinutes);
+        }
+
+        #endregion
+
+        #region ServerGroups
+
+        /// <summary>
+        /// Strips the groups.
+        /// </summary>
+        /// <param name="clientDatabaseId">The client database id.</param>
+        public void StripGroups(uint clientDatabaseId)
+        {
+            // Get the current Server Groups
+            var currentGroups = Repository.Client.GetClientServerGroups(clientDatabaseId).Select(m => m.Id).ToList();
+
+            lock (Container.lockPreviousServerGroupsList)
+            {
+                // Save current Server Groups, that they can restored later
+                if (!Container.PreviousServerGroupsList.ContainsKey(clientDatabaseId))
+                {
+                    Container.PreviousServerGroupsList.Add(clientDatabaseId, string.Join(";", currentGroups));
+                }
+            }
+
+            Repository.Client.RemoveClientServerGroups(clientDatabaseId, currentGroups);
+        }
+
+        /// <summary>
+        /// Restores the groups.
+        /// </summary>
+        /// <param name="clientDatabaseId">The client database id.</param>
+        public void RestoreGroups(uint clientDatabaseId)
+        {
+            lock (Container.lockPreviousServerGroupsList)
+            {
+                if (Container.PreviousServerGroupsList.ContainsKey(clientDatabaseId))
+                {
+                    var serverGroups = Container.PreviousServerGroupsList[clientDatabaseId].Split(';').Select(uint.Parse);
+                    Repository.Client.AddClientServerGroups(clientDatabaseId, serverGroups);
+                }
             }
         }
 

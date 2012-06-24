@@ -24,8 +24,11 @@
         <!-- Gib das Passwort zum obenstehenden Benutzer an. -->
         <Password></Password>
         
-        <!-- Gib die Instanz-ID an. -->
+        <!-- Gib die Instanz-ID an. Du musst eine Instance oder einen InstancePort angeben! -->
         <Instance>1</Instance>
+
+        <!-- Gib den Port deiner Instanz an. Du musst eine Instance oder einen InstancePort angeben! -->
+        <InstancePort>1</InstancePort>
         
         <!-- Gib den ServerQuery Port an, auf welchem der Bot sich Verbinden kann. -->
         <QueryPort>10011</QueryPort>

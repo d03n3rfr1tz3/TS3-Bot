@@ -16,7 +16,7 @@ namespace DirkSarodnick.TS3_Bot.Core
         public BotInstanceQueueHelper(string file)
         {
             File = file;
-            LastInitError = DateTime.Now;
+            LastInitError = DateTime.UtcNow;
             LastInitWaiting = 1;
         }
 

@@ -31,8 +31,11 @@
 	<xs:simpleType name="T_Interval">
         <xs:restriction base="xs:int"/>
 	</xs:simpleType>
+	<xs:simpleType name="T_InstancePort">
+        <xs:restriction base="xs:int"/>
+	</xs:simpleType>
 	<xs:simpleType name="T_Instance">
-        <xs:restriction base="xs:string"/>
+        <xs:restriction base="xs:int"/>
 	</xs:simpleType>
 	<xs:simpleType name="T_Time">
         <xs:restriction base="xs:int"/>
@@ -94,6 +97,7 @@
 			<xs:element ref="Username" minOccurs="1" maxOccurs="1"/>
 			<xs:element ref="Password" minOccurs="1" maxOccurs="1"/>
 			<xs:element ref="Instance" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="InstancePort" minOccurs="1" maxOccurs="1"/>
 			<xs:element ref="QueryPort" minOccurs="1" maxOccurs="1"/>
 			<xs:element ref="GuestGroups" minOccurs="1" maxOccurs="1"/>
 		</xs:all>
@@ -328,6 +332,7 @@
 	<xs:element name="KickMessage" type="T_KickMessage" nillable="true"/>
 	<xs:element name="Interval" type="T_Interval" nillable="true"/>
 	<xs:element name="InstanceSettings" type="T_InstanceSettings" nillable="true"/>
+	<xs:element name="InstancePort" type="T_InstancePort" nillable="true"/>
 	<xs:element name="Instance" type="T_Instance" nillable="true"/>
 	<xs:element name="IdleTime" type="T_Time" nillable="true"/>
 	<xs:element name="Idle" type="T_Idle" nillable="true"/>

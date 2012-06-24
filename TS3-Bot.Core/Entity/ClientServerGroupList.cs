@@ -15,7 +15,7 @@
         /// <param name="serverGroups">The server groups.</param>
         public ClientServerGroupList(List<ServerGroupLight> serverGroups)
         {
-            Creation = DateTime.Now;
+            Creation = DateTime.UtcNow;
             ServerGroups = serverGroups;
         }
 

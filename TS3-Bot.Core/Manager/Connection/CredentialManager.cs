@@ -5,6 +5,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Connection
     using TS3QueryLib.Core.CommandHandling;
     using TS3QueryLib.Core.Query;
     using TS3QueryLib.Core.Query.HelperClasses;
+    using TS3QueryLib.Core.Query.Notification.EventArgs;
 
     /// <summary>
     /// Defines the CredentialManager class.
@@ -104,7 +105,12 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Connection
             WorkerTcpDispatcher = new SyncTcpDispatcher(BotInstance.Settings);
             WorkerQueryRunner = new QueryRunner(WorkerTcpDispatcher);
             WorkerQueryRunner.Login(BotInstance.Settings.TeamSpeak.Username, BotInstance.Settings.TeamSpeak.Password);
-            WorkerQueryRunner.SelectVirtualServerById(BotInstance.Settings.TeamSpeak.Instance);
+
+            if (BotInstance.Settings.TeamSpeak.InstancePort > 0)
+                WorkerQueryRunner.SelectVirtualServerByPort(BotInstance.Settings.TeamSpeak.InstancePort);
+            else
+                WorkerQueryRunner.SelectVirtualServerById(BotInstance.Settings.TeamSpeak.Instance);
+            
             WorkerQueryRunner.UpdateCurrentQueryClient(new ClientModification { Nickname = BotInstance.Settings.Global.BotNickname });
             SelfWorker = WorkerQueryRunner.SendWhoAmI();
             WorkerQueryRunner.AddLogEntry(new LogEntryLight(LogLevel.Info, string.Format("TS3-Bot '{0}' connected.", BotInstance.Settings.Global.BotNickname)));
@@ -117,6 +123,8 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Connection
             NotificationQueryRunner.Notifications.ClientJoined += BotInstance.Notifications_ClientJoined;
             NotificationQueryRunner.Notifications.ClientMoved += BotInstance.Notifications_ClientMoved;
             NotificationQueryRunner.Notifications.ClientMoveForced += BotInstance.Notifications_ClientMoveForced;
+            NotificationQueryRunner.Notifications.ClientDisconnect += BotInstance.Notifications_ClientDisconnect;
+            NotificationQueryRunner.Notifications.ClientConnectionLost += BotInstance.Notifications_ClientConnectionLost;
             NotificationQueryRunner.Notifications.ServerMessageReceived += BotInstance.Notifications_MessageReceived;
             NotificationQueryRunner.Notifications.ChannelMessageReceived += BotInstance.Notifications_MessageReceived;
             NotificationQueryRunner.Notifications.ClientMessageReceived += BotInstance.Notifications_MessageReceived;

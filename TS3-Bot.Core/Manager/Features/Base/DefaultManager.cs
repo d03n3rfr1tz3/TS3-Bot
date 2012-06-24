@@ -47,9 +47,99 @@
         }
 
         /// <summary>
+        /// Determines whether this instance [can slow invoke].
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if this instance [can slow invoke]; otherwise, <c>false</c>.
+        /// </returns>
+        public virtual bool CanSlowInvoke()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether this instance can invoke the specified e.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientMovedByClientEventArgs"/> instance containing the event data.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
+        /// </returns>
+        public virtual bool CanInvoke(ClientMovedByClientEventArgs e)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether this instance can invoke the specified e.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientMovedEventArgs"/> instance containing the event data.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
+        /// </returns>
+        public virtual bool CanInvoke(ClientMovedEventArgs e)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether this instance can invoke the specified e.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
+        /// </returns>
+        public virtual bool CanInvoke(ClientJoinedEventArgs e)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether this instance can invoke the specified e.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientDisconnectEventArgs"/> instance containing the event data.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
+        /// </returns>
+        public virtual bool CanInvoke(ClientDisconnectEventArgs e)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether this instance can invoke the specified e.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientConnectionLostEventArgs"/> instance containing the event data.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
+        /// </returns>
+        public virtual bool CanInvoke(ClientConnectionLostEventArgs e)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether this instance can invoke the specified e.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
+        /// </returns>
+        public virtual bool CanInvoke(MessageReceivedEventArgs e)
+        {
+            return false;
+        }
+
+        /// <summary>
         /// Invokes this instance.
         /// </summary>
         public virtual void Invoke()
+        {
+        }
+
+        /// <summary>
+        /// Slows the invoke.
+        /// </summary>
+        public virtual void SlowInvoke()
         {
         }
 
@@ -74,6 +164,22 @@
         /// </summary>
         /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
         public virtual void Invoke(ClientJoinedEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Invokes the specified e.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientDisconnectEventArgs"/> instance containing the event data.</param>
+        public virtual void Invoke(ClientDisconnectEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Invokes the specified e.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientConnectionLostEventArgs"/> instance containing the event data.</param>
+        public virtual void Invoke(ClientConnectionLostEventArgs e)
         {
         }
 

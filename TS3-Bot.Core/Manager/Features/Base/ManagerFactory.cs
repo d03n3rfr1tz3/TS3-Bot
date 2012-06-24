@@ -29,8 +29,10 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Features.Base
                               new ControlManager(Repository),
                               new EventManager(Repository),
                               new MessageManager(Repository),
+                              new ModerationManager(Repository),
                               new NickManager(Repository),
-                              new RecordManager(Repository)
+                              new RecordManager(Repository),
+                              new TimeManager(Repository)
                           };
         }
 
@@ -64,12 +66,20 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Features.Base
         }
 
         /// <summary>
+        /// Slows the invoke.
+        /// </summary>
+        public virtual void SlowInvoke()
+        {
+            Manager.Where(m => m.CanSlowInvoke()).ForEach(m => m.SlowInvoke());
+        }
+
+        /// <summary>
         /// Invokes the specified e.
         /// </summary>
         /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientMovedByClientEventArgs"/> instance containing the event data.</param>
         public virtual void Invoke(ClientMovedByClientEventArgs e)
         {
-            Manager.Where(m => m.CanInvoke()).ForEach(m => m.Invoke(e));
+            Manager.Where(m => m.CanInvoke(e)).ForEach(m => m.Invoke(e));
         }
 
         /// <summary>
@@ -78,7 +88,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Features.Base
         /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientMovedEventArgs"/> instance containing the event data.</param>
         public virtual void Invoke(ClientMovedEventArgs e)
         {
-            Manager.Where(m => m.CanInvoke()).ForEach(m => m.Invoke(e));
+            Manager.Where(m => m.CanInvoke(e)).ForEach(m => m.Invoke(e));
         }
 
         /// <summary>
@@ -87,7 +97,25 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Features.Base
         /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
         public virtual void Invoke(ClientJoinedEventArgs e)
         {
-            Manager.Where(m => m.CanInvoke()).ForEach(m => m.Invoke(e));
+            Manager.Where(m => m.CanInvoke(e)).ForEach(m => m.Invoke(e));
+        }
+
+        /// <summary>
+        /// Invokes the specified e.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientDisconnectEventArgs"/> instance containing the event data.</param>
+        public virtual void Invoke(ClientDisconnectEventArgs e)
+        {
+            Manager.Where(m => m.CanInvoke(e)).ForEach(m => m.Invoke(e));
+        }
+
+        /// <summary>
+        /// Invokes the specified e.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientConnectionLostEventArgs"/> instance containing the event data.</param>
+        public virtual void Invoke(ClientConnectionLostEventArgs e)
+        {
+            Manager.Where(m => m.CanInvoke(e)).ForEach(m => m.Invoke(e));
         }
 
         /// <summary>
@@ -96,7 +124,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Features.Base
         /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
         public virtual void Invoke(MessageReceivedEventArgs e)
         {
-            Manager.Where(m => m.CanInvoke()).ForEach(m => m.Invoke(e));
+            Manager.Where(m => m.CanInvoke(e)).ForEach(m => m.Invoke(e));
         }
 
         /// <summary>

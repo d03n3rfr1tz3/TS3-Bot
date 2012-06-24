@@ -97,8 +97,13 @@
     <Compile Include="Entity\AsyncDispatcher.cs" />
     <Compile Include="Entity\Messages\UnstickMessage.cs" />
     <Compile Include="Entity\Messages\StickMessage.cs" />
+    <Compile Include="Entity\ModeratedClientEntity.cs" />
+    <Compile Include="Entity\ModerationType.cs" />
+    <Compile Include="Entity\TimeClientEntity.cs" />
+    <Compile Include="Manager\Features\ModerationManager.cs" />
     <Compile Include="Manager\Features\NickManager.cs" />
     <Compile Include="Manager\Features\RecordManager.cs" />
+    <Compile Include="Manager\Features\TimeManager.cs" />
     <Compile Include="Repository\ChannelData.cs" />
     <Compile Include="Manager\Connection\TeamSpeakConnection.cs" />
     <Compile Include="Manager\Features\AwayManager.cs" />

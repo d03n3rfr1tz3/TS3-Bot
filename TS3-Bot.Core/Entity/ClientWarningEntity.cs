@@ -14,7 +14,7 @@
         /// <param name="type">The type.</param>
         public ClientWarningEntity(uint clientId, WarnType type)
         {
-            Creation = DateTime.Now;
+            Creation = DateTime.UtcNow;
             ClientId = clientId;
             Type = type;
         }

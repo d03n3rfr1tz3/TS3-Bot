@@ -14,6 +14,14 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
         public ushort Instance { get; set; }
 
         /// <summary>
+        /// Gets or sets the instance port.
+        /// </summary>
+        /// <value>
+        /// The instance port.
+        /// </value>
+        public uint InstancePort { get; set; }
+
+        /// <summary>
         /// Gets or sets the query port.
         /// </summary>
         /// <value>The query port.</value>

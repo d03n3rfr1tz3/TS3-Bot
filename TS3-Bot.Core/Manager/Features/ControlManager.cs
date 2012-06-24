@@ -30,10 +30,13 @@
         }
 
         /// <summary>
-        /// Determines whether this instance can invoke.
+        /// Determines whether this instance can invoke the specified e.
         /// </summary>
-        /// <returns>True or False</returns>
-        public override bool CanInvoke()
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool CanInvoke(MessageReceivedEventArgs e)
         {
             return CanInvoke(new ISettings[]
                                  {
@@ -187,9 +190,9 @@
                                   {
                                       ClientDatabaseId = client.DatabaseId,
                                       ClientNickname = client.NickName,
-                                      ClientLastLogin = client.LastConnected.ToString(Repository.Static.DateTimeFormat),
+                                      ClientLastLogin = client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat),
                                       ClientLastSeen = lastSeen != default(DateTime) && lastSeen > DateTime.MinValue
-                                                           ? lastSeen.ToString(Repository.Static.DateTimeFormat)
+                                                           ? lastSeen.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
                                                            : "Nie"
                                   };
 
@@ -241,7 +244,7 @@
                                                                      ChannelId = f.ChannelId,
                                                                      ChannelName = f.ChannelName,
                                                                      FileName = f.Name,
-                                                                     FileCreated = f.Created.ToString(Repository.Static.DateTimeFormat),
+                                                                     FileCreated = f.Created.ToLocalTime().ToString(Repository.Static.DateTimeFormat),
                                                                      FileSize = f.Size
                                                                  })));
                 }

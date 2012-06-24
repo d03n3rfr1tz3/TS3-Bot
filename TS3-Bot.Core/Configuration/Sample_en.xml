@@ -24,8 +24,11 @@
         <!-- Specify the Password for the Username above. -->
         <Password></Password>
 		
-        <!-- Specify the Server Instance ID, on which this Bot will be running. -->
+        <!-- Specify the Server Instance ID, on which this Bot will be running. You have to specify an Instance OR an InstancePort! -->
         <Instance>1</Instance>
+      
+        <!-- Specify the Server Instance Port, on which this Bot will be running. You have to specify an Instance OR an InstancePort! -->
+        <InstancePort>9987</InstancePort>
 		
         <!-- Specify the Server Query Port, on which this Bot has to connect. -->
         <QueryPort>10011</QueryPort>
