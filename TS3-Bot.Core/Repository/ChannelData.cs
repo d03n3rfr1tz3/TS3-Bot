@@ -4,8 +4,8 @@
     using System.Linq;
     using Base;
     using Entity;
-    using TS3QueryLib.Core.Query.HelperClasses;
-    using TS3QueryLib.Core.Query.Responses;
+    using TS3QueryLib.Core.Server.Entities;
+    using TS3QueryLib.Core.Server.Responses;
     using System;
 
     /// <summary>

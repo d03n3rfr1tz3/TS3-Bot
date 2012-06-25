@@ -7,7 +7,7 @@
     using Repository;
     using Settings;
     using TS3QueryLib.Core.CommandHandling;
-    using TS3QueryLib.Core.Query.Notification.EventArgs;
+    using TS3QueryLib.Core.Server.Notification.EventArgs;
 
     /// <summary>
     /// Defines the RecordManager class.
@@ -39,7 +39,7 @@
         /// <summary>
         /// Determines whether this instance can invoke the specified e.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
         /// <returns>
         ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
         /// </returns>
@@ -62,7 +62,7 @@
         /// <summary>
         /// Invokes the specified e.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
         public override void Invoke(ClientJoinedEventArgs e)
         {
             KickRecordingClients(e);
@@ -91,7 +91,7 @@
         /// <summary>
         /// Kicks the recording clients.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
         protected void KickRecordingClients(ClientJoinedEventArgs e)
         {
             if (!Repository.Settings.Record.Enabled) return;

@@ -2,8 +2,8 @@
 {
     using System;
     using Manager.Connection;
-    using TS3QueryLib.Core.Query;
-    using TS3QueryLib.Core.Query.Responses;
+    using TS3QueryLib.Core.Server;
+    using TS3QueryLib.Core.Server.Responses;
 
     /// <summary>
     /// Defines the DefaultData class.

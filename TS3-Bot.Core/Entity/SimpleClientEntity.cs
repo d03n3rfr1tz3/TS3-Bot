@@ -2,9 +2,9 @@ namespace DirkSarodnick.TS3_Bot.Core.Entity
 {
     using System;
     using System.Collections.Generic;
-    using TS3QueryLib.Core.Query.HelperClasses;
-    using TS3QueryLib.Core.Query.Notification.EventArgs;
-    using TS3QueryLib.Core.Query.Responses;
+    using TS3QueryLib.Core.Server.Entities;
+    using TS3QueryLib.Core.Server.Notification.EventArgs;
+    using TS3QueryLib.Core.Server.Responses;
 
     /// <summary>
     /// Defines the SimpleClientEntity class.
@@ -43,7 +43,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Entity
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleClientEntity"/> class.
         /// </summary>
-        /// <param name="client">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
+        /// <param name="client">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
         public SimpleClientEntity(ClientJoinedEventArgs client)
         {
             this.ClientDatabaseId = client.ClientDatabaseId;

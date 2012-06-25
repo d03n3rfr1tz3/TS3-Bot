@@ -3,7 +3,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
     using System;
     using Manager.Connection;
     using Settings;
-    using TS3QueryLib.Core.Query.HelperClasses;
+    using TS3QueryLib.Core.Server.Entities;
 
     /// <summary>
     /// Defines the DataRepository class.
@@ -96,6 +96,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         /// </summary>
         public void KeepAlive()
         {
+            Client.CaptureModeration();
             Client.CaptureTimes();
             Connection.CredentialEntity.NotificationQueryRunner.GetVersion();
             Connection.CredentialEntity.WorkerQueryRunner.UpdateCurrentQueryClient(new ClientModification { Nickname = Settings.Global.BotNickname });

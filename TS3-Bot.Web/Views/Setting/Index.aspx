@@ -21,6 +21,9 @@
             Instance
         </th>
         <th>
+            InstancePort
+        </th>
+        <th>
             File
         </th>
         <th>
@@ -41,6 +44,9 @@
         </td>
         <td>
             <%: Html.DisplayFor(m => item.TeamSpeak.Instance) %>
+        </td>
+        <td>
+            <%: Html.DisplayFor(m => item.TeamSpeak.InstancePort) %>
         </td>
         <td>
             <%: Html.DisplayFor(m => item.Id) %>

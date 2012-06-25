@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using Entity;
     using Settings;
-    using TS3QueryLib.Core.Query;
-    using TS3QueryLib.Core.Query.HelperClasses;
+    using TS3QueryLib.Core.Server;
+    using TS3QueryLib.Core.Server.Entities;
 
     public class DataService
     {

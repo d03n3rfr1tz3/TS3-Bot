@@ -3,9 +3,8 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Connection
     using System;
     using Entity;
     using TS3QueryLib.Core.CommandHandling;
-    using TS3QueryLib.Core.Query;
-    using TS3QueryLib.Core.Query.HelperClasses;
-    using TS3QueryLib.Core.Query.Notification.EventArgs;
+    using TS3QueryLib.Core.Server;
+    using TS3QueryLib.Core.Server.Entities;
 
     /// <summary>
     /// Defines the CredentialManager class.
@@ -99,7 +98,10 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Connection
             TcpDispatcher = new SyncTcpDispatcher(BotInstance.Settings);
             QueryRunner = new QueryRunner(TcpDispatcher);
             QueryRunner.Login(BotInstance.Settings.TeamSpeak.Username, BotInstance.Settings.TeamSpeak.Password);
-            QueryRunner.SelectVirtualServerById(BotInstance.Settings.TeamSpeak.Instance);
+            if (BotInstance.Settings.TeamSpeak.InstancePort > 0)
+                QueryRunner.SelectVirtualServerByPort(BotInstance.Settings.TeamSpeak.InstancePort);
+            else
+                QueryRunner.SelectVirtualServerById(BotInstance.Settings.TeamSpeak.Instance);
             Self = QueryRunner.SendWhoAmI();
 
             WorkerTcpDispatcher = new SyncTcpDispatcher(BotInstance.Settings);
@@ -141,7 +143,10 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Connection
         private void InitNotification()
         {
             NotificationQueryRunner.Login(BotInstance.Settings.TeamSpeak.Username, BotInstance.Settings.TeamSpeak.Password);
-            NotificationQueryRunner.SelectVirtualServerById(BotInstance.Settings.TeamSpeak.Instance);
+            if (BotInstance.Settings.TeamSpeak.InstancePort > 0)
+                NotificationQueryRunner.SelectVirtualServerByPort(BotInstance.Settings.TeamSpeak.InstancePort);
+            else
+                NotificationQueryRunner.SelectVirtualServerById(BotInstance.Settings.TeamSpeak.Instance);
 
             NotificationQueryRunner.RegisterForNotifications(ServerNotifyRegisterEvent.Server);
             NotificationQueryRunner.RegisterForNotifications(ServerNotifyRegisterEvent.Channel, BotInstance.Settings.Sticky.Channel);

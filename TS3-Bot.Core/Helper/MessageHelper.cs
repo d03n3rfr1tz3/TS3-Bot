@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using Entity.Messages;
     using Repository;
-    using TS3QueryLib.Core.Query.Notification.EventArgs;
+    using TS3QueryLib.Core.Server.Notification.EventArgs;
 
     /// <summary>
     /// Defines the MessageHelper class.
@@ -44,7 +44,7 @@
         /// Gets the message information.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
         /// <param name="message">The message.</param>
         /// <returns></returns>
         public T GetMessageInformation<T>(MessageReceivedEventArgs e, string message) where T : Message, new()

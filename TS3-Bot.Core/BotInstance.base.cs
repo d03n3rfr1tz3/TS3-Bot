@@ -6,7 +6,7 @@ namespace DirkSarodnick.TS3_Bot.Core
     using Repository;
     using Settings;
     using TS3QueryLib.Core.CommandHandling;
-    using TS3QueryLib.Core.Query.HelperClasses;
+    using TS3QueryLib.Core.Server.Entities;
 
     /// <summary>
     /// Defines the BotInstanceBase class.

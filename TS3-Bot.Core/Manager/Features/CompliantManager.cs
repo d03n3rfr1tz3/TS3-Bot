@@ -7,7 +7,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Features
     using Repository;
     using Settings;
     using TS3QueryLib.Core.CommandHandling;
-    using TS3QueryLib.Core.Query.Notification.EventArgs;
+    using TS3QueryLib.Core.Server.Notification.EventArgs;
 
     /// <summary>
     /// Defines the CompliantManager class.
@@ -39,7 +39,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Features
         /// <summary>
         /// Determines whether this instance can invoke the specified e.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientMovedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientMovedEventArgs"/> instance containing the event data.</param>
         /// <returns>
         ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
         /// </returns>
@@ -62,7 +62,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Features
         /// <summary>
         /// Invokes the specified e.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientMovedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientMovedEventArgs"/> instance containing the event data.</param>
         public override void Invoke(ClientMovedEventArgs e)
         {
             PunishVoted(e);
@@ -97,7 +97,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Features
         /// <summary>
         /// Punishes the voted.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientMovedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientMovedEventArgs"/> instance containing the event data.</param>
         protected void PunishVoted(ClientMovedEventArgs e)
         {
             if (!Repository.Settings.Vote.Enabled) return;

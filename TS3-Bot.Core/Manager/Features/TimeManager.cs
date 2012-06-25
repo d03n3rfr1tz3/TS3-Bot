@@ -2,7 +2,7 @@
 {
     using Base;
     using Repository;
-    using TS3QueryLib.Core.Query.Notification.EventArgs;
+    using TS3QueryLib.Core.Server.Notification.EventArgs;
 
     public class TimeManager : DefaultManager
     {
@@ -19,7 +19,7 @@
         /// <summary>
         /// Determines whether this instance can invoke the specified e.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
         /// <returns>
         ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
         /// </returns>
@@ -31,7 +31,7 @@
         /// <summary>
         /// Determines whether this instance can invoke the specified e.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientDisconnectEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientDisconnectEventArgs"/> instance containing the event data.</param>
         /// <returns>
         ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
         /// </returns>
@@ -43,7 +43,7 @@
         /// <summary>
         /// Determines whether this instance can invoke the specified e.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientConnectionLostEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientConnectionLostEventArgs"/> instance containing the event data.</param>
         /// <returns>
         ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
         /// </returns>
@@ -55,7 +55,7 @@
         /// <summary>
         /// Invokes the specified e.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
         public override void Invoke(ClientJoinedEventArgs e)
         {
             TimeCapture(e);
@@ -64,7 +64,7 @@
         /// <summary>
         /// Invokes the specified e.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientDisconnectEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientDisconnectEventArgs"/> instance containing the event data.</param>
         public override void Invoke(ClientDisconnectEventArgs e)
         {
             TimeCapture(e);
@@ -73,7 +73,7 @@
         /// <summary>
         /// Invokes the specified e.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientConnectionLostEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientConnectionLostEventArgs"/> instance containing the event data.</param>
         public override void Invoke(ClientConnectionLostEventArgs e)
         {
             TimeCapture(e);
@@ -86,7 +86,7 @@
         /// <summary>
         /// Times the capture.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
         protected void TimeCapture(ClientJoinedEventArgs e)
         {
             Repository.Client.CaptureTime(e.ClientDatabaseId, Repository.Static.Now, null);
@@ -95,7 +95,7 @@
         /// <summary>
         /// Times the capture.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientDisconnectEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientDisconnectEventArgs"/> instance containing the event data.</param>
         protected void TimeCapture(ClientDisconnectEventArgs e)
         {
             var clientDatabaseId = Repository.Client.GetClientDatabaseIdByClientId(e.ClientId);
@@ -108,7 +108,7 @@
         /// <summary>
         /// Times the capture.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientConnectionLostEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientConnectionLostEventArgs"/> instance containing the event data.</param>
         protected void TimeCapture(ClientConnectionLostEventArgs e)
         {
             var clientDatabaseId = Repository.Client.GetClientDatabaseIdByClientId(e.ClientId);

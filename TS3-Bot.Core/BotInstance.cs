@@ -4,7 +4,7 @@
     using System.Net.Sockets;
     using System.Threading;
     using Service;
-    using TS3QueryLib.Core.Query.Notification.EventArgs;
+    using TS3QueryLib.Core.Server.Notification.EventArgs;
 
     /// <summary>
     /// Defines the BotInstance class.
@@ -35,10 +35,11 @@
             }
             catch (SocketException ex)
             {
-                LogService.Warning(string.Format("{0} (IP: {1}, QPort: {2}, Server: {3}, User: {4}){5}{6}", ex.Message,
+                LogService.Warning(string.Format("{0} (IP: {1}, QPort: {2}, Server: {3}/{4}, User: {5}){6}{7}", ex.Message,
                                                  Repository.Settings.TeamSpeak.Host,
                                                  Repository.Settings.TeamSpeak.QueryPort,
                                                  Repository.Settings.TeamSpeak.Instance,
+                                                 Repository.Settings.TeamSpeak.InstancePort,
                                                  Repository.Settings.TeamSpeak.Username,
                                                  Environment.NewLine,
                                                  ex.StackTrace));
@@ -77,7 +78,7 @@
         /// Handles the ClientJoined event of the Teamspeak Server.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
         public void Notifications_ClientJoined(object sender, ClientJoinedEventArgs e)
         {
             try
@@ -94,7 +95,7 @@
         /// Handles the ClientMoved event of the Teamspeak Server.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientMovedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientMovedEventArgs"/> instance containing the event data.</param>
         public void Notifications_ClientMoved(object sender, ClientMovedEventArgs e)
         {
             try
@@ -111,7 +112,7 @@
         /// Handles the ClientMoveForced event of the Teamspeak Server.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientMovedByClientEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientMovedByClientEventArgs"/> instance containing the event data.</param>
         public void Notifications_ClientMoveForced(object sender, ClientMovedByClientEventArgs e)
         {
             try
@@ -128,7 +129,7 @@
         /// Handles the ClientDisconnect event of the Notifications control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientDisconnectEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientDisconnectEventArgs"/> instance containing the event data.</param>
         public void Notifications_ClientDisconnect(object sender, ClientDisconnectEventArgs e)
         {
             try
@@ -145,7 +146,7 @@
         /// Handles the ClientConnectionLost event of the Notifications control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientConnectionLostEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientConnectionLostEventArgs"/> instance containing the event data.</param>
         public void Notifications_ClientConnectionLost(object sender, ClientConnectionLostEventArgs e)
         {
             try
@@ -162,7 +163,7 @@
         /// Handles the MessageReceived event of the Teamspeak Server.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
         public void Notifications_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
             try

@@ -16,6 +16,11 @@
 </div>
 
 <div>
+    <%: Html.LabelFor(m => m.TeamSpeak.InstancePort) %>
+    <%: Html.EditorFor(m => m.TeamSpeak.InstancePort)%>
+</div>
+
+<div>
     <%: Html.LabelFor(m => m.TeamSpeak.Username) %>
     <%: Html.EditorFor(m => m.TeamSpeak.Username) %>
 </div>

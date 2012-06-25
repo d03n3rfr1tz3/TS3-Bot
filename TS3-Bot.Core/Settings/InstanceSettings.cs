@@ -153,6 +153,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings
 
             this.TeamSpeak.Host = settings.TeamSpeak.Host;
             this.TeamSpeak.Instance = settings.TeamSpeak.Instance;
+            this.TeamSpeak.InstancePort = settings.TeamSpeak.InstancePort;
             this.TeamSpeak.QueryPort = settings.TeamSpeak.QueryPort;
             this.TeamSpeak.Username = settings.TeamSpeak.Username;
             this.TeamSpeak.Password = settings.TeamSpeak.Password;

@@ -1,7 +1,7 @@
 ﻿namespace DirkSarodnick.TS3_Bot.Core.Entity
 {
-    using TS3QueryLib.Core.Query;
-    using TS3QueryLib.Core.Query.Responses;
+    using TS3QueryLib.Core.Server;
+    using TS3QueryLib.Core.Server.Responses;
 
     /// <summary>
     /// Defines the CredentialEntity class.

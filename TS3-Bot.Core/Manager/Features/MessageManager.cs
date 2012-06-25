@@ -8,7 +8,7 @@
     using Settings;
     using Settings.SettingClasses.MessageSetting;
     using TS3QueryLib.Core.CommandHandling;
-    using TS3QueryLib.Core.Query.Notification.EventArgs;
+    using TS3QueryLib.Core.Server.Notification.EventArgs;
 
     /// <summary>
     /// Defines the MessageManager class.
@@ -40,7 +40,7 @@
         /// <summary>
         /// Determines whether this instance can invoke the specified e.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
         /// <returns>
         ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
         /// </returns>
@@ -64,7 +64,7 @@
         /// <summary>
         /// Invokes the specified e.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
         public override void Invoke(ClientJoinedEventArgs e)
         {
             Repository.Settings.Message.Messages.Where(m => m.Enabled && m.MessageType == MessageType.Welcome).ForEach(m => WelcomeMessage(e, m));
@@ -77,7 +77,7 @@
         /// <summary>
         /// Welcomes the message.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
         /// <param name="message">The message.</param>
         protected void WelcomeMessage(ClientJoinedEventArgs e, MessageDefinition message)
         {
@@ -107,13 +107,13 @@
             {
                 Repository.Static.SetLastIntervalById(message.Id, Repository.Static.Now);
                 QueryRunner.SendTextMessage(
-                    MessageTarget.Server, Repository.Settings.TeamSpeak.Instance,
+                    MessageTarget.Server, Repository.Connection.CredentialEntity.Self.VirtualServerId,
                     message.TextMessage.ToMessage(new MessageContext
                                                   {
-                                                      ServerId = Repository.Settings.TeamSpeak.Instance
+                                                      ServerId = Repository.Connection.CredentialEntity.Self.VirtualServerId
                                                   }));
 
-                Log(message, string.Format("Advert message successfully sent to server '{0}'.", Repository.Settings.TeamSpeak.Instance));
+                Log(message, string.Format("Advert message successfully sent to server '{0}'.", Repository.Connection.CredentialEntity.Self.VirtualServerId));
             }
         }
 

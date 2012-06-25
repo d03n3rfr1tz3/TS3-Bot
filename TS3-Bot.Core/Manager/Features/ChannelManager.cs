@@ -4,7 +4,7 @@
     using Helper;
     using Repository;
     using Settings;
-    using TS3QueryLib.Core.Query.Notification.EventArgs;
+    using TS3QueryLib.Core.Server.Notification.EventArgs;
 
     /// <summary>
     /// Defines the ChannelManager class.
@@ -36,7 +36,7 @@
         /// <summary>
         /// Determines whether this instance can invoke the specified e.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientMovedByClientEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientMovedByClientEventArgs"/> instance containing the event data.</param>
         /// <returns>
         ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
         /// </returns>
@@ -51,7 +51,7 @@
         /// <summary>
         /// Determines whether this instance can invoke the specified e.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientMovedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientMovedEventArgs"/> instance containing the event data.</param>
         /// <returns>
         ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
         /// </returns>
@@ -66,7 +66,7 @@
         /// <summary>
         /// Determines whether this instance can invoke the specified e.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
         /// <returns>
         ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>.
         /// </returns>
@@ -89,7 +89,7 @@
         /// <summary>
         /// Invokes the specified e.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientMovedByClientEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientMovedByClientEventArgs"/> instance containing the event data.</param>
         public override void Invoke(ClientMovedByClientEventArgs e)
         {
             StickyChannel(e);
@@ -98,7 +98,7 @@
         /// <summary>
         /// Invokes the specified e.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientMovedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientMovedEventArgs"/> instance containing the event data.</param>
         public override void Invoke(ClientMovedEventArgs e)
         {
             StickyChannel(e);
@@ -107,7 +107,7 @@
         /// <summary>
         /// Invokes the specified e.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
         public override void Invoke(ClientJoinedEventArgs e)
         {
             StickyChannel(e);
@@ -138,7 +138,7 @@
         /// <summary>
         /// Stickies the channel.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientMovedByClientEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientMovedByClientEventArgs"/> instance containing the event data.</param>
         protected void StickyChannel(ClientMovedByClientEventArgs e)
         {
             if (!Repository.Settings.Sticky.Enabled ||
@@ -170,7 +170,7 @@
         /// <summary>
         /// Stickies the channel.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientMovedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientMovedEventArgs"/> instance containing the event data.</param>
         protected void StickyChannel(ClientMovedEventArgs e)
         {
             if (!Repository.Settings.Sticky.Enabled) return;
@@ -195,7 +195,7 @@
         /// <summary>
         /// Stickies the channel.
         /// </summary>
-        /// <param name="e">The <see cref="TS3QueryLib.Core.Query.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
         protected void StickyChannel(ClientJoinedEventArgs e)
         {
             if (!Repository.Settings.Sticky.Enabled ||

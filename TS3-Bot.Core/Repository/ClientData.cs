@@ -6,8 +6,9 @@
     using Base;
     using Entity;
     using Helper;
-    using TS3QueryLib.Core.Query.HelperClasses;
-    using TS3QueryLib.Core.Query.Responses;
+    using TS3QueryLib.Core.CommandHandling;
+    using TS3QueryLib.Core.Server.Entities;
+    using TS3QueryLib.Core.Server.Responses;
 
     /// <summary>
     /// Defines the ClientData class.
@@ -63,7 +64,7 @@
             {
                 if (Container.ClientList == null)
                 {
-                    Container.ClientList = QueryRunner.GetClientList(true, true, true, true, false, true, false, true)
+                    Container.ClientList = QueryRunner.GetClientList(true, true, true, true, false, true, false, true, true)
                         .Where(m => m.ClientType == 0).ToList();
                     Container.ClientList.Where(m => !IsClientGuest(m.ClientDatabaseId, m.ServerGroups))
                         .ForEach(c => SetLastSeen(c.ClientDatabaseId));
@@ -403,6 +404,58 @@
         #endregion
 
         #region Moderated
+
+        /// <summary>
+        /// Captures all moderations.
+        /// </summary>
+        public void CaptureModeration()
+        {
+            var entries = new List<LogEntry>();
+            var lastModerated = Container.ModeratedClientList.Count > 0 ? Container.ModeratedClientList.Max(m => m.Value.Moderated) : DateTime.MinValue;
+
+            uint index = 0;
+            const ushort length = 100;
+            try
+            {
+                while (true)
+                {
+                    var logEntries = QueryRunner.GetLogEntries(length, false, index).LogEntries;
+                    entries.AddRange(logEntries.Where(m => m.LogLevel == LogLevel.Info && m.LogCategory == "VirtualServer"));
+
+                    if (!logEntries.Any() || logEntries.Any(l => l.TimeStamp < lastModerated)) break;
+                    index += length;
+                }
+            }
+            catch(ArgumentException) { }
+
+            CaptureModeration(entries);
+        }
+
+        /// <summary>
+        /// Captures the moderation.
+        /// </summary>
+        /// <param name="entries">The entries.</param>
+        public void CaptureModeration(IEnumerable<LogEntry> entries)
+        {
+            entries.ForEach(CaptureModeration);
+        }
+
+        /// <summary>
+        /// Captures the moderation.
+        /// </summary>
+        /// <param name="logEntry">The log entry.</param>
+        public void CaptureModeration(LogEntry logEntry)
+        {
+            var entity = ModeratedClientEntity.Parse(logEntry);
+            if (entity.HasValue)
+            {
+                lock (Container.lockModeratedClientList)
+                {
+                    if (!Container.ModeratedClientList.Any(m => m.Value.Type == entity.Value.Type && m.Value.User == entity.Value.User && m.Value.ServerGroup == entity.Value.ServerGroup))
+                        Container.ModeratedClientList.Add(Guid.NewGuid(), entity.Value);
+                }
+            }
+        }
 
         /// <summary>
         /// Captures the moderation.

@@ -1,6 +1,8 @@
 ﻿namespace DirkSarodnick.TS3_Bot.Core.Entity
 {
     using System;
+    using System.Text.RegularExpressions;
+    using TS3QueryLib.Core.Server.Entities;
 
     /// <summary>
     /// Defines the ModeratedClientEntity struct.
@@ -63,5 +65,35 @@
         /// The moderated.
         /// </value>
         public DateTime Moderated;
+
+        /// <summary>
+        /// Defines the Regex for Log Entries, that will be used to parse ModeratedClientEntity of it.
+        /// </summary>
+        private static readonly Regex LogRegex = new Regex(@"client \(id:(?<clientId>.*)\) was (?<type>.*) (?<typeAdd>.*) servergroup '(?<groupName>.*)'\(id:(?<groupId>.*)\) by client '(?<moderatorName>.*)'\(id:(?<moderatorId>.*)\)", RegexOptions.IgnoreCase);
+
+        /// <summary>
+        /// Parses the specified log entry.
+        /// </summary>
+        /// <param name="logEntry">The log entry.</param>
+        /// <returns>Returns parsed ModeratedClientEntity.</returns>
+        public static ModeratedClientEntity? Parse(LogEntry logEntry)
+        {
+            var match = LogRegex.Match(logEntry.Message);
+
+            try
+            {
+                ModerationType type;
+                if (Enum.TryParse(match.Groups["type"].Value, true, out type))
+                {
+                    return new ModeratedClientEntity(type,
+                                                     uint.Parse(match.Groups["moderatorId"].Value),
+                                                     uint.Parse(match.Groups["clientId"].Value),
+                                                     uint.Parse(match.Groups["groupId"].Value));
+                }
+            }
+            catch { }
+
+            return null;
+        }
     }
 }

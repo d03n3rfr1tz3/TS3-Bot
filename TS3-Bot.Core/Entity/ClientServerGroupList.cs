@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using TS3QueryLib.Core.Query.HelperClasses;
+    using TS3QueryLib.Core.Server.Entities;
 
     /// <summary>
     /// Defines the ClientServerGroupList class.

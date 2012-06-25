@@ -1,7 +1,7 @@
 ﻿namespace DirkSarodnick.TS3_Bot.Core.Entity
 {
     using System;
-    using TS3QueryLib.Core.Query.HelperClasses;
+    using TS3QueryLib.Core.Server.Entities;
 
     /// <summary>
     /// Defines the FileEntity class.

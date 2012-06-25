@@ -3,7 +3,7 @@
     using System;
     using Entity;
     using Repository;
-    using TS3QueryLib.Core.Query;
+    using TS3QueryLib.Core.Server;
 
     /// <summary>
     /// Defines the DynamicCredentialContainer class.

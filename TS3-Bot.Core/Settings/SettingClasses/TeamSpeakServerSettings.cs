@@ -42,8 +42,8 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
         {
             get
             {
-                return string.Format("{0}|{1}|{2}|{3}|{4}",
-                                     this.Host, this.Instance, this.QueryPort, this.Username, this.Password);
+                return string.Format("{0}|{1}|{2}|{3}|{4}|{5}",
+                                     this.Host, this.Instance, this.InstancePort, this.QueryPort, this.Username, this.Password);
             }
         }
     }

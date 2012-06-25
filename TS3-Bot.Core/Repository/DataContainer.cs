@@ -5,8 +5,8 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
     using System.Linq;
     using Entity;
     using Microsoft.Isam.Esent.Collections.Generic;
-    using TS3QueryLib.Core.Query.HelperClasses;
-    using TS3QueryLib.Core.Query.Responses;
+    using TS3QueryLib.Core.Server.Entities;
+    using TS3QueryLib.Core.Server.Responses;
 
     public class DataContainer : IDisposable
     {
