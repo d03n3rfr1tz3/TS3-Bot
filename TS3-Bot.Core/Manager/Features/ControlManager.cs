@@ -1,6 +1,7 @@
 ﻿namespace DirkSarodnick.TS3_Bot.Core.Manager.Features
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using Base;
@@ -43,7 +44,12 @@
                                      Repository.Settings.Control.Help,
                                      Repository.Settings.Control.Seen,
                                      Repository.Settings.Control.Files,
-                                     Repository.Settings.Control.Stick
+                                     Repository.Settings.Control.Stick,
+                                     Repository.Settings.Control.Hours,
+                                     Repository.Settings.Control.Moderator,
+                                     Repository.Settings.Control.SeenGroup,
+                                     Repository.Settings.Control.SeenModerator,
+                                     Repository.Settings.Control.Punish
                                  });
         }
 
@@ -58,6 +64,12 @@
             Files(e);
             Stick(e);
             Unstick(e);
+            Hour(e);
+            Moderator(e);
+            SeenGroup(e);
+            SeenModerator(e);
+            Punish(e);
+            Unpunish(e);
         }
 
         #endregion
@@ -75,7 +87,7 @@
         #region Message Validation
 
         /// <summary>
-        /// Validates the Help message
+        /// Validates the Help message.
         /// </summary>
         /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
         protected void Help(MessageReceivedEventArgs e)
@@ -91,7 +103,7 @@
         }
 
         /// <summary>
-        /// Validates the Seen message
+        /// Validates the Seen message.
         /// </summary>
         /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
         protected void Seen(MessageReceivedEventArgs e)
@@ -107,7 +119,7 @@
         }
 
         /// <summary>
-        /// Validates the Files message
+        /// Validates the Files message.
         /// </summary>
         /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
         protected void Files(MessageReceivedEventArgs e)
@@ -122,6 +134,10 @@
             }
         }
 
+        /// <summary>
+        /// Validates the Stick message.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
         protected void Stick(MessageReceivedEventArgs e)
         {
             if (!Repository.Settings.Control.Stick.Enabled) return;
@@ -134,6 +150,10 @@
             }
         }
 
+        /// <summary>
+        /// Validates the Unstick message.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
         protected void Unstick(MessageReceivedEventArgs e)
         {
             if (!Repository.Settings.Control.Stick.Enabled) return;
@@ -143,6 +163,105 @@
                     .Any(m => PermissionHelper.IsGranted(Repository.Settings.Control.Stick, m)))
             {
                 Execute(MessageHelper.GetMessageInformation<UnstickMessage>(e, e.Message));
+            }
+        }
+
+        /// <summary>
+        /// Validates the Hours message.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
+        protected void Hour(MessageReceivedEventArgs e)
+        {
+            if (!Repository.Settings.Control.Hours.Enabled) return;
+
+            if (MessageHelper.CanBeMessage<HoursMessage>(e.Message) &&
+                Repository.Client.GetClientInfo(e.InvokerClientId).ServerGroups
+                    .Any(m => PermissionHelper.IsGranted(Repository.Settings.Control.Hours, m)))
+            {
+                Execute(MessageHelper.GetMessageInformation<HoursMessage>(e, e.Message));
+            }
+        }
+
+        /// <summary>
+        /// Validates the Moderator message.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
+        protected void Moderator(MessageReceivedEventArgs e)
+        {
+            if (!Repository.Settings.Control.Moderator.Enabled) return;
+
+            if (MessageHelper.CanBeMessage<ModeratorMessage>(e.Message) &&
+                Repository.Client.GetClientInfo(e.InvokerClientId).ServerGroups
+                    .Any(m => PermissionHelper.IsGranted(Repository.Settings.Control.Moderator, m)))
+            {
+                Execute(MessageHelper.GetMessageInformation<ModeratorMessage>(e, e.Message));
+            }
+        }
+
+        /// <summary>
+        /// Validates the SeenGroup message.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
+        protected void SeenGroup(MessageReceivedEventArgs e)
+        {
+            if (!Repository.Settings.Control.SeenGroup.Enabled) return;
+
+            if (MessageHelper.CanBeMessage<SeenGroupMessage>(e.Message) &&
+                Repository.Client.GetClientInfo(e.InvokerClientId).ServerGroups
+                    .Any(m => PermissionHelper.IsGranted(Repository.Settings.Control.SeenGroup, m)))
+            {
+                Execute(MessageHelper.GetMessageInformation<SeenGroupMessage>(e, e.Message));
+            }
+        }
+
+        /// <summary>
+        /// Validates the SeenModerator message.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
+        protected void SeenModerator(MessageReceivedEventArgs e)
+        {
+            if (!Repository.Settings.Control.SeenModerator.Enabled) return;
+            if (Repository.Settings.Control.SeenModerator.ServerGroup <= 0) return;
+
+            if (MessageHelper.CanBeMessage<SeenModeratorMessage>(e.Message) &&
+                Repository.Client.GetClientInfo(e.InvokerClientId).ServerGroups
+                    .Any(m => PermissionHelper.IsGranted(Repository.Settings.Control.SeenModerator, m)))
+            {
+                Execute(MessageHelper.GetMessageInformation<SeenModeratorMessage>(e, e.Message));
+            }
+        }
+
+        /// <summary>
+        /// Validates the Punish message.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
+        protected void Punish(MessageReceivedEventArgs e)
+        {
+            if (!Repository.Settings.Control.Punish.Enabled) return;
+            if (Repository.Settings.Control.Punish.ServerGroup <= 0) return;
+
+            if (MessageHelper.CanBeMessage<PunishMessage>(e.Message) &&
+                Repository.Client.GetClientInfo(e.InvokerClientId).ServerGroups
+                    .Any(m => PermissionHelper.IsGranted(Repository.Settings.Control.Punish, m)))
+            {
+                Execute(MessageHelper.GetMessageInformation<PunishMessage>(e, e.Message));
+            }
+        }
+
+        /// <summary>
+        /// Validates the Unpunish message.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
+        protected void Unpunish(MessageReceivedEventArgs e)
+        {
+            if (!Repository.Settings.Control.Punish.Enabled) return;
+            if (Repository.Settings.Control.Punish.ServerGroup <= 0) return;
+
+            if (MessageHelper.CanBeMessage<UnpunishMessage>(e.Message) &&
+                Repository.Client.GetClientInfo(e.InvokerClientId).ServerGroups
+                    .Any(m => PermissionHelper.IsGranted(Repository.Settings.Control.Punish, m)))
+            {
+                Execute(MessageHelper.GetMessageInformation<UnpunishMessage>(e, e.Message));
             }
         }
 
@@ -156,9 +275,11 @@
         /// <param name="message">The message.</param>
         private void Execute(HelpMessage message)
         {
-            var helpMessage = MessageHelper.GetHelpMessages(Repository.Client.GetClientInfo(message.SenderClientId).ServerGroups);
-            if (helpMessage != null)
-                QueryRunner.SendTextMessage(MessageTarget.Client, message.SenderClientId, helpMessage.ToMessage());
+            var helpMessages = MessageHelper.GetHelpMessages(Repository.Client.GetClientInfo(message.SenderClientId).ServerGroups);
+            if (helpMessages != null)
+            {
+                helpMessages.ForEach(helpMessage => QueryRunner.SendTextMessage(MessageTarget.Client, message.SenderClientId, helpMessage.ToMessage()));
+            }
 
             var clientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
             Log(Repository.Settings.Control.Help,
@@ -287,6 +408,233 @@
             var clientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
             Log(Repository.Settings.Control.Stick,
                 string.Format("Client '{0}'(id:{1}) used !unstick.",
+                              clientEntry.Nickname, clientEntry.DatabaseId));
+        }
+
+        /// <summary>
+        /// Executes the Hours message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        private void Execute(HoursMessage message)
+        {
+            if (message.ErrorMessage != null)
+            {
+                Log(LogLevel.Warning, message.ErrorMessage);
+                return;
+            }
+
+            var server = Repository.Server.GetCurrentServer();
+            var context = new MessageContext
+            {
+                ServerId = server.Id,
+                ServerName = server.Name,
+                ServerPort = server.Port
+            };
+            QueryRunner.SendTextMessage(MessageTarget.Client, message.SenderClientId, Repository.Settings.Control.Hours.TextMessage.ToMessage(context));
+
+            var clientDatabaseDict = new Dictionary<uint, double>();
+            var ids = message.ClientDatabaseIds.Any() ? message.ClientDatabaseIds : Repository.Client.GetTimeUsers(message.TimeSpan.FromDate, message.TimeSpan.ToDate);
+            ids.ForEach(clientDatabaseId => clientDatabaseDict.Add(clientDatabaseId, Repository.Client.GetTime(clientDatabaseId, message.TimeSpan.FromDate, message.TimeSpan.ToDate)));
+            var clientDatabaseIds = clientDatabaseDict.Where(m => m.Value >= 0.5).OrderByDescending(m => m.Value).Select(m => m.Key).ToList();
+
+            foreach (var clientDatabaseId in clientDatabaseIds)
+            {
+                var client = Repository.Client.GetClientDataBaseInfo(clientDatabaseId);
+                var lastSeen = Repository.Client.GetLastSeen(clientDatabaseId);
+                var hours = Repository.Client.GetTime(clientDatabaseId, message.TimeSpan.FromDate, message.TimeSpan.ToDate);
+                var messageContext = new MessageContext
+                {
+                    ClientDatabaseId = client.DatabaseId,
+                    ClientNickname = client.NickName,
+                    ClientLastLogin = client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat),
+                    ClientLastSeen = lastSeen != default(DateTime) && lastSeen > DateTime.MinValue
+                                         ? lastSeen.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
+                                         : "Nie",
+                    ClientHours = hours / 60
+                };
+
+                QueryRunner.SendTextMessage(MessageTarget.Client, message.SenderClientId, Repository.Settings.Control.Hours.MessagePerClient.ToMessage(messageContext));
+            }
+
+            var senderClientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
+            Log(Repository.Settings.Control.Hours,
+                string.Format("Client '{0}'(id:{1}) used !hours for clients '{2}'.",
+                              senderClientEntry.Nickname, senderClientEntry.DatabaseId,
+                              string.Join("', '", message.ClientDatabaseIds.ConvertAll(i => i.ToString(CultureInfo.InvariantCulture)).ToArray())));
+        }
+
+        /// <summary>
+        /// Executes the Moderator message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        private void Execute(ModeratorMessage message)
+        {
+            if (message.ErrorMessage != null)
+            {
+                Log(LogLevel.Warning, message.ErrorMessage);
+                return;
+            }
+
+            var server = Repository.Server.GetCurrentServer();
+            var entities = Repository.Client.GetModeration(ModerationType.Added, message.TimeSpan.FromDate, message.TimeSpan.ToDate);
+
+            var context = new MessageContext
+                              {
+                                  ServerId = server.Id,
+                                  ServerName = server.Name,
+                                  ServerPort = server.Port
+                              };
+            QueryRunner.SendTextMessage(MessageTarget.Client, message.SenderClientId, Repository.Settings.Control.Moderator.TextMessage.ToMessage(context));
+
+            foreach (var entity in entities.GroupBy(m => m.Moderator).OrderByDescending(m => m.Count()))
+            {
+                var moderatorEntity = Repository.Client.GetClientSimple(entity.Key);
+                var messageContext = new MessageContext
+                {
+                    ClientDatabaseId = moderatorEntity.ClientDatabaseId,
+                    ClientNickname = moderatorEntity.Nickname,
+                    ModeratorVerified = entity.Count()
+                };
+                QueryRunner.SendTextMessage(MessageTarget.Client, message.SenderClientId, Repository.Settings.Control.Moderator.MessagePerModerator.ToMessage(messageContext));
+            }
+
+            var clientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
+            Log(Repository.Settings.Control.Moderator,
+                string.Format("Client '{0}'(id:{1}) used !mods.",
+                              clientEntry.Nickname, clientEntry.DatabaseId));
+        }
+
+        /// <summary>
+        /// Executes the SeenGroup message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        private void Execute(SeenGroupMessage message)
+        {
+            if (message.ErrorMessage != null)
+            {
+                Log(LogLevel.Warning, message.ErrorMessage);
+                return;
+            }
+
+            var server = Repository.Server.GetCurrentServer();
+            var serverGroup = Repository.Server.GetServerGroup(message.ServerGroup);
+            var context = new MessageContext
+            {
+                ServerId = server.Id,
+                ServerName = server.Name,
+                ServerPort = server.Port,
+                ServerGroupId = serverGroup.Id,
+                ServerGroupName = serverGroup.Name
+            };
+            QueryRunner.SendTextMessage(MessageTarget.Client, message.SenderClientId, Repository.Settings.Control.SeenGroup.TextMessage.ToMessage(context));
+
+            foreach (var clientDatabaseId in message.ClientDatabaseIds)
+            {
+                var client = Repository.Client.GetClientDataBaseInfo(clientDatabaseId);
+                var lastSeen = Repository.Client.GetLastSeen(clientDatabaseId);
+                var messageContext = new MessageContext
+                {
+                    ServerGroupId = serverGroup.Id,
+                    ServerGroupName = serverGroup.Name,
+                    ClientDatabaseId = client.DatabaseId,
+                    ClientNickname = client.NickName,
+                    ClientLastLogin = client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat),
+                    ClientLastSeen = lastSeen != default(DateTime) && lastSeen > DateTime.MinValue
+                                         ? lastSeen.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
+                                         : "Nie"
+                };
+
+                QueryRunner.SendTextMessage(MessageTarget.Client, message.SenderClientId, Repository.Settings.Control.SeenGroup.MessagePerClient.ToMessage(messageContext));
+            }
+
+            var senderClientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
+            Log(Repository.Settings.Control.SeenGroup,
+                string.Format("Client '{0}'(id:{1}) used !seengroup for server group '{2}'.",
+                              senderClientEntry.Nickname, senderClientEntry.DatabaseId, message.ServerGroup));
+        }
+
+        /// <summary>
+        /// Executes the SeenModerator message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        private void Execute(SeenModeratorMessage message)
+        {
+            if (message.ErrorMessage != null)
+            {
+                Log(LogLevel.Warning, message.ErrorMessage);
+                return;
+            }
+
+            var server = Repository.Server.GetCurrentServer();
+            var serverGroup = Repository.Server.GetServerGroup(message.ServerGroup);
+            var context = new MessageContext
+            {
+                ServerId = server.Id,
+                ServerName = server.Name,
+                ServerPort = server.Port,
+                ServerGroupId = serverGroup.Id,
+                ServerGroupName = serverGroup.Name
+            };
+            QueryRunner.SendTextMessage(MessageTarget.Client, message.SenderClientId, Repository.Settings.Control.SeenModerator.TextMessage.ToMessage(context));
+
+            foreach (var clientDatabaseId in message.ClientDatabaseIds)
+            {
+                var client = Repository.Client.GetClientDataBaseInfo(clientDatabaseId);
+                var lastSeen = Repository.Client.GetLastSeen(clientDatabaseId);
+                var messageContext = new MessageContext
+                {
+                    ServerGroupId = serverGroup.Id,
+                    ServerGroupName = serverGroup.Name,
+                    ClientDatabaseId = client.DatabaseId,
+                    ClientNickname = client.NickName,
+                    ClientLastLogin = client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat),
+                    ClientLastSeen = lastSeen != default(DateTime) && lastSeen > DateTime.MinValue
+                                         ? lastSeen.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
+                                         : "Nie"
+                };
+
+                QueryRunner.SendTextMessage(MessageTarget.Client, message.SenderClientId, Repository.Settings.Control.SeenModerator.MessagePerClient.ToMessage(messageContext));
+            }
+
+            var senderClientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
+            Log(Repository.Settings.Control.SeenModerator,
+                string.Format("Client '{0}'(id:{1}) used !seenmods.",
+                              senderClientEntry.Nickname, senderClientEntry.DatabaseId));
+        }
+
+        /// <summary>
+        /// Executes the PunishMessage message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        private void Execute(PunishMessage message)
+        {
+            foreach (uint clientDatabaseId in message.ClientDatabaseIds)
+            {
+                Repository.Client.RemoveClientServerGroups(clientDatabaseId, Repository.Client.GetClientServerGroups(clientDatabaseId).Select(m => m.Id).ToList());
+                Repository.Client.AddClientServerGroups(clientDatabaseId, new[] { Repository.Settings.Control.Punish.ServerGroup });
+            }
+
+            var clientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
+            Log(Repository.Settings.Control.Stick,
+                string.Format("Client '{0}'(id:{1}) used !stick.",
+                              clientEntry.Nickname, clientEntry.DatabaseId));
+        }
+
+        /// <summary>
+        /// Executes the UnpunishMessage message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        private void Execute(UnpunishMessage message)
+        {
+            foreach (uint clientDatabaseId in message.ClientDatabaseIds)
+            {
+                Repository.Client.RemoveClientServerGroups(clientDatabaseId, new[] { Repository.Settings.Control.Punish.ServerGroup });
+                Repository.Client.RestoreGroups(clientDatabaseId);
+            }
+
+            var clientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
+            Log(Repository.Settings.Control.Punish,
+                string.Format("Client '{0}'(id:{1}) used !unpunish.",
                               clientEntry.Nickname, clientEntry.DatabaseId));
         }
 

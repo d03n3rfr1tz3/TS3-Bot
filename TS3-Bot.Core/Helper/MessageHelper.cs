@@ -59,9 +59,9 @@
         /// </summary>
         /// <param name="groups">The server groups.</param>
         /// <returns>The Help Messages</returns>
-        public string GetHelpMessages(List<uint> groups)
+        public IEnumerable<string> GetHelpMessages(List<uint> groups)
         {
-            var helpMessages = new List<string>();
+            var helpMessages = new List<string>(new[] { Repository.Settings.Control.HelpMessage });
 
             if (Repository.Settings.Control.Help.Enabled && PermissionHelper.IsGranted(Repository.Settings.Control.Help, groups))
                 helpMessages.Add(Repository.Settings.Control.Help.HelpMessage.Trim());
@@ -72,15 +72,25 @@
             if (Repository.Settings.Control.Stick.Enabled && PermissionHelper.IsGranted(Repository.Settings.Control.Stick, groups))
                 helpMessages.Add(Repository.Settings.Control.Stick.HelpMessage.Trim());
 
+            if (Repository.Settings.Control.Moderator.Enabled && PermissionHelper.IsGranted(Repository.Settings.Control.Moderator, groups))
+                helpMessages.Add(Repository.Settings.Control.Moderator.HelpMessage.Trim());
+
+            if (Repository.Settings.Control.SeenModerator.Enabled && PermissionHelper.IsGranted(Repository.Settings.Control.SeenModerator, groups))
+                helpMessages.Add(Repository.Settings.Control.SeenModerator.HelpMessage.Trim());
+
+            if (Repository.Settings.Control.SeenGroup.Enabled && PermissionHelper.IsGranted(Repository.Settings.Control.SeenGroup, groups))
+                helpMessages.Add(Repository.Settings.Control.SeenGroup.HelpMessage.Trim());
+
+            if (Repository.Settings.Control.Hours.Enabled && PermissionHelper.IsGranted(Repository.Settings.Control.Hours, groups))
+                helpMessages.Add(Repository.Settings.Control.Hours.HelpMessage.Trim());
+
+            if (Repository.Settings.Control.Punish.Enabled && PermissionHelper.IsGranted(Repository.Settings.Control.Punish, groups))
+                helpMessages.Add(Repository.Settings.Control.Punish.HelpMessage.Trim());
+
             if (Repository.Settings.Control.Files.Enabled && PermissionHelper.IsGranted(Repository.Settings.Control.Files, groups))
                 helpMessages.Add(Repository.Settings.Control.Files.HelpMessage.Trim());
 
-            if (helpMessages.Count > 0)
-                return string.Format("{0}\n\r\n\r{1}",
-                                     Repository.Settings.Control.HelpMessage,
-                                     String.Join("\r\n\r\n", helpMessages.ToArray()));
-
-            return null;
+            return helpMessages;
         }
     }
 }

@@ -4,6 +4,7 @@
     using System.Linq;
     using Base;
     using TS3QueryLib.Core.Server.Entities;
+    using TS3QueryLib.Core.Server.Responses;
 
     /// <summary>
     /// Defines the ServerData class.
@@ -27,6 +28,30 @@
             lock (Container.lockGetServerList)
             {
                 return Container.ServerList ?? (Container.ServerList = QueryRunner.GetServerList().ToList());
+            }
+        }
+
+        /// <summary>
+        /// Gets the current server.
+        /// </summary>
+        /// <returns></returns>
+        public ServerInfoResponse GetCurrentServer()
+        {
+            return QueryRunner.GetServerInfo();
+        }
+
+        /// <summary>
+        /// Gets the server group.
+        /// </summary>
+        /// <param name="serverGroupId">The server group.</param>
+        /// <returns></returns>
+        public ServerGroupLight GetServerGroup(uint serverGroupId)
+        {
+            lock (Container.lockGetServerGroup)
+            {
+                return Container.ClientServerGroupList.Select(m => m.Value.ServerGroups.FirstOrDefault(s => s.Id == serverGroupId)).FirstOrDefault() ??
+                       QueryRunner.GetServerGroupList().FirstOrDefault(m => m.Id == serverGroupId) ??
+                       new ServerGroupLight();
             }
         }
     }

@@ -15,6 +15,12 @@ namespace DirkSarodnick.TS3_Bot.Core.Entity
         public string ClientNickname { get; set; }
 
         /// <summary>
+        /// Gets or sets the client registered.
+        /// </summary>
+        /// <value>The client registered.</value>
+        public string ClientRegistered { get; set; }
+
+        /// <summary>
         /// Gets or sets the client last login.
         /// </summary>
         /// <value>The client last login.</value>
@@ -25,6 +31,12 @@ namespace DirkSarodnick.TS3_Bot.Core.Entity
         /// </summary>
         /// <value>The client last seen.</value>
         public string ClientLastSeen { get; set; }
+
+        /// <summary>
+        /// Gets or sets the client hours.
+        /// </summary>
+        /// <value>The client hours.</value>
+        public double? ClientHours { get; set; }
 
         /// <summary>
         /// Gets or sets the channel id.
@@ -79,5 +91,29 @@ namespace DirkSarodnick.TS3_Bot.Core.Entity
         /// </summary>
         /// <value>The size of the file.</value>
         public ulong? FileSize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the moderator verified.
+        /// </summary>
+        /// <value>
+        /// The moderator verified.
+        /// </value>
+        public int? ModeratorVerified { get; set; }
+
+        /// <summary>
+        /// Gets or sets the server group id.
+        /// </summary>
+        /// <value>
+        /// The server group id.
+        /// </value>
+        public uint? ServerGroupId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the server group.
+        /// </summary>
+        /// <value>
+        /// The name of the server group.
+        /// </value>
+        public string ServerGroupName { get; set; }
     }
 }

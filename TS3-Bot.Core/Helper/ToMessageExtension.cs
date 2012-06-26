@@ -1,5 +1,6 @@
 namespace DirkSarodnick.TS3_Bot.Core.Helper
 {
+    using System;
     using System.Globalization;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -30,6 +31,11 @@ namespace DirkSarodnick.TS3_Bot.Core.Helper
                 result.Replace("[CLIENT_NICKNAME]", context.ClientNickname);
             }
 
+            if (context.ClientRegistered != null)
+            {
+                result.Replace("[CLIENT_REGISTERED]", context.ClientRegistered);
+            }
+
             if (context.ClientLastLogin != null)
             {
                 result.Replace("[CLIENT_LASTLOGIN]", context.ClientLastLogin);
@@ -38,6 +44,11 @@ namespace DirkSarodnick.TS3_Bot.Core.Helper
             if (context.ClientLastSeen != null)
             {
                 result.Replace("[CLIENT_LASTSEEN]", context.ClientLastSeen);
+            }
+
+            if (context.ClientHours.HasValue)
+            {
+                result.Replace("[CLIENT_HOURS]", Math.Round(context.ClientHours.Value, 1).ToString(CultureInfo.InvariantCulture));
             }
 
             if (context.ChannelId.HasValue)
@@ -83,6 +94,21 @@ namespace DirkSarodnick.TS3_Bot.Core.Helper
             if (context.FileSize.HasValue)
             {
                 result.Replace("[FILE_SIZE]", BasicHelper.GetFileSize(context.FileSize.Value));
+            }
+
+            if (context.ServerGroupId.HasValue)
+            {
+                result.Replace("[SERVERGROUP_ID]", context.ServerGroupId.Value.ToString(CultureInfo.InvariantCulture));
+            }
+
+            if (context.ServerGroupName != null)
+            {
+                result.Replace("[SERVERGROUP_NAME]", context.ServerGroupName);
+            }
+
+            if (context.ModeratorVerified.HasValue)
+            {
+                result.Replace("[VERIFIED]", context.ModeratorVerified.Value.ToString(CultureInfo.InvariantCulture));
             }
 
             // killing some unnecessary whitespaces

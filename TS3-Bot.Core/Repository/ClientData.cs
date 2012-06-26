@@ -214,6 +214,16 @@
             }
         }
 
+        /// <summary>
+        /// Gets the clients by server group.
+        /// </summary>
+        /// <param name="serverGroupId">The server group id.</param>
+        /// <returns>The clients.</returns>
+        public List<uint> GetClientsByServerGroup(uint serverGroupId)
+        {
+            return QueryRunner.GetServerGroupClientList(serverGroupId).Select(m => m.DatabaseId).ToList();
+        }
+
         #region Last Channel
 
         /// <summary>
@@ -477,15 +487,14 @@
         /// Gets the moderation.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <param name="moderatorDatabaseId">The moderator database id.</param>
         /// <param name="fromDate">From date.</param>
         /// <param name="toDate">To date.</param>
         /// <returns></returns>
-        public IEnumerable<ModeratedClientEntity> GetModeration(ModerationType type, uint moderatorDatabaseId, DateTime? fromDate, DateTime? toDate)
+        public IEnumerable<ModeratedClientEntity> GetModeration(ModerationType type, DateTime? fromDate, DateTime? toDate)
         {
             lock (Container.lockModeratedClientList)
             {
-                var entities = Container.ModeratedClientList.Where(m => m.Value.Type == type && m.Value.Moderator == moderatorDatabaseId).AsEnumerable();
+                var entities = Container.ModeratedClientList.Where(m => m.Value.Type == type).AsEnumerable();
 
                 if (fromDate.HasValue)
                 {
@@ -572,6 +581,32 @@
             }
 
             return times.Sum(m => m.Value.GetTime(fromTime, toTime).TotalMinutes);
+        }
+
+        /// <summary>
+        /// Gets the time users.
+        /// </summary>
+        /// <param name="fromTime">From time.</param>
+        /// <param name="toTime">To time.</param>
+        /// <returns></returns>
+        public List<uint> GetTimeUsers(DateTime? fromTime, DateTime? toTime)
+        {
+            lock (Container.lockTimeClientList)
+            {
+                var users = Container.TimeClientList.AsEnumerable();
+
+                if (fromTime.HasValue)
+                {
+                    users = users.Where(m => m.Value.Disconnected > fromTime);
+                }
+
+                if (toTime.HasValue)
+                {
+                    users = users.Where(m => m.Value.Joined < toTime);
+                }
+
+                return users.Select(m => m.Value.User).Distinct().ToList();
+            }
         }
 
         #endregion

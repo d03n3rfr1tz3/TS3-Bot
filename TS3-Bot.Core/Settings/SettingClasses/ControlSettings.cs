@@ -16,6 +16,12 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
             Help = new HelpControlSettings();
             Seen = new SeenControlSettings();
             Files = new FilesControlSettings();
+            Stick = new StickControlSettings();
+            SeenGroup = new SeenGroupControlSettings();
+            SeenModerator = new SeenModeratorControlSettings();
+            Moderator = new ModeratorControlSettings();
+            Hours = new HourControlSettings();
+            Punish = new PunishControlSettings();
         }
 
         /// <summary>
@@ -39,10 +45,38 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
         /// <summary>
         /// Gets or sets the stick.
         /// </summary>
-        /// <value>
-        /// The stick.
-        /// </value>
+        /// <value>The stick.</value>
         public StickControlSettings Stick { get; set; }
+
+        /// <summary>
+        /// Gets or sets the seen group.
+        /// </summary>
+        /// <value>The seen group.</value>
+        public SeenGroupControlSettings SeenGroup { get; set; }
+
+        /// <summary>
+        /// Gets or sets the seen moderator.
+        /// </summary>
+        /// <value>The seen moderator.</value>
+        public SeenModeratorControlSettings SeenModerator { get; set; }
+
+        /// <summary>
+        /// Gets or sets the moderator.
+        /// </summary>
+        /// <value>The moderator.</value>
+        public ModeratorControlSettings Moderator { get; set; }
+
+        /// <summary>
+        /// Gets or sets the hour.
+        /// </summary>
+        /// <value>The hour.</value>
+        public HourControlSettings Hours { get; set; }
+
+        /// <summary>
+        /// Gets or sets the punish.
+        /// </summary>
+        /// <value>The punish.</value>
+        public PunishControlSettings Punish { get; set; }
 
         /// <summary>
         /// Gets or sets the help message.
@@ -64,6 +98,11 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
             Seen.ApplySetting(setting.Seen);
             Files.ApplySetting(setting.Files);
             Stick.ApplySetting(setting.Stick);
+            SeenGroup.ApplySetting(setting.SeenGroup);
+            SeenModerator.ApplySetting(setting.SeenModerator);
+            Moderator.ApplySetting(setting.Moderator);
+            Hours.ApplySetting(setting.Hours);
+            Punish.ApplySetting(setting.Punish);
         }
     }
 }

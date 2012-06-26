@@ -1,5 +1,6 @@
 ﻿namespace DirkSarodnick.TS3_Bot.Core.Entity.Messages
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using TS3QueryLib.Core.Server.Notification.EventArgs;
@@ -17,6 +18,10 @@
             ClientDatabaseIds = new List<uint>();
         }
 
+        /// <summary>
+        /// Gets the command.
+        /// </summary>
+        /// <value>The command.</value>
         protected override string Command { get { return "!unstick"; } }
 
         /// <summary>
@@ -39,7 +44,7 @@
         public override bool Validate(string[] parameters)
         {
             return parameters.Length > 1 &&
-                   parameters[0].StartsWith(Command) &&
+                   parameters[0].StartsWith(Command, StringComparison.InvariantCultureIgnoreCase) &&
                    !string.IsNullOrEmpty(parameters[1]);
         }
 

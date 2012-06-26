@@ -115,6 +115,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         internal readonly object lockFileList = new object();
         internal readonly object lockGetCompliantList = new object();
         internal readonly object lockGetServerList = new object();
+        internal readonly object lockGetServerGroup = new object();
         internal readonly object lockLastEventList = new object();
 
         #endregion

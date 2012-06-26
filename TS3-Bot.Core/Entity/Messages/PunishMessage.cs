@@ -6,14 +6,14 @@
     using TS3QueryLib.Core.Server.Notification.EventArgs;
 
     /// <summary>
-    /// Defines SeenMessage class.
+    /// Defines PunishMessage class.
     /// </summary>
-    public class SeenMessage : Message
+    public class PunishMessage : Message
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SeenMessage"/> class.
+        /// Initializes a new instance of the <see cref="PunishMessage"/> class.
         /// </summary>
-        public SeenMessage()
+        public PunishMessage()
         {
             ClientDatabaseIds = new List<uint>();
         }
@@ -22,13 +22,21 @@
         /// Gets the command.
         /// </summary>
         /// <value>The command.</value>
-        protected override string Command { get { return "!seen "; } }
+        protected override string Command { get { return "!punish"; } }
 
         /// <summary>
         /// Gets or sets the client database ids.
         /// </summary>
         /// <value>The client database ids.</value>
         public List<uint> ClientDatabaseIds { get; set; }
+
+        /// <summary>
+        /// Gets or sets the channel id.
+        /// </summary>
+        /// <value>
+        /// The channel id.
+        /// </value>
+        public uint ChannelId { get; set; }
 
         /// <summary>
         /// Gets or sets the error message.
@@ -56,7 +64,7 @@
         public override void Initialize(MessageReceivedEventArgs e, string[] parameters)
         {
             SenderClientId = e.InvokerClientId;
-            var nickname = string.Join(string.Empty, parameters, 1, parameters.Length - 1);
+            var nickname = parameters[1];
 
             uint clientDatabaseId;
             if (uint.TryParse(nickname, out clientDatabaseId))
@@ -76,6 +84,12 @@
                 {
                     ErrorMessage = string.Format("Could not find nickname or database id '{0}'", nickname);
                 }
+            }
+
+            uint channelId;
+            if (uint.TryParse(parameters[2], out channelId))
+            {
+                ChannelId = channelId;
             }
         }
     }

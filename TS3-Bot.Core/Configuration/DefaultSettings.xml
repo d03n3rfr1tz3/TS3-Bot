@@ -87,6 +87,60 @@
                 <Group>6</Group>
             </Permitted>
         </Stick>
+
+        <Moderator Enabled="true" LogEnabled="true">
+            <HelpMessage>
+              [B]!mods [Period][/B]
+              Zeigt eine Auflistung aller Moderatoren und deren Anzahl von verifizierten Mitgliedern an.
+              Die Periode ist optional und kann folgende Werte haben: today, week, month.
+              Beispiel: [I]!mods week[/I]
+            </HelpMessage>
+            <TextMessage>Moderatoren von [B][SERVER_NAME][/B].</TextMessage>
+            <MessagePerModerator>[B][CLIENT_NICKNAME][/B] hat bereits [B][VERIFIED][/B] Mitglieder verifiziert.</MessagePerModerator>
+        </Moderator>
+
+        <SeenModerator Enabled="true" LogEnabled="true">
+            <HelpMessage>
+              [B]!seenmods[/B]
+              Zeigt eine Auflistung aller Moderatoren und deren letzten Onlinezeitpunkt an.
+            </HelpMessage>
+            <TextMessage>Moderatoren von [B][SERVER_NAME][/B].</TextMessage>
+            <MessagePerClient>[B][CLIENT_NICKNAME][/B] hat sich zuletzt am [B][CLIENT_LASTLOGIN][/B] eingeloggt und wurde zuletzt gesehen am [B][CLIENT_LASTSEEN][/B].</MessagePerClient>
+            <ServerGroup>0</ServerGroup>
+        </SeenModerator>
+
+        <SeenGroup Enabled="true" LogEnabled="true">
+            <HelpMessage>
+              [B]!seengroup {ServerGroup ID}[/B]
+              Gibt dir Informationen, wann jemand die Mitglieder der angegebenen Gruppe zuletzt gesehen wurden.
+              Beispiel: [I]!seengroup 6[/I]
+            </HelpMessage>
+            <TextMessage>Mitglieder der Server Gruppe [B][SERVERGROUP_NAME][/B].</TextMessage>
+            <MessagePerClient>[B][CLIENT_NICKNAME][/B] hat sich zuletzt am [B][CLIENT_LASTLOGIN][/B] eingeloggt und wurde zuletzt gesehen am [B][CLIENT_LASTSEEN][/B].</MessagePerClient>
+        </SeenGroup>
+
+        <Hours Enabled="true" LogEnabled="true">
+            <HelpMessage>
+              [B]!hours [Period][/B]
+              Gibt dir Informationen, wann jemand zuletzt gesehen wurde.
+              Die Periode ist optional und kann folgende Werte haben: today, week, month.
+            </HelpMessage>
+            <TextMessage>Aktivste Mitglieder von [B][SERVER_NAME][/B].</TextMessage>
+            <MessagePerClient>[B][CLIENT_NICKNAME][/B] war insgesamt [B][CLIENT_HOURS] Stunden[/B] online.</MessagePerClient>
+        </Hours>
+
+        <Punish Enabled="true" LogEnabled="true">
+            <HelpMessage>
+              [B]!punish {Nickname|Datenbank ID} {Channel ID}[/B]
+              Nimmt dem angegebenen Client alle Server Gruppen und ersetzt diese durch eine vorkonfigurierte Server Gruppe.
+              Beispiel: [I]!punish 5[/I]
+
+              [B]!unpunish {Nickname|Datenbank ID}[/B]
+              Nimmt dem angegebenen Client die vorkonfiguriert Server Gruppe und stellt alle vorherigen Server Gruppen wieder her.
+              Beispiel: [I]!unpunish 5[/I]
+            </HelpMessage>
+            <ServerGroup>0</ServerGroup>
+        </Punish>
     </Control>
     
     <Event Enabled="false">

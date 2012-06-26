@@ -1,35 +1,44 @@
-namespace DirkSarodnick.TS3_Bot.Core.Entity.Messages
+﻿namespace DirkSarodnick.TS3_Bot.Core.Entity.Messages
 {
     using System;
-    using Repository;
     using TS3QueryLib.Core.Server.Notification.EventArgs;
 
-    public class Message
+    /// <summary>
+    /// Defines ModeratorMessage class.
+    /// </summary>
+    public class ModeratorMessage : Message
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModeratorMessage"/> class.
+        /// </summary>
+        public ModeratorMessage()
+        {
+            TimeSpan = new TimeSpanEntity();
+        }
+
         /// <summary>
         /// Gets the command.
         /// </summary>
         /// <value>The command.</value>
-        protected virtual string Command { get { return string.Empty; } }
+        protected override string Command { get { return "!mods"; } }
 
         /// <summary>
-        /// Gets or sets the repository.
+        /// Gets the time span.
         /// </summary>
-        /// <value>The repository.</value>
-        public DataRepository Repository { get; set; }
+        public TimeSpanEntity TimeSpan { get; private set; }
 
         /// <summary>
-        /// Gets or sets the sender client id.
+        /// Gets or sets the error message.
         /// </summary>
-        /// <value>The sender client id.</value>
-        public uint SenderClientId { get; set; }
+        /// <value>The error message.</value>
+        public string ErrorMessage { get; set; }
 
         /// <summary>
         /// Validates the message
         /// </summary>
         /// <param name="parameters">The parameters.</param>
-        /// <returns>True or False</returns>
-        public virtual bool Validate(string[] parameters)
+        /// <returns></returns>
+        public override bool Validate(string[] parameters)
         {
             return parameters.Length > 0 &&
                    parameters[0].StartsWith(Command, StringComparison.InvariantCultureIgnoreCase);
@@ -40,9 +49,10 @@ namespace DirkSarodnick.TS3_Bot.Core.Entity.Messages
         /// </summary>
         /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.MessageReceivedEventArgs"/> instance containing the event data.</param>
         /// <param name="parameters">The parameters.</param>
-        public virtual void Initialize(MessageReceivedEventArgs e, string[] parameters)
+        public override void Initialize(MessageReceivedEventArgs e, string[] parameters)
         {
             SenderClientId = e.InvokerClientId;
+            this.TimeSpan = TimeSpanEntity.Parse(parameters.Length > 1 ? parameters[1] : null);
         }
     }
 }

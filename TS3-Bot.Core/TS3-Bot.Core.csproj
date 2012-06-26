@@ -95,6 +95,13 @@
     <Compile Include="BotInstance.cs" />
     <Compile Include="Entity\CredentialEntity.cs" />
     <Compile Include="Entity\AsyncDispatcher.cs" />
+    <Compile Include="Entity\Messages\UnpunishMessage.cs" />
+    <Compile Include="Entity\Messages\PunishMessage.cs" />
+    <Compile Include="Entity\Messages\HoursMessage.cs" />
+    <Compile Include="Entity\Messages\SeenModeratorMessage.cs" />
+    <Compile Include="Entity\Messages\SeenGroupMessage.cs" />
+    <Compile Include="Entity\Messages\ModeratorMessage.cs" />
+    <Compile Include="Entity\TimeSpanEntity.cs" />
     <Compile Include="Entity\Messages\UnstickMessage.cs" />
     <Compile Include="Entity\Messages\StickMessage.cs" />
     <Compile Include="Entity\ModeratedClientEntity.cs" />
@@ -158,6 +165,11 @@
     <Compile Include="Settings\SettingClasses\BadNicknameSettings.cs" />
     <Compile Include="Settings\SettingClasses\ControlSettings.cs" />
     <Compile Include="Settings\SettingClasses\ControlSetting\ControlSettingsBase.cs" />
+    <Compile Include="Settings\SettingClasses\ControlSetting\PunishControlSettings.cs" />
+    <Compile Include="Settings\SettingClasses\ControlSetting\HourControlSettings.cs" />
+    <Compile Include="Settings\SettingClasses\ControlSetting\ModeratorControlSettings.cs" />
+    <Compile Include="Settings\SettingClasses\ControlSetting\SeenModeratorControlSettings.cs" />
+    <Compile Include="Settings\SettingClasses\ControlSetting\SeenGroupControlSettings.cs" />
     <Compile Include="Settings\SettingClasses\ControlSetting\StickControlSettings.cs" />
     <Compile Include="Settings\SettingClasses\ControlSetting\FilesControlSettings.cs" />
     <Compile Include="Settings\SettingClasses\ControlSetting\HelpControlSettings.cs" />

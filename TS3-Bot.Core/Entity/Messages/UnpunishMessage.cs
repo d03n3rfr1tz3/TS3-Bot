@@ -6,14 +6,14 @@
     using TS3QueryLib.Core.Server.Notification.EventArgs;
 
     /// <summary>
-    /// Defines SeenMessage class.
+    /// Defines UnpunishMessage class.
     /// </summary>
-    public class SeenMessage : Message
+    public class UnpunishMessage : Message
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SeenMessage"/> class.
+        /// Initializes a new instance of the <see cref="UnpunishMessage"/> class.
         /// </summary>
-        public SeenMessage()
+        public UnpunishMessage()
         {
             ClientDatabaseIds = new List<uint>();
         }
@@ -22,7 +22,7 @@
         /// Gets the command.
         /// </summary>
         /// <value>The command.</value>
-        protected override string Command { get { return "!seen "; } }
+        protected override string Command { get { return "!unpunish"; } }
 
         /// <summary>
         /// Gets or sets the client database ids.

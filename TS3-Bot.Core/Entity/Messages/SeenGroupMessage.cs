@@ -6,14 +6,14 @@
     using TS3QueryLib.Core.Server.Notification.EventArgs;
 
     /// <summary>
-    /// Defines SeenMessage class.
+    /// Defines SeenGroupMessage class.
     /// </summary>
-    public class SeenMessage : Message
+    public class SeenGroupMessage : Message
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SeenMessage"/> class.
+        /// Initializes a new instance of the <see cref="SeenGroupMessage"/> class.
         /// </summary>
-        public SeenMessage()
+        public SeenGroupMessage()
         {
             ClientDatabaseIds = new List<uint>();
         }
@@ -22,7 +22,15 @@
         /// Gets the command.
         /// </summary>
         /// <value>The command.</value>
-        protected override string Command { get { return "!seen "; } }
+        protected override string Command { get { return "!seengroup"; } }
+
+        /// <summary>
+        /// Gets or sets the server group.
+        /// </summary>
+        /// <value>
+        /// The server group.
+        /// </value>
+        public uint ServerGroup { get; set; }
 
         /// <summary>
         /// Gets or sets the client database ids.
@@ -56,26 +64,20 @@
         public override void Initialize(MessageReceivedEventArgs e, string[] parameters)
         {
             SenderClientId = e.InvokerClientId;
-            var nickname = string.Join(string.Empty, parameters, 1, parameters.Length - 1);
 
-            uint clientDatabaseId;
-            if (uint.TryParse(nickname, out clientDatabaseId))
+            uint serverGroup;
+            if (uint.TryParse(parameters[1], out serverGroup))
             {
-                ClientDatabaseIds.Add(clientDatabaseId);
+                ServerGroup = serverGroup;
+                ClientDatabaseIds = Repository.Client.GetClientsByServerGroup(serverGroup).ToList();
+                if (!ClientDatabaseIds.Any())
+                {
+                    ErrorMessage = string.Format("Could not find server group id '{0}'", serverGroup);
+                }
             }
             else
             {
-                var clientIds = Repository.Client.GetClientsFromDatabase()
-                    .Where(m => m.NickName.ToLower().Contains(nickname.ToLower()))
-                    .Select(m => m.DatabaseId).ToList();
-                if (clientIds.Any())
-                {
-                    ClientDatabaseIds = clientIds;
-                }
-                else
-                {
-                    ErrorMessage = string.Format("Could not find nickname or database id '{0}'", nickname);
-                }
+                ErrorMessage = string.Format("Could not find server group id '{0}'", parameters[1]);
             }
         }
     }
