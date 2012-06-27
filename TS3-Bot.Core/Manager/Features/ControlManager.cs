@@ -284,7 +284,7 @@
 
             var clientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
             Log(Repository.Settings.Control.Help,
-                string.Format("Client '{0}'(id:{1}) used !help.",
+                string.Format("Client '{1}'(id:{2}) used {0}.", Repository.Settings.Control.Help.Command,
                               clientEntry.Nickname, clientEntry.DatabaseId));
         }
 
@@ -308,26 +308,29 @@
             {
                 var clientDatabaseId = message.ClientDatabaseIds[index];
                 var client = Repository.Client.GetClientDataBaseInfo(clientDatabaseId);
-                var lastSeen = Repository.Client.GetLastSeen(clientDatabaseId);
-                var context = new MessageContext
-                                  {
-                                      Index = index,
-                                      ClientDatabaseId = client.DatabaseId,
-                                      ClientNickname = client.NickName,
-                                      ClientLastLogin = client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat),
-                                      ClientLastSeen = lastSeen != default(DateTime) && lastSeen > DateTime.MinValue
-                                                           ? lastSeen.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
-                                                           : "Never"
-                                  };
+                if (client != null)
+                {
+                    var lastSeen = Repository.Client.GetLastSeen(clientDatabaseId);
+                    var context = new MessageContext
+                                      {
+                                          Index = index + 1,
+                                          ClientDatabaseId = client.DatabaseId,
+                                          ClientNickname = client.NickName,
+                                          ClientLastLogin = client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat),
+                                          ClientLastSeen = lastSeen != default(DateTime) && lastSeen > DateTime.MinValue
+                                                               ? lastSeen.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
+                                                               : "Never"
+                                      };
 
-                QueryRunner.SendTextMessage(Repository.Settings.Control.Seen.Target,
-                                            Repository.Settings.Control.Seen.TargetId > 0 ? Repository.Settings.Control.Seen.TargetId : message.SenderClientId,
-                                            Repository.Settings.Control.Seen.TextMessage.ToMessage(context));
+                    QueryRunner.SendTextMessage(Repository.Settings.Control.Seen.Target,
+                                                Repository.Settings.Control.Seen.TargetId > 0 ? Repository.Settings.Control.Seen.TargetId : message.SenderClientId,
+                                                Repository.Settings.Control.Seen.TextMessage.ToMessage(context));
+                }
             }
 
             var senderClientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
             Log(Repository.Settings.Control.Seen,
-                string.Format("Client '{0}'(id:{1}) used !seen for clients '{2}'.",
+                string.Format("Client '{1}'(id:{2}) used {0} for clients '{3}'.", Repository.Settings.Control.Seen.Command,
                               senderClientEntry.Nickname, senderClientEntry.DatabaseId,
                               string.Join("', '", message.ClientDatabaseIds.ConvertAll(i => i.ToString(CultureInfo.InvariantCulture)).ToArray())));
         }
@@ -340,9 +343,10 @@
         {
             using (new DynamicCredentialManager(Repository))
             {
-                for (int index = 0; index < Repository.Server.GetServerList().Count; index++)
+                var serverList = Repository.Server.GetServerList();
+                for (int index = 0; index < serverList.Count; index++)
                 {
-                    var server = Repository.Server.GetServerList()[index];
+                    var server = serverList[index];
                     var fileList = Repository.File.GetFileList(server.ServerId);
                     var context = new MessageContext
                                       {
@@ -370,7 +374,10 @@
                         Repository.Settings.Control.Files.TargetId > 0 ? Repository.Settings.Control.Files.TargetId : message.SenderClientId,
                         Repository.Settings.Control.Files.MessageFile.ToMessage(new MessageContext
                                            {
-                                               Index = index,
+                                               Index = index + 1,
+                                               ServerName = server.ServerName,
+                                               ServerId = server.ServerId,
+                                               ServerPort = server.ServerPort,
                                                ChannelId = f.ChannelId,
                                                ChannelName = f.ChannelName,
                                                FileName = f.Name,
@@ -383,7 +390,7 @@
 
             var clientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
             Log(Repository.Settings.Control.Files,
-                string.Format("Client '{0}'(id:{1}) used !files.",
+                string.Format("Client '{1}'(id:{2}) used {0}.", Repository.Settings.Control.Files.Command,
                               clientEntry.Nickname, clientEntry.DatabaseId));
         }
 
@@ -400,7 +407,7 @@
 
             var clientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
             Log(Repository.Settings.Control.Stick,
-                string.Format("Client '{0}'(id:{1}) used !stick.",
+                string.Format("Client '{1}'(id:{2}) used {0}.", Repository.Settings.Control.Stick.Command,
                               clientEntry.Nickname, clientEntry.DatabaseId));
         }
 
@@ -417,7 +424,7 @@
 
             var clientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
             Log(Repository.Settings.Control.Stick,
-                string.Format("Client '{0}'(id:{1}) used !unstick.",
+                string.Format("Client '{1}'(id:{2}) used {0}.", Repository.Settings.Control.Stick.UndoCommand,
                               clientEntry.Nickname, clientEntry.DatabaseId));
         }
 
@@ -452,29 +459,34 @@
             {
                 var clientDatabaseId = clientDatabaseIds[index];
                 var client = Repository.Client.GetClientDataBaseInfo(clientDatabaseId);
-                var lastSeen = Repository.Client.GetLastSeen(clientDatabaseId);
-                var minutes = Repository.Client.GetTime(clientDatabaseId, message.TimeSpan.FromDate,
-                                                      message.TimeSpan.ToDate);
-                var messageContext = new MessageContext
-                                         {
-                                             Index = index,
-                                             ClientDatabaseId = client.DatabaseId,
-                                             ClientNickname = client.NickName,
-                                             ClientLastLogin = client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat),
-                                             ClientLastSeen = lastSeen != default(DateTime) && lastSeen > DateTime.MinValue
-                                                     ? lastSeen.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
-                                                     : "Never",
-                                             ClientHours = minutes/60
-                                         };
+                if (client != null)
+                {
+                    var lastSeen = Repository.Client.GetLastSeen(clientDatabaseId);
+                    var minutes = Repository.Client.GetTime(clientDatabaseId, message.TimeSpan.FromDate, message.TimeSpan.ToDate);
+                    var messageContext = new MessageContext
+                                             {
+                                                 Index = index + 1,
+                                                 ServerName = server.Name,
+                                                 ServerId = server.Id,
+                                                 ServerPort = server.Port,
+                                                 ClientDatabaseId = client.DatabaseId,
+                                                 ClientNickname = client.NickName,
+                                                 ClientLastLogin = client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat),
+                                                 ClientLastSeen = lastSeen != default(DateTime) && lastSeen > DateTime.MinValue
+                                                         ? lastSeen.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
+                                                         : "Never",
+                                                 ClientHours = minutes / 60
+                                             };
 
-                QueryRunner.SendTextMessage(Repository.Settings.Control.Hours.Target,
-                                            Repository.Settings.Control.Hours.TargetId > 0 ? Repository.Settings.Control.Hours.TargetId : message.SenderClientId,
-                                            Repository.Settings.Control.Hours.MessagePerClient.ToMessage(messageContext));
+                    QueryRunner.SendTextMessage(Repository.Settings.Control.Hours.Target,
+                                                Repository.Settings.Control.Hours.TargetId > 0 ? Repository.Settings.Control.Hours.TargetId : message.SenderClientId,
+                                                Repository.Settings.Control.Hours.MessagePerClient.ToMessage(messageContext));
+                }
             }
 
             var senderClientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
             Log(Repository.Settings.Control.Hours,
-                string.Format("Client '{0}'(id:{1}) used !hours for clients '{2}'.",
+                string.Format("Client '{1}'(id:{2}) used {0} for clients '{3}'.", Repository.Settings.Control.Hours.Command,
                               senderClientEntry.Nickname, senderClientEntry.DatabaseId,
                               string.Join("', '", message.ClientDatabaseIds.ConvertAll(i => i.ToString(CultureInfo.InvariantCulture)).ToArray())));
         }
@@ -510,7 +522,10 @@
                 var moderatorEntity = Repository.Client.GetClientSimple(entity.Key);
                 var messageContext = new MessageContext
                                          {
-                                             Index = index,
+                                             Index = index + 1,
+                                             ServerName = server.Name,
+                                             ServerId = server.Id,
+                                             ServerPort = server.Port,
                                              ClientDatabaseId = moderatorEntity.ClientDatabaseId,
                                              ClientNickname = moderatorEntity.Nickname,
                                              ModeratorVerified = entity.Count()
@@ -522,7 +537,7 @@
 
             var clientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
             Log(Repository.Settings.Control.Moderator,
-                string.Format("Client '{0}'(id:{1}) used !mods.",
+                string.Format("Client '{1}'(id:{2}) used {0}.", Repository.Settings.Control.Moderator.Command,
                               clientEntry.Nickname, clientEntry.DatabaseId));
         }
 
@@ -555,28 +570,34 @@
             {
                 var clientDatabaseId = message.ClientDatabaseIds[index];
                 var client = Repository.Client.GetClientDataBaseInfo(clientDatabaseId);
-                var lastSeen = Repository.Client.GetLastSeen(clientDatabaseId);
-                var messageContext = new MessageContext
-                                         {
-                                             Index = index,
-                                             ServerGroupId = serverGroup.Id,
-                                             ServerGroupName = serverGroup.Name,
-                                             ClientDatabaseId = client.DatabaseId,
-                                             ClientNickname = client.NickName,
-                                             ClientLastLogin = client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat),
-                                             ClientLastSeen = lastSeen != default(DateTime) && lastSeen > DateTime.MinValue
-                                                     ? lastSeen.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
-                                                     : "Never"
-                                         };
+                if (client != null)
+                {
+                    var lastSeen = Repository.Client.GetLastSeen(clientDatabaseId);
+                    var messageContext = new MessageContext
+                                             {
+                                                 Index = index + 1,
+                                                 ServerName = server.Name,
+                                                 ServerId = server.Id,
+                                                 ServerPort = server.Port,
+                                                 ServerGroupId = serverGroup.Id,
+                                                 ServerGroupName = serverGroup.Name,
+                                                 ClientDatabaseId = client.DatabaseId,
+                                                 ClientNickname = client.NickName,
+                                                 ClientLastLogin = client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat),
+                                                 ClientLastSeen = lastSeen != default(DateTime) && lastSeen > DateTime.MinValue
+                                                         ? lastSeen.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
+                                                         : "Never"
+                                             };
 
-                QueryRunner.SendTextMessage(Repository.Settings.Control.SeenGroup.Target,
-                                            Repository.Settings.Control.SeenGroup.TargetId > 0 ? Repository.Settings.Control.SeenGroup.TargetId : message.SenderClientId,
-                                            Repository.Settings.Control.SeenGroup.MessagePerClient.ToMessage(messageContext));
+                    QueryRunner.SendTextMessage(Repository.Settings.Control.SeenGroup.Target,
+                                                Repository.Settings.Control.SeenGroup.TargetId > 0 ? Repository.Settings.Control.SeenGroup.TargetId : message.SenderClientId,
+                                                Repository.Settings.Control.SeenGroup.MessagePerClient.ToMessage(messageContext));
+                }
             }
 
             var senderClientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
             Log(Repository.Settings.Control.SeenGroup,
-                string.Format("Client '{0}'(id:{1}) used !seengroup for server group '{2}'.",
+                string.Format("Client '{1}'(id:{2}) used {0} for server group '{3}'.", Repository.Settings.Control.SeenGroup.Command,
                               senderClientEntry.Nickname, senderClientEntry.DatabaseId, message.ServerGroup));
         }
 
@@ -609,32 +630,38 @@
             {
                 var clientDatabaseId = message.ClientDatabaseIds[index];
                 var client = Repository.Client.GetClientDataBaseInfo(clientDatabaseId);
-                var lastSeen = Repository.Client.GetLastSeen(clientDatabaseId);
-                var joinedGroup = Repository.Client.GetServerGroupJoined(clientDatabaseId, message.ServerGroup);
-                var messageContext = new MessageContext
-                                         {
-                                             Index = index,
-                                             ServerGroupId = serverGroup.Id,
-                                             ServerGroupName = serverGroup.Name,
-                                             ServerGroupJoined = joinedGroup > DateTime.MinValue
-                                                     ? joinedGroup.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
-                                                     : "Never",
-                                             ClientDatabaseId = client.DatabaseId,
-                                             ClientNickname = client.NickName,
-                                             ClientLastLogin = client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat),
-                                             ClientLastSeen = lastSeen != default(DateTime) && lastSeen > DateTime.MinValue
-                                                     ? lastSeen.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
-                                                     : "Never"
-                                         };
+                if (client != null)
+                {
+                    var lastSeen = Repository.Client.GetLastSeen(clientDatabaseId);
+                    var joinedGroup = Repository.Client.GetServerGroupJoined(clientDatabaseId, message.ServerGroup);
+                    var messageContext = new MessageContext
+                                             {
+                                                 Index = index + 1,
+                                                 ServerName = server.Name,
+                                                 ServerId = server.Id,
+                                                 ServerPort = server.Port,
+                                                 ServerGroupId = serverGroup.Id,
+                                                 ServerGroupName = serverGroup.Name,
+                                                 ServerGroupJoined = joinedGroup > DateTime.MinValue
+                                                         ? joinedGroup.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
+                                                         : "Never",
+                                                 ClientDatabaseId = client.DatabaseId,
+                                                 ClientNickname = client.NickName,
+                                                 ClientLastLogin = client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat),
+                                                 ClientLastSeen = lastSeen != default(DateTime) && lastSeen > DateTime.MinValue
+                                                         ? lastSeen.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
+                                                         : "Never"
+                                             };
 
-                QueryRunner.SendTextMessage(Repository.Settings.Control.SeenModerator.Target,
-                                            Repository.Settings.Control.SeenModerator.TargetId > 0 ? Repository.Settings.Control.SeenModerator.TargetId : message.SenderClientId,
-                                            Repository.Settings.Control.SeenModerator.MessagePerClient.ToMessage(messageContext));
+                    QueryRunner.SendTextMessage(Repository.Settings.Control.SeenModerator.Target,
+                                                Repository.Settings.Control.SeenModerator.TargetId > 0 ? Repository.Settings.Control.SeenModerator.TargetId : message.SenderClientId,
+                                                Repository.Settings.Control.SeenModerator.MessagePerClient.ToMessage(messageContext));
+                }
             }
 
             var senderClientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
             Log(Repository.Settings.Control.SeenModerator,
-                string.Format("Client '{0}'(id:{1}) used !seenmods.",
+                string.Format("Client '{1}'(id:{2}) used {0}.", Repository.Settings.Control.SeenModerator.Command,
                               senderClientEntry.Nickname, senderClientEntry.DatabaseId));
         }
 
@@ -652,13 +679,13 @@
                     QueryRunner.MoveClient(clientId.Value, Repository.Settings.Control.Punish.Channel);
                 }
 
-                Repository.Client.RemoveClientServerGroups(clientDatabaseId, Repository.Client.GetClientServerGroups(clientDatabaseId).Select(m => m.Id).ToList());
+                Repository.Client.StripGroups(clientDatabaseId);
                 Repository.Client.AddClientServerGroups(clientDatabaseId, new[] { Repository.Settings.Control.Punish.ServerGroup });
             }
 
             var clientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
-            Log(Repository.Settings.Control.Stick,
-                string.Format("Client '{0}'(id:{1}) used !stick.",
+            Log(Repository.Settings.Control.Punish,
+                string.Format("Client '{1}'(id:{2}) used {0}.", Repository.Settings.Control.Punish.Command,
                               clientEntry.Nickname, clientEntry.DatabaseId));
         }
 
@@ -676,7 +703,7 @@
 
             var clientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
             Log(Repository.Settings.Control.Punish,
-                string.Format("Client '{0}'(id:{1}) used !unpunish.",
+                string.Format("Client '{1}'(id:{2}) used {0}.", Repository.Settings.Control.Punish.UndoCommand,
                               clientEntry.Nickname, clientEntry.DatabaseId));
         }
 

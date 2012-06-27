@@ -194,7 +194,7 @@
             <HelpMessage>
               [B]!hours [Period][/B]
               Gives you a list of active Clients sorted by the highest online time.
-              Die Periode ist optional und kann folgende Werte haben: today, week, month.
+              The Period is optional and can be one of the following values: today, week, month.
             </HelpMessage>
 
             <!-- Limits the clients that will be listed. Default are the Top10. -->

@@ -20,6 +20,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Service
         {
             LogHandler handler = Log;
             if (handler != null) handler(type, message);
+            if (type == EventLogEntryType.Information) return;
 
             try
             {
@@ -40,6 +41,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Service
         {
             LogHandler handler = Log;
             if (handler != null) handler(type, exception.Message);
+            if (type == EventLogEntryType.Information) return;
 
             try
             {

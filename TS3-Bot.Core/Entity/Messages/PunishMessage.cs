@@ -87,7 +87,7 @@
             }
 
             uint channelId;
-            if (uint.TryParse(parameters[2], out channelId))
+            if (parameters.Length > 2 && uint.TryParse(parameters[2], out channelId))
             {
                 ChannelId = channelId;
             }

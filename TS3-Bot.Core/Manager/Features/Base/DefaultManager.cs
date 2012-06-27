@@ -4,6 +4,7 @@
     using System.Linq;
     using Connection;
     using Repository;
+    using Service;
     using Settings;
     using TS3QueryLib.Core.CommandHandling;
     using TS3QueryLib.Core.Server;
@@ -255,6 +256,7 @@
         /// <param name="message">The message.</param>
         protected void Log(LogLevel logLevel, ISettings setting, string message)
         {
+            LogService.Debug(message);
             if (setting.LogEnabled)
                 QueryRunner.AddLogEntry(new LogEntryLight(logLevel, message));
         }

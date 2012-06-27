@@ -96,7 +96,7 @@
         /// <returns></returns>
         public ClientDbEntry GetClientDataBaseInfo(uint clientDatabaseId)
         {
-            return GetClientsFromDatabase().Single(c => c.DatabaseId == clientDatabaseId);
+            return GetClientsFromDatabase().FirstOrDefault(c => c.DatabaseId == clientDatabaseId);
         }
 
         /// <summary>
@@ -674,6 +674,7 @@
                 {
                     var serverGroups = Container.PreviousServerGroupsList[clientDatabaseId].Split(';').Select(uint.Parse);
                     Repository.Client.AddClientServerGroups(clientDatabaseId, serverGroups);
+                    Container.PreviousServerGroupsList.Remove(clientDatabaseId);
                 }
             }
         }

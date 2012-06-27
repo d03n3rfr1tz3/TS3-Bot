@@ -36,7 +36,7 @@
         /// </returns>
         public bool CanBeMessage<T>(string message) where T : Message, new()
         {
-            var t = new T();
+            var t = new T { Repository = Repository };
             return t.Validate(message.Split(' '));
         }
 
