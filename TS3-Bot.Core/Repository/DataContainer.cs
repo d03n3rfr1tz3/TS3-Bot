@@ -4,6 +4,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
     using System.Collections.Generic;
     using System.Linq;
     using Entity;
+    using Helper;
     using Microsoft.Isam.Esent.Collections.Generic;
     using TS3QueryLib.Core.Server.Entities;
     using TS3QueryLib.Core.Server.Responses;
@@ -38,37 +39,37 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
 
         internal PersistentDictionary<uint, uint> ClientLastChannelList
         {
-            get { return this.clientLastChannelList ?? (this.clientLastChannelList = new PersistentDictionary<uint, uint>(string.Format(@"Data\{0}\LastChannel", name))); }
+            get { return this.clientLastChannelList ?? (this.clientLastChannelList = new PersistentDictionary<uint, uint>(string.Format(@"{0}\{1}\LastChannel", BasicHelper.DataDirectory, name))); }
         }
 
         internal PersistentDictionary<Guid, StickyClientEntity> StickyClientList
         {
-            get { return this.stickyClientList ?? (this.stickyClientList = new PersistentDictionary<Guid, StickyClientEntity>(string.Format(@"Data\{0}\Sticky", name))); }
+            get { return this.stickyClientList ?? (this.stickyClientList = new PersistentDictionary<Guid, StickyClientEntity>(string.Format(@"{0}\{1}\Sticky", BasicHelper.DataDirectory, name))); }
         }
 
         internal PersistentDictionary<Guid, VotedClientEntity> VotedClientList
         {
-            get { return this.votedClientList ?? (this.votedClientList = new PersistentDictionary<Guid, VotedClientEntity>(string.Format(@"Data\{0}\Voted", name))); }
+            get { return this.votedClientList ?? (this.votedClientList = new PersistentDictionary<Guid, VotedClientEntity>(string.Format(@"{0}\{1}\Voted", BasicHelper.DataDirectory, name))); }
         }
 
         internal PersistentDictionary<uint, DateTime> ClientLastSeen
         {
-            get { return this.clientLastSeen ?? (this.clientLastSeen = new PersistentDictionary<uint, DateTime>(string.Format(@"Data\{0}\Seen", name))); }
+            get { return this.clientLastSeen ?? (this.clientLastSeen = new PersistentDictionary<uint, DateTime>(string.Format(@"{0}\{1}\Seen", BasicHelper.DataDirectory, name))); }
         }
 
         internal PersistentDictionary<Guid, ModeratedClientEntity> ModeratedClientList
         {
-            get { return this.moderatedClientList ?? (this.moderatedClientList = new PersistentDictionary<Guid, ModeratedClientEntity>(string.Format(@"Data\{0}\Moderated", name))); }
+            get { return this.moderatedClientList ?? (this.moderatedClientList = new PersistentDictionary<Guid, ModeratedClientEntity>(string.Format(@"{0}\{1}\Moderated", BasicHelper.DataDirectory, name))); }
         }
 
         internal PersistentDictionary<Guid, TimeClientEntity> TimeClientList
         {
-            get { return this.timeClientList ?? (this.timeClientList = new PersistentDictionary<Guid, TimeClientEntity>(string.Format(@"Data\{0}\Time", name))); }
+            get { return this.timeClientList ?? (this.timeClientList = new PersistentDictionary<Guid, TimeClientEntity>(string.Format(@"{0}\{1}\Time", BasicHelper.DataDirectory, name))); }
         }
 
         internal PersistentDictionary<uint, string> PreviousServerGroupsList
         {
-            get { return this.previousServerGroupsList ?? (this.previousServerGroupsList = new PersistentDictionary<uint, string>(string.Format(@"Data\{0}\PrevServerGroups", name))); }
+            get { return this.previousServerGroupsList ?? (this.previousServerGroupsList = new PersistentDictionary<uint, string>(string.Format(@"{0}\{1}\PrevServerGroups", BasicHelper.DataDirectory, name))); }
         }
 
         #endregion

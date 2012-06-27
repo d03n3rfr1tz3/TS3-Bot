@@ -61,12 +61,22 @@
         /// <summary>
         /// Gets the configuration directory.
         /// </summary>
-        /// <value>The configuration directory.</value>
         public static string ConfigurationDirectory
         {
             get
             {
                 return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configuration");
+            }
+        }
+
+        /// <summary>
+        /// Gets the data directory.
+        /// </summary>
+        public static string DataDirectory
+        {
+            get
+            {
+                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
             }
         }
 
