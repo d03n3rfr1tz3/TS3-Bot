@@ -104,10 +104,21 @@
         /// </summary>
         /// <param name="clientId">The client id.</param>
         /// <returns></returns>
-        public uint GetClientDatabaseIdByClientId(uint clientId)
+        public uint? GetClientDatabaseIdByClientId(uint clientId)
         {
             var client = GetClientList().FirstOrDefault(m => m.ClientId == clientId);
-            return client != null ? client.ClientDatabaseId : 0;
+            return client != null ? client.ClientDatabaseId : (uint?)null;
+        }
+
+        /// <summary>
+        /// Gets the client id by client database id.
+        /// </summary>
+        /// <param name="clientDatabaseId">The client database id.</param>
+        /// <returns></returns>
+        public uint? GetClientIdByClientDatabaseId(uint clientDatabaseId)
+        {
+            var client = GetClientList().FirstOrDefault(m => m.ClientDatabaseId == clientDatabaseId);
+            return client != null ? client.ClientDatabaseId : (uint?)null;
         }
 
         /// <summary>
@@ -507,6 +518,23 @@
                 }
 
                 return entities.Select(m => m.Value).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Gets the server group joined.
+        /// </summary>
+        /// <param name="clientDatabaseId">The client database id.</param>
+        /// <param name="serverGroupId">The server group id.</param>
+        /// <returns></returns>
+        public DateTime GetServerGroupJoined(uint clientDatabaseId, uint serverGroupId)
+        {
+            lock (Container.lockModeratedClientList)
+            {
+                var joins = Container.ModeratedClientList.Where(m => m.Value.Type == ModerationType.Added && m.Value.User == clientDatabaseId && m.Value.ServerGroup == serverGroupId);
+                if (joins.Any()) return joins.Max(m => m.Value.Moderated);
+                if (Container.ModeratedClientList.Any()) return Container.ModeratedClientList.Where(m => m.Value.ServerGroup == serverGroupId).Min(m => m.Value.Moderated);
+                return DateTime.MinValue;
             }
         }
 

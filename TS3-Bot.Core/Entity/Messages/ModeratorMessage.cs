@@ -20,7 +20,7 @@
         /// Gets the command.
         /// </summary>
         /// <value>The command.</value>
-        protected override string Command { get { return "!mods"; } }
+        protected override string Command { get { return this.Repository.Settings.Control.Moderator.Command; } }
 
         /// <summary>
         /// Gets the time span.

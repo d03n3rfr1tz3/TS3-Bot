@@ -9,6 +9,6 @@
         /// Gets the command.
         /// </summary>
         /// <value>The command.</value>
-        protected override string Command { get { return "!help"; } }
+        protected override string Command { get { return this.Repository.Settings.Control.Help.Command; } }
     }
 }

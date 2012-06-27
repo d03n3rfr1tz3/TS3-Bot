@@ -24,6 +24,12 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses.ControlSetting
         public string MessagePerClient { get; set; }
 
         /// <summary>
+        /// Gets or sets the limit.
+        /// </summary>
+        /// <value>The limit.</value>
+        public int Limit { get; set; }
+
+        /// <summary>
         /// Applies the setting.
         /// </summary>
         /// <param name="setting">The setting.</param>
@@ -31,6 +37,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses.ControlSetting
         {
             base.ApplySetting(setting);
 
+            if (setting.Limit > 0) this.Limit = setting.Limit;
             if (!string.IsNullOrEmpty(setting.TextMessage))
                 this.TextMessage = setting.TextMessage;
             if (!string.IsNullOrEmpty(setting.MessagePerClient))

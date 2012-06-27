@@ -3,6 +3,14 @@ namespace DirkSarodnick.TS3_Bot.Core.Entity
     public class MessageContext
     {
         /// <summary>
+        /// Gets or sets the index.
+        /// </summary>
+        /// <value>
+        /// The index.
+        /// </value>
+        public int? Index { get; set; }
+
+        /// <summary>
         /// Gets or sets the client database id.
         /// </summary>
         /// <value>The client database id.</value>
@@ -115,5 +123,13 @@ namespace DirkSarodnick.TS3_Bot.Core.Entity
         /// The name of the server group.
         /// </value>
         public string ServerGroupName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the server group joined.
+        /// </summary>
+        /// <value>
+        /// The server group joined.
+        /// </value>
+        public string ServerGroupJoined { get; set; }
     }
 }

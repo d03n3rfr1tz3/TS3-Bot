@@ -99,9 +99,9 @@
         protected void TimeCapture(ClientDisconnectEventArgs e)
         {
             var clientDatabaseId = Repository.Client.GetClientDatabaseIdByClientId(e.ClientId);
-            if (clientDatabaseId > 0)
+            if (clientDatabaseId.HasValue)
             {
-                Repository.Client.CaptureTime(e.ClientId, null, Repository.Static.Now);
+                Repository.Client.CaptureTime(clientDatabaseId.Value, null, Repository.Static.Now);
             }
         }
 
@@ -112,9 +112,9 @@
         protected void TimeCapture(ClientConnectionLostEventArgs e)
         {
             var clientDatabaseId = Repository.Client.GetClientDatabaseIdByClientId(e.ClientId);
-            if (clientDatabaseId > 0)
+            if (clientDatabaseId.HasValue)
             {
-                Repository.Client.CaptureTime(e.ClientId, null, Repository.Static.Now);
+                Repository.Client.CaptureTime(clientDatabaseId.Value, null, Repository.Static.Now);
             }
         }
 

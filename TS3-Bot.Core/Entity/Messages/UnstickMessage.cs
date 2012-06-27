@@ -22,7 +22,7 @@
         /// Gets the command.
         /// </summary>
         /// <value>The command.</value>
-        protected override string Command { get { return "!unstick"; } }
+        protected override string Command { get { return this.Repository.Settings.Control.Stick.UndoCommand; } }
 
         /// <summary>
         /// Gets or sets the client database ids.

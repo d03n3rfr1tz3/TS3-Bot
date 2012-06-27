@@ -22,7 +22,7 @@
         /// Gets the command.
         /// </summary>
         /// <value>The command.</value>
-        protected override string Command { get { return "!punish"; } }
+        protected override string Command { get { return this.Repository.Settings.Control.Punish.Command; } }
 
         /// <summary>
         /// Gets or sets the client database ids.

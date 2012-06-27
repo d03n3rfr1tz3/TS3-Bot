@@ -86,7 +86,7 @@
         <!-- Enabled: true/false    | Aktiviert/Deaktiviert den !help-Befehl. -->
         <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
         <Help Enabled="true">
-            <!-- Die Teil der Hilfenachricht, welcher den !help-Befehl erklärt. -->
+            <!-- Der Teil der Hilfenachricht, welcher den !help-Befehl erklärt. -->
             <HelpMessage>
                 [B]!help[/B]
                 Öffnet diese Hilfe. Wer hätte es gedacht.
@@ -98,7 +98,7 @@
         <!-- Enabled: true/false    | Aktiviert/Deaktiviert den !seen-Befehl. -->
         <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
         <Seen Enabled="true">
-            <!-- Die Teil der Hilfenachricht, welcher den !seen-Befehl erklärt. -->
+            <!-- Der Teil der Hilfenachricht, welcher den !seen-Befehl erklärt. -->
             <HelpMessage>
                 [B]!seen {Nickname|Datenbank ID}[/B]
                 Gibt dir Informationen, wann jemand zuletzt gesehen wurde. Es reicht einen Teil des Nicks anzugeben. Alternativ kann auch die Datenbank ID angegeben werden.
@@ -115,10 +115,36 @@
             <!-- Denied/Permitted-Tags können hier platziert werden. Weitere Details dazu sind unten im Abstimmungs-Feature zu finden.-->
         </Seen>
 
+        <!-- Enabled: true/false    | Aktiviert/Deaktiviert den !seengroup-Befehl. -->
+        <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
+        <SeenGroup Enabled="true">
+            <!-- Der Befehlsname, auf welchen dieser Befehl reagiert. -->
+            <Command>!seengroup</Command>
+          
+            <!-- Der Teil der Hilfenachricht, welcher den !seengroup-Befehl erklärt. -->
+            <HelpMessage>
+              [B]!seengroup {ServerGruppe ID}[/B]
+              Gibt dir Informationen, wann jemand die Mitglieder der angegebenen Gruppe zuletzt gesehen wurden.
+              Beispiel: [I]!seengroup 6[/I]
+            </HelpMessage>
+
+            <!-- Die Nachricht, welche angezeigt wird, wenn jemand den !seengroup-Befehl benutzt. -->
+            <TextMessage>
+              Mitglieder der Server Gruppe [B][SERVERGROUP_NAME][/B]:
+            </TextMessage>
+
+            <!-- Diese Nachricht wird für jedes gefundene Gruppenmitglied wiederholt. -->
+            <MessagePerClient>
+              [NUM]. [B][CLIENT_NICKNAME][/B] hat sich zuletzt am [B][CLIENT_LASTLOGIN][/B] eingeloggt und wurde zuletzt gesehen am [B][CLIENT_LASTSEEN][/B].
+            </MessagePerClient>
+
+            <!-- Denied/Permitted-Tags können hier platziert werden. Weitere Details dazu sind unten im Abstimmungs-Feature zu finden.-->
+        </SeenGroup>
+
         <!-- Enabled: true/false    | Aktiviert/Deaktiviert den !files-Befehl. -->
         <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
         <Files Enabled="true">
-            <!-- Die Teil der Hilfenachricht, welcher den !files-Befehl erklärt. -->
+            <!-- Der Teil der Hilfenachricht, welcher den !files-Befehl erklärt. -->
             <HelpMessage>
                 [B]!files[/B]
                 Gibt dir eine Auflistung aller Dateien in allen Räumen, gruppiert nach virtuellen Servern, wenn du Server-Administrator bist :-)
@@ -143,10 +169,10 @@
             </Permitted>
         </Files>
 
-        <!-- Enabled: true/false    | Aktiviert/Deaktiviert den !stick- and !unstick-Befehl. -->
+        <!-- Enabled: true/false    | Aktiviert/Deaktiviert den !stick- und !unstick-Befehl. -->
         <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
         <Stick Enabled="true" LogEnabled="true">
-            <!-- Die Teil der Hilfenachricht, welcher die !stick- und !unstick-Befehle erklärt. -->
+            <!-- Der Teil der Hilfenachricht, welcher die !stick- und !unstick-Befehle erklärt. -->
             <HelpMessage>
                 [B]!stick {Nickname|Datenbank ID} {Channel ID} [StickTime][/B]
                 Gibt dem angegebenen Client im angegebenen Channel einen Sticky-Status. Die StickTime (optional) gibt die Dauer in Minuten an, die ein Client darin festgehalten wird.
@@ -163,6 +189,52 @@
                 <Group>6</Group>
             </Permitted>
         </Stick>
+
+        <!-- Enabled: true/false    | Aktiviert/Deaktiviert den !hours-Befehl. -->
+        <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
+        <Hours Enabled="true">
+            <!-- Der Teil der Hilfenachricht, welcher den !hours-Befehl erklärt. -->
+            <HelpMessage>
+              [B]!hours [Zeitraum][/B]
+              Gibt dir eine Auflistung aller aktiven Mitglieder sortiert nach der längsten Onlinezeit.
+              Der Zeitraum ist optional und kann folgende Werte haben: today, week, month.
+            </HelpMessage>
+
+            <!-- Das Limit, bis zu wieviele Mitglieder aufgelistet werden. Standard sind die Top10. -->
+            <Limit>10</Limit>
+
+            <!-- Diese Nachricht wird am Anfang gesendet. -->
+            <TextMessage>
+              Aktivste Mitglieder von [B][SERVER_NAME][/B]:
+            </TextMessage>
+
+            <!-- Diese Nachricht wird für jedes aktive Mitglied wiederholt. -->
+            <MessagePerClient>
+              [NUM]. [B][CLIENT_NICKNAME][/B] war insgesamt [B][CLIENT_HOURS] Stunden[/B] online.
+            </MessagePerClient>
+
+            <!-- Denied/Permitted-Tags können hier platziert werden. Weitere Details dazu sind unten im Abstimmungs-Feature zu finden.-->
+        </Hours>
+
+        <!-- Enabled: true/false    | Aktiviert/Deaktiviert den !punish- und !unpunish-Befehl. -->
+        <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
+        <Punish Enabled="false" LogEnabled="true">
+            <!-- Der Teil der Hilfenachricht, welcher die !punish- und !unpunish-Befehle erklärt. -->
+            <HelpMessage>
+              [B]!punish {Nickname|Datenbank ID} {Channel ID}[/B]
+              Nimmt dem angegebenen Client alle Server Gruppen und ersetzt diese durch eine vorkonfigurierte Server Gruppe.
+              Beispiel: [I]!punish 5[/I]
+
+              [B]!unpunish {Nickname|Datenbank ID}[/B]
+              Nimmt dem angegebenen Client die vorkonfiguriert Server Gruppe und stellt alle vorherigen Server Gruppen wieder her.
+              Beispiel: [I]!unpunish 5[/I]
+            </HelpMessage>
+
+            <!-- Die Server Gruppe, welche dem Benutzer stattdessen gegeben wird. -->
+            <ServerGroup>7</ServerGroup>
+
+            <!-- Denied/Permitted-Tags können hier platziert werden. Weitere Details dazu sind unten im Abstimmungs-Feature zu finden.-->
+        </Punish>
     </Control>
 
     <!-- Enabled: true/false | Aktiviert/Deaktiviert das Random-Event-Messages Feature. -->

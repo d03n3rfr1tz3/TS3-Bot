@@ -23,7 +23,7 @@
         /// Gets the command.
         /// </summary>
         /// <value>The command.</value>
-        protected override string Command { get { return "!hours"; } }
+        protected override string Command { get { return this.Repository.Settings.Control.Hours.Command; } }
 
         /// <summary>
         /// Gets the time span.

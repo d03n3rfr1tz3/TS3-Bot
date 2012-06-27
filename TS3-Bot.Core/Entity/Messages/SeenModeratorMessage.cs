@@ -21,7 +21,7 @@
         /// Gets the command.
         /// </summary>
         /// <value>The command.</value>
-        protected override string Command { get { return "!seenmods"; } }
+        protected override string Command { get { return this.Repository.Settings.Control.SeenModerator.Command; } }
 
         /// <summary>
         /// Validates the message

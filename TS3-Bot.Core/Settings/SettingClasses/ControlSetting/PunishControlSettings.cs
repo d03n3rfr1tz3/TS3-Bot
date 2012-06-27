@@ -6,6 +6,22 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses.ControlSetting
     public class PunishControlSettings : ControlSettingsBase
     {
         /// <summary>
+        /// Gets or sets the undo command.
+        /// </summary>
+        /// <value>
+        /// The undo command.
+        /// </value>
+        public string UndoCommand { get; set; }
+
+        /// <summary>
+        /// Gets or sets the channel.
+        /// </summary>
+        /// <value>
+        /// The channel.
+        /// </value>
+        public uint Channel { get; set; }
+
+        /// <summary>
         /// Gets or sets the server group.
         /// </summary>
         /// <value>
@@ -21,7 +37,11 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses.ControlSetting
         {
             base.ApplySetting(setting);
 
+            this.Channel = setting.Channel;
             this.ServerGroup = setting.ServerGroup;
+
+            if (!string.IsNullOrEmpty(setting.UndoCommand))
+                this.UndoCommand = setting.UndoCommand;
         }
     }
 }

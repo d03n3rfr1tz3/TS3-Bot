@@ -22,7 +22,7 @@
         /// Gets the command.
         /// </summary>
         /// <value>The command.</value>
-        protected override string Command { get { return "!seengroup"; } }
+        protected override string Command { get { return this.Repository.Settings.Control.SeenGroup.Command; } }
 
         /// <summary>
         /// Gets or sets the server group.

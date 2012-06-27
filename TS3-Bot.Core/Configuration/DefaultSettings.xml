@@ -10,8 +10,8 @@
 
     <Away Enabled="false" LogEnabled="false">
         <Channel>0</Channel>
-		<MuteHeadphoneChannel>0</MuteHeadphoneChannel>
-		<MuteMicrophoneChannel>0</MuteMicrophoneChannel>
+		    <MuteHeadphoneChannel>0</MuteHeadphoneChannel>
+		    <MuteMicrophoneChannel>0</MuteMicrophoneChannel>
         <Permitted/>
         <Denied/>
     </Away>
@@ -33,20 +33,26 @@
         </HelpMessage>
         
         <Help Enabled="false" LogEnabled="false">
+            <Command>!help</Command>
             <HelpMessage>
                 [B]!help[/B]
                 Öffnet diese Hilfe. Wer hätte es gedacht.
             </HelpMessage>
+            <Target>Client</Target>
+            <TargetId>0</TargetId>
             <Permitted/>
             <Denied/>
         </Help>
         
         <Seen Enabled="false" LogEnabled="false">
+            <Command>!seen </Command>
             <HelpMessage>
                 [B]!seen {Nickname|Datenbank ID}[/B]
                 Gibt dir Informationen, wann jemand zuletzt gesehen wurde. Es reicht einen Teil des Nicks anzugeben. Alternativ kann auch die Datenbank ID angegeben werden.
                 Beispiel: [I]!seen John[/I]
             </HelpMessage>
+            <Target>Client</Target>
+            <TargetId>0</TargetId>
             <TextMessage>
                 Infos zu '[B][CLIENT_NICKNAME][/B]'(id:[CLIENT_ID]):
                 Zuletzt eingeloggt: [B][CLIENT_LASTLOGIN][/B]
@@ -57,14 +63,17 @@
         </Seen>
         
         <Files Enabled="false" LogEnabled="false">
+            <Command>!files</Command>
             <HelpMessage>
                 [B]!files[/B]
                 Gibt dir eine Auflistung aller Dateien in allen Räumen, gruppiert nach virtuellen Servern, wenn du Server-Administrator bist :-)
             </HelpMessage>
+            <Target>Client</Target>
+            <TargetId>0</TargetId>
             <MessagePerServer>Dateien auf Server '[B][SERVER_NAME][/B]' (Id: [SERVER_ID], Port: [SERVER_PORT]):</MessagePerServer>
             <MessageNoFilesFound>Es wurden keine Dateien gefunden.</MessageNoFilesFound>
             <MessageFilesFound>Folgende Dateien wurden gefunden:</MessageFilesFound>
-            <MessageFile>'[B][CHANNEL_NAME][/B]'(id:[CHANNEL_ID]) > '[B][FILE_NAME][/B]' (Erstellt: [FILE_CREATED], Größe: [FILE_SIZE])</MessageFile>
+            <MessageFile>[NUM]. '[B][CHANNEL_NAME][/B]'(id:[CHANNEL_ID]) > '[B][FILE_NAME][/B]' (Erstellt: [FILE_CREATED], Größe: [FILE_SIZE])</MessageFile>
             <Permitted>
                 <Group>2</Group>
                 <Group>6</Group>
@@ -73,6 +82,8 @@
         </Files>
 
         <Stick Enabled="false" LogEnabled="false">
+            <Command>!stick</Command>
+            <UndoCommand>!unstick</UndoCommand>
             <HelpMessage>
                 [B]!stick {Nickname|Datenbank ID} {Channel ID} [StickTime][/B]
                 Gibt dem angegebenen Client im angegebenen Channel einen Sticky-Status. Die StickTime (optional) gibt die Dauer in Minuten an, die ein Client darin festgehalten wird.
@@ -82,54 +93,72 @@
                 Löst vom angegebenen Client jeden Sticky-Status.
                 Beispiel: [I]!unstick 5[/I]
             </HelpMessage>
+            <Target>Client</Target>
+            <TargetId>0</TargetId>
             <Permitted>
                 <Group>2</Group>
                 <Group>6</Group>
             </Permitted>
         </Stick>
 
-        <Moderator Enabled="true" LogEnabled="true">
+        <Moderator Enabled="false" LogEnabled="false">
+            <Command>!mods</Command>
             <HelpMessage>
               [B]!mods [Period][/B]
               Zeigt eine Auflistung aller Moderatoren und deren Anzahl von verifizierten Mitgliedern an.
               Die Periode ist optional und kann folgende Werte haben: today, week, month.
               Beispiel: [I]!mods week[/I]
             </HelpMessage>
-            <TextMessage>Moderatoren von [B][SERVER_NAME][/B].</TextMessage>
-            <MessagePerModerator>[B][CLIENT_NICKNAME][/B] hat bereits [B][VERIFIED][/B] Mitglieder verifiziert.</MessagePerModerator>
+            <Target>Client</Target>
+            <TargetId>0</TargetId>
+            <Limit>10</Limit>
+            <TextMessage>Aktuelle Moderatoren von [B][SERVER_NAME][/B]:</TextMessage>
+            <MessagePerModerator>[NUM]. [B][CLIENT_NICKNAME][/B] hat bereits [B][VERIFIED] Mitglieder[/B] verifiziert.</MessagePerModerator>
         </Moderator>
 
-        <SeenModerator Enabled="true" LogEnabled="true">
+        <SeenModerator Enabled="false" LogEnabled="false">
+            <Command>!seenmods</Command>
             <HelpMessage>
               [B]!seenmods[/B]
               Zeigt eine Auflistung aller Moderatoren und deren letzten Onlinezeitpunkt an.
             </HelpMessage>
-            <TextMessage>Moderatoren von [B][SERVER_NAME][/B].</TextMessage>
-            <MessagePerClient>[B][CLIENT_NICKNAME][/B] hat sich zuletzt am [B][CLIENT_LASTLOGIN][/B] eingeloggt und wurde zuletzt gesehen am [B][CLIENT_LASTSEEN][/B].</MessagePerClient>
+            <Target>Client</Target>
+            <TargetId>0</TargetId>
+            <TextMessage>Aktuelle Moderatoren von [B][SERVER_NAME][/B]:</TextMessage>
+            <MessagePerClient>[NUM]. [B][CLIENT_NICKNAME][/B] hat sich zuletzt am [B][SERVERGROUP_JOINED][/B] eingeloggt und wurde zuletzt gesehen am [B][CLIENT_LASTSEEN][/B].</MessagePerClient>
             <ServerGroup>0</ServerGroup>
         </SeenModerator>
 
-        <SeenGroup Enabled="true" LogEnabled="true">
+        <SeenGroup Enabled="false" LogEnabled="false">
+            <Command>!seengroup</Command>
             <HelpMessage>
               [B]!seengroup {ServerGroup ID}[/B]
               Gibt dir Informationen, wann jemand die Mitglieder der angegebenen Gruppe zuletzt gesehen wurden.
               Beispiel: [I]!seengroup 6[/I]
             </HelpMessage>
-            <TextMessage>Mitglieder der Server Gruppe [B][SERVERGROUP_NAME][/B].</TextMessage>
-            <MessagePerClient>[B][CLIENT_NICKNAME][/B] hat sich zuletzt am [B][CLIENT_LASTLOGIN][/B] eingeloggt und wurde zuletzt gesehen am [B][CLIENT_LASTSEEN][/B].</MessagePerClient>
+            <Target>Client</Target>
+            <TargetId>0</TargetId>
+            <TextMessage>Mitglieder der Server Gruppe [B][SERVERGROUP_NAME][/B]:</TextMessage>
+            <MessagePerClient>[NUM]. [B][CLIENT_NICKNAME][/B] hat sich zuletzt am [B][CLIENT_LASTLOGIN][/B] eingeloggt und wurde zuletzt gesehen am [B][CLIENT_LASTSEEN][/B].</MessagePerClient>
         </SeenGroup>
 
-        <Hours Enabled="true" LogEnabled="true">
+        <Hours Enabled="false" LogEnabled="false">
+            <Command>!hours</Command>
             <HelpMessage>
               [B]!hours [Period][/B]
-              Gibt dir Informationen, wann jemand zuletzt gesehen wurde.
+              Gibt dir eine Auflistung aller aktiven Mitglieder sortiert nach der längsten Onlinezeit.
               Die Periode ist optional und kann folgende Werte haben: today, week, month.
             </HelpMessage>
-            <TextMessage>Aktivste Mitglieder von [B][SERVER_NAME][/B].</TextMessage>
-            <MessagePerClient>[B][CLIENT_NICKNAME][/B] war insgesamt [B][CLIENT_HOURS] Stunden[/B] online.</MessagePerClient>
+            <Target>Client</Target>
+            <TargetId>0</TargetId>
+            <Limit>10</Limit>
+            <TextMessage>Aktivste Mitglieder von [B][SERVER_NAME][/B]:</TextMessage>
+            <MessagePerClient>[NUM]. [B][CLIENT_NICKNAME][/B] war insgesamt [B][CLIENT_HOURS] Stunden[/B] online.</MessagePerClient>
         </Hours>
 
-        <Punish Enabled="true" LogEnabled="true">
+        <Punish Enabled="false" LogEnabled="false">
+            <Command>!punish</Command>
+            <UndoCommand>!unpunish</UndoCommand>
             <HelpMessage>
               [B]!punish {Nickname|Datenbank ID} {Channel ID}[/B]
               Nimmt dem angegebenen Client alle Server Gruppen und ersetzt diese durch eine vorkonfigurierte Server Gruppe.
@@ -139,6 +168,9 @@
               Nimmt dem angegebenen Client die vorkonfiguriert Server Gruppe und stellt alle vorherigen Server Gruppen wieder her.
               Beispiel: [I]!unpunish 5[/I]
             </HelpMessage>
+            <Target>Client</Target>
+            <TargetId>0</TargetId>
+            <Channel>0</Channel>
             <ServerGroup>0</ServerGroup>
         </Punish>
     </Control>

@@ -21,6 +21,11 @@ namespace DirkSarodnick.TS3_Bot.Core.Helper
         {
             var result = new StringBuilder(value);
 
+            if (context.Index.HasValue)
+            {
+                result.Replace("[NUM]", context.Index.Value.ToString(CultureInfo.InvariantCulture));
+            }
+
             if (context.ClientDatabaseId.HasValue)
             {
                 result.Replace("[CLIENT_ID]", context.ClientDatabaseId.Value.ToString(CultureInfo.InvariantCulture));
@@ -104,6 +109,11 @@ namespace DirkSarodnick.TS3_Bot.Core.Helper
             if (context.ServerGroupName != null)
             {
                 result.Replace("[SERVERGROUP_NAME]", context.ServerGroupName);
+            }
+
+            if (context.ServerGroupJoined != null)
+            {
+                result.Replace("[SERVERGROUP_JOINED]", context.ServerGroupJoined);
             }
 
             if (context.ModeratorVerified.HasValue)

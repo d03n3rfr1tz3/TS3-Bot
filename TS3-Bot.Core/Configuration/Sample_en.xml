@@ -112,6 +112,32 @@
             <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
         </Seen>
 
+        <!-- Enabled: true/false    | Enables/Disables the !seengroup-Command. -->
+        <!-- LogEnabled: true/false | Enables/Disables the Logging of this feature. -->
+        <SeenGroup Enabled="true">
+            <!-- The command name, on which this command will be triggered -->
+            <Command>!seengroup</Command>
+
+            <!-- The Help-Message part, which will explain the !seengroup-Command -->
+            <HelpMessage>
+              [B]!seengroup {ServerGroup ID}[/B]
+              Gives you information about when the clients of the specified ServerGroup were last seen.
+              Example: [I]!seengroup 6[/I]
+            </HelpMessage>
+        
+            <!-- This Message will be sent first. -->
+            <TextMessage>
+              Client of the ServerGroup [B][SERVERGROUP_NAME][/B]:
+            </TextMessage>
+
+            <!-- The message, which will be repeated for every client, which were found. -->
+            <MessagePerClient>
+              [NUM]. [B][CLIENT_NICKNAME][/B] last connected on [B][CLIENT_LASTLOGIN][/B] and was last seen on [B][CLIENT_LASTSEEN][/B].
+            </MessagePerClient>
+
+            <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
+        </SeenGroup>
+
         <!-- Enabled: true/false    | Enables/Disables the !files-Command. -->
         <!-- LogEnabled: true/false | Enables/Disables the Logging of this feature. -->
         <Files Enabled="true">
@@ -160,6 +186,52 @@
                 <Group>6</Group>
             </Permitted>
         </Stick>
+
+        <!-- Enabled: true/false    | Enables/Disables the !hours-Command. -->
+        <!-- LogEnabled: true/false | Enables/Disables the Logging of this feature. -->
+        <Hours Enabled="true">
+            <!-- The Help-Message part, which will explain the !hours-Command -->
+            <HelpMessage>
+              [B]!hours [Period][/B]
+              Gives you a list of active Clients sorted by the highest online time.
+              Die Periode ist optional und kann folgende Werte haben: today, week, month.
+            </HelpMessage>
+
+            <!-- Limits the clients that will be listed. Default are the Top10. -->
+            <Limit>10</Limit>
+
+            <!-- This Message will be sent first. -->
+            <TextMessage>
+              Active Clients of [B][SERVER_NAME][/B]:
+            </TextMessage>
+
+            <!-- The message, which will be repeated for every client, which were found. -->
+            <MessagePerClient>
+              [NUM]. [B][CLIENT_NICKNAME][/B] has total amount of activity of [B][CLIENT_HOURS] hours[/B] spent.
+            </MessagePerClient>
+
+            <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
+        </Hours>
+
+        <!-- Enabled: true/false    | Enables/Disables the !punish- and !unpunish-Command. -->
+        <!-- LogEnabled: true/false | Enables/Disables the Logging of this feature. -->
+        <Punish Enabled="false" LogEnabled="true">
+            <!-- The Help-Message part, which will explain the !stick- and !unstick-Command -->
+            <HelpMessage>
+              [B]!punish {Nickname|Database ID} {Channel ID}[/B]
+              Strips all ServerGroups of the specified Client and adds a single ServerGroup instead.
+              Example: [I]!punish 5[/I]
+
+              [B]!unpunish {Nickname|Database ID}[/B]
+              Restores all ServerGroups that were stripped by this command.
+              Example: [I]!unpunish 5[/I]
+            </HelpMessage>
+
+            <!-- The Server Group, that will be applied instead. -->
+            <ServerGroup>7</ServerGroup>
+
+            <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
+        </Punish>
     </Control>
 
     <!-- Enabled: true/false | Enables/Disables the Random-Event-Messages feature. -->
