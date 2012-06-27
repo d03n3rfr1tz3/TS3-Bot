@@ -192,9 +192,10 @@
         <Hours Enabled="true">
             <!-- The Help-Message part, which will explain the !hours-Command -->
             <HelpMessage>
-              [B]!hours [Period][/B]
+              [B]!hours [Period] [Nickname|Database ID][/B]
               Gives you a list of active Clients sorted by the highest online time.
-              The Period is optional and can be one of the following values: today, week, month.
+			  The Period is optional and can be one of the following values: today, week, month.
+			  Can optionally be filtered by specifying a Client Database ID or a part of the nickname.
             </HelpMessage>
 
             <!-- Limits the clients that will be listed. Default are the Top10. -->

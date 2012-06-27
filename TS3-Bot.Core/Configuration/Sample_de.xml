@@ -195,9 +195,10 @@
         <Hours Enabled="true">
             <!-- Der Teil der Hilfenachricht, welcher den !hours-Befehl erklärt. -->
             <HelpMessage>
-              [B]!hours [Zeitraum][/B]
+              [B]!hours [Zeitraum] [Nickname|Datenbank ID][/B]
               Gibt dir eine Auflistung aller aktiven Mitglieder sortiert nach der längsten Onlinezeit.
               Der Zeitraum ist optional und kann folgende Werte haben: today, week, month.
+			  Kann optional auch nach einer Datenbank ID oder einem Teil eines Nicknamen gefiltert werden.
             </HelpMessage>
 
             <!-- Das Limit, bis zu wieviele Mitglieder aufgelistet werden. Standard sind die Top10. -->
