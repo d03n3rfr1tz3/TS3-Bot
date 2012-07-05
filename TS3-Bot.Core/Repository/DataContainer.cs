@@ -135,6 +135,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
             lock (lockGetServerList) ServerList = null;
             lock (lockGetClientInfo) ClientInfoList.Clear();
             lock (lockGetChannelInfo) ChannelInfoList.Clear();
+            lock (lockGetClientsFromDatabase) ClientDatabaseList.Clear();
 
             lock (lockClientWarningList) ClientWarningList.RemoveAll(m => m.Creation.AddMinutes(5) < DateTime.UtcNow);
 
@@ -183,6 +184,82 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
             lock (lockPreviousServerGroupsList)
             {
                 if (previousServerGroupsList != null) previousServerGroupsList.Flush();
+            }
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        public void SlowClean()
+        {
+            lock (lockClientLastChannelList)
+            {
+                if (clientLastChannelList != null)
+                {
+                    clientLastChannelList.Flush();
+                    clientLastChannelList.Dispose();
+                    clientLastChannelList = null;
+                }
+            }
+
+            lock (lockStickyClientList)
+            {
+                if (stickyClientList != null)
+                {
+                    stickyClientList.Flush();
+                    stickyClientList.Dispose();
+                    stickyClientList = null;
+                }
+            }
+
+            lock (lockVotedClientList)
+            {
+                if (votedClientList != null)
+                {
+                    votedClientList.Flush();
+                    votedClientList.Dispose();
+                    votedClientList = null;
+                }
+            }
+
+            lock (lockSeenClientList)
+            {
+                if (clientLastSeen != null)
+                {
+                    clientLastSeen.Flush();
+                    clientLastSeen.Dispose();
+                    clientLastSeen = null;
+                }
+            }
+
+            lock (lockModeratedClientList)
+            {
+                if (moderatedClientList != null)
+                {
+                    moderatedClientList.Flush();
+                    moderatedClientList.Dispose();
+                    moderatedClientList = null;
+                }
+            }
+
+            lock (lockTimeClientList)
+            {
+                if (timeClientList != null)
+                {
+                    timeClientList.Flush();
+                    timeClientList.Dispose();
+                    timeClientList = null;
+                }
+            }
+
+            lock (lockPreviousServerGroupsList)
+            {
+                if (previousServerGroupsList != null)
+                {
+                    previousServerGroupsList.Flush();
+                    previousServerGroupsList.Dispose();
+                    previousServerGroupsList = null;
+                }
             }
         }
 

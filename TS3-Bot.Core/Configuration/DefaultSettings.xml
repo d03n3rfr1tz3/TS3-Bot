@@ -45,7 +45,7 @@
         </Help>
         
         <Seen Enabled="false" LogEnabled="false">
-            <Command>!seen </Command>
+            <Command>!seen</Command>
             <HelpMessage>
                 [B]!seen {Nickname|Datenbank ID}[/B]
                 Gibt dir Informationen, wann jemand zuletzt gesehen wurde. Es reicht einen Teil des Nicks anzugeben. Alternativ kann auch die Datenbank ID angegeben werden.

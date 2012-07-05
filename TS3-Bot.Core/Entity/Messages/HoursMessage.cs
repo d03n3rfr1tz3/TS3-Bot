@@ -58,7 +58,7 @@
         public override bool Validate(string[] parameters)
         {
             return parameters.Length > 0 &&
-                   parameters[0].StartsWith(Command, StringComparison.InvariantCultureIgnoreCase);
+                   parameters[0].Equals(Command, StringComparison.InvariantCultureIgnoreCase);
         }
 
         /// <summary>
@@ -71,39 +71,30 @@
             SenderClientId = e.InvokerClientId;
 
             string nickname = null;
-            if (parameters.Length > 2)
+            if (parameters.Length == 1)
             {
-                TimeSpanEntity timeSpanEntity;
-                if (TimeSpanEntity.TryParse(parameters[1], out timeSpanEntity))
-                {
-                    this.TimeSpan = timeSpanEntity;
-                    nickname = parameters[2];
-                }
-                else if (TimeSpanEntity.TryParse(parameters[2], out timeSpanEntity))
-                {
-                    this.TimeSpan = timeSpanEntity;
-                    nickname = parameters[1];
-                }
-                else
-                {
-                    ErrorMessage = "Could not parse your request!";
-                }
-            }
-            else if (parameters.Length > 1)
-            {
-                TimeSpanEntity timeSpanEntity;
-                if (TimeSpanEntity.TryParse(parameters[1], out timeSpanEntity))
-                {
-                    this.TimeSpan = timeSpanEntity;
-                }
-                else
-                {
-                    nickname = parameters[1];
-                }
+                AllClients = true;
             }
             else
             {
-                AllClients = true;
+                TimeSpanEntity timeSpanEntity;
+                if (TimeSpanEntity.TryParse(parameters[1], out timeSpanEntity))
+                {
+                    this.TimeSpan = timeSpanEntity;
+                    if (parameters.Length > 2)
+                    {
+                        nickname = string.Join(" ", parameters, 2, parameters.Length - 2);
+                    }
+                }
+                else if (parameters.Length > 2 && TimeSpanEntity.TryParse(parameters[parameters.Length - 1], out timeSpanEntity))
+                {
+                    this.TimeSpan = timeSpanEntity;
+                    nickname = string.Join(" ", parameters, 1, parameters.Length - 2);
+                }
+                else
+                {
+                    nickname = string.Join(" ", parameters, 1, parameters.Length - 1);
+                }
             }
 
             if (nickname != null)

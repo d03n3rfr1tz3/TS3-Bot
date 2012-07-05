@@ -61,7 +61,7 @@
         public override bool Validate(string[] parameters)
         {
             return parameters.Length > 1 &&
-                   parameters[0].StartsWith(Command, StringComparison.InvariantCultureIgnoreCase) &&
+                   parameters[0].Equals(Command, StringComparison.InvariantCultureIgnoreCase) &&
                    !string.IsNullOrEmpty(parameters[1]);
         }
 

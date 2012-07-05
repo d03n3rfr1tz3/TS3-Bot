@@ -72,6 +72,7 @@
         {
             KeepTickCounter = 0;
             Repository.KeepAlive();
+            Repository.Container.SlowClean();
         }
 
         /// <summary>

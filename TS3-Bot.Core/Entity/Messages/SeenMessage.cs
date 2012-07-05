@@ -44,7 +44,7 @@
         public override bool Validate(string[] parameters)
         {
             return parameters.Length > 1 &&
-                   parameters[0].StartsWith(Command, StringComparison.InvariantCultureIgnoreCase) &&
+                   parameters[0].Equals(Command, StringComparison.InvariantCultureIgnoreCase) &&
                    !string.IsNullOrEmpty(parameters[1]);
         }
 
@@ -56,7 +56,7 @@
         public override void Initialize(MessageReceivedEventArgs e, string[] parameters)
         {
             SenderClientId = e.InvokerClientId;
-            var nickname = string.Join(string.Empty, parameters, 1, parameters.Length - 1);
+            var nickname = string.Join(" ", parameters, 1, parameters.Length - 1);
 
             uint clientDatabaseId;
             if (uint.TryParse(nickname, out clientDatabaseId))

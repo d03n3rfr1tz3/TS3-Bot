@@ -83,7 +83,7 @@
             lock (Container.lockGetClientsFromDatabase)
             {
                 if (!Container.ClientDatabaseList.Any())
-                    Container.ClientDatabaseList = QueryRunner.GetClientDatabaseList(99999).ToList();
+                    Container.ClientDatabaseList = QueryRunner.GetClientDatabaseList(999999).ToList();
 
                 return Container.ClientDatabaseList.ToList();
             }

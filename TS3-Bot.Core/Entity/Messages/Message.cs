@@ -32,7 +32,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Entity.Messages
         public virtual bool Validate(string[] parameters)
         {
             return parameters.Length > 0 &&
-                   parameters[0].StartsWith(Command, StringComparison.InvariantCultureIgnoreCase);
+                   parameters[0].Equals(Command, StringComparison.InvariantCultureIgnoreCase);
         }
 
         /// <summary>

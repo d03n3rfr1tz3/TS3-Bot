@@ -514,7 +514,7 @@
                               };
             QueryRunner.SendTextMessage(Repository.Settings.Control.Moderator.Target, Repository.Settings.Control.Moderator.TargetId > 0 ? Repository.Settings.Control.Moderator.TargetId : message.SenderClientId,
                                         Repository.Settings.Control.Moderator.TextMessage.ToMessage(context));
-            var groupedEntities = entities.GroupBy(m => m.Moderator).OrderByDescending(m => m.Count()).Take(Repository.Settings.Control.Hours.Limit).ToList();
+            var groupedEntities = entities.GroupBy(m => m.Moderator).OrderByDescending(m => m.Count()).Take(Repository.Settings.Control.Moderator.Limit).ToList();
 
             for (int index = 0; index < groupedEntities.Count; index++)
             {
