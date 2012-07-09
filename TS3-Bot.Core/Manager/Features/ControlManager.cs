@@ -1,7 +1,6 @@
 ﻿namespace DirkSarodnick.TS3_Bot.Core.Manager.Features
 {
     using System;
-    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using Base;
@@ -319,7 +318,7 @@
                                           ClientLastLogin = client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat),
                                           ClientLastSeen = lastSeen != default(DateTime) && lastSeen > DateTime.MinValue
                                                                ? lastSeen.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
-                                                               : "Never"
+                                                               : client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
                                       };
 
                     QueryRunner.SendTextMessage(Repository.Settings.Control.Seen.Target,
@@ -450,19 +449,18 @@
             QueryRunner.SendTextMessage(Repository.Settings.Control.Hours.Target, Repository.Settings.Control.Hours.TargetId > 0 ? Repository.Settings.Control.Hours.TargetId : message.SenderClientId,
                                         Repository.Settings.Control.Hours.TextMessage.ToMessage(context));
 
-            var clientDatabaseDict = new Dictionary<uint, double>();
-            var ids = message.ClientDatabaseIds.Any() ? message.ClientDatabaseIds : Repository.Client.GetTimeUsers(message.TimeSpan.FromDate, message.TimeSpan.ToDate);
-            ids.ForEach(clientDatabaseId => clientDatabaseDict.Add(clientDatabaseId, Repository.Client.GetTime(clientDatabaseId, message.TimeSpan.FromDate, message.TimeSpan.ToDate)));
-            var clientDatabaseIds = clientDatabaseDict.Where(m => m.Value >= 0.5).OrderByDescending(m => m.Value).Select(m => m.Key).Take(Repository.Settings.Control.Hours.Limit).ToList();
+            var clientDatabaseTimes = message.AllClients
+                                          ? Repository.Client.GetTime(message.TimeSpan.FromDate, message.TimeSpan.ToDate)
+                                          : Repository.Client.GetTime(message.ClientDatabaseIds, message.TimeSpan.FromDate, message.TimeSpan.ToDate);
+            var clientDatabaseIds = clientDatabaseTimes.OrderByDescending(m => m.Value).Take(Repository.Settings.Control.Hours.Limit).ToList();
 
             for (int index = 0; index < clientDatabaseIds.Count; index++)
             {
-                var clientDatabaseId = clientDatabaseIds[index];
-                var client = Repository.Client.GetClientDataBaseInfo(clientDatabaseId);
+                var clientDatabaseTime = clientDatabaseIds[index];
+                var client = Repository.Client.GetClientDataBaseInfo(clientDatabaseTime.Key);
                 if (client != null)
                 {
-                    var lastSeen = Repository.Client.GetLastSeen(clientDatabaseId);
-                    var minutes = Repository.Client.GetTime(clientDatabaseId, message.TimeSpan.FromDate, message.TimeSpan.ToDate);
+                    var lastSeen = Repository.Client.GetLastSeen(clientDatabaseTime.Key);
                     var messageContext = new MessageContext
                                              {
                                                  Index = index + 1,
@@ -474,8 +472,8 @@
                                                  ClientLastLogin = client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat),
                                                  ClientLastSeen = lastSeen != default(DateTime) && lastSeen > DateTime.MinValue
                                                          ? lastSeen.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
-                                                         : "Never",
-                                                 ClientHours = minutes / 60
+                                                         : client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat),
+                                                 ClientHours = clientDatabaseTime.Value / 60
                                              };
 
                     QueryRunner.SendTextMessage(Repository.Settings.Control.Hours.Target,
@@ -519,15 +517,15 @@
             for (int index = 0; index < groupedEntities.Count; index++)
             {
                 var entity = groupedEntities[index];
-                var moderatorEntity = Repository.Client.GetClientSimple(entity.Key);
+                var moderatorEntity = Repository.Client.GetClientDataBaseInfo(entity.Key);
                 var messageContext = new MessageContext
                                          {
                                              Index = index + 1,
                                              ServerName = server.Name,
                                              ServerId = server.Id,
                                              ServerPort = server.Port,
-                                             ClientDatabaseId = moderatorEntity.ClientDatabaseId,
-                                             ClientNickname = moderatorEntity.Nickname,
+                                             ClientDatabaseId = moderatorEntity.DatabaseId,
+                                             ClientNickname = moderatorEntity.NickName,
                                              ModeratorVerified = entity.Count()
                                          };
                 QueryRunner.SendTextMessage(Repository.Settings.Control.Moderator.Target,
@@ -586,7 +584,7 @@
                                                  ClientLastLogin = client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat),
                                                  ClientLastSeen = lastSeen != default(DateTime) && lastSeen > DateTime.MinValue
                                                          ? lastSeen.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
-                                                         : "Never"
+                                                         : client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
                                              };
 
                     QueryRunner.SendTextMessage(Repository.Settings.Control.SeenGroup.Target,
@@ -650,7 +648,7 @@
                                                  ClientLastLogin = client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat),
                                                  ClientLastSeen = lastSeen != default(DateTime) && lastSeen > DateTime.MinValue
                                                          ? lastSeen.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
-                                                         : "Never"
+                                                         : client.LastConnected.ToLocalTime().ToString(Repository.Static.DateTimeFormat)
                                              };
 
                     QueryRunner.SendTextMessage(Repository.Settings.Control.SeenModerator.Target,

@@ -135,7 +135,6 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
             lock (lockGetServerList) ServerList = null;
             lock (lockGetClientInfo) ClientInfoList.Clear();
             lock (lockGetChannelInfo) ChannelInfoList.Clear();
-            lock (lockGetClientsFromDatabase) ClientDatabaseList.Clear();
 
             lock (lockClientWarningList) ClientWarningList.RemoveAll(m => m.Creation.AddMinutes(5) < DateTime.UtcNow);
 
@@ -192,6 +191,8 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         /// </summary>
         public void SlowClean()
         {
+            lock (lockGetClientsFromDatabase) ClientDatabaseList.Clear();
+
             lock (lockClientLastChannelList)
             {
                 if (clientLastChannelList != null)

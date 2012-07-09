@@ -17,6 +17,7 @@
         {
             TimeSpan = new TimeSpanEntity();
             ClientDatabaseIds = new List<uint>();
+            AllClients = true;
         }
 
         /// <summary>
@@ -71,11 +72,7 @@
             SenderClientId = e.InvokerClientId;
 
             string nickname = null;
-            if (parameters.Length == 1)
-            {
-                AllClients = true;
-            }
-            else
+            if (parameters.Length > 1)
             {
                 TimeSpanEntity timeSpanEntity;
                 if (TimeSpanEntity.TryParse(parameters[1], out timeSpanEntity))

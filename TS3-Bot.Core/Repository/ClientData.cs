@@ -83,9 +83,19 @@
             lock (Container.lockGetClientsFromDatabase)
             {
                 if (!Container.ClientDatabaseList.Any())
-                    Container.ClientDatabaseList = QueryRunner.GetClientDatabaseList(999999).ToList();
+                {
+                    var response = QueryRunner.GetClientDatabaseList(0, 100, true);
+                    var clientDatabaseList = response.ToList();
 
-                return Container.ClientDatabaseList.ToList();
+                    for (int i = 100; i < (response.TotalClientsInDatabase ?? uint.MaxValue); i = i + 100)
+                    {
+                        clientDatabaseList.AddRange(QueryRunner.GetClientDatabaseList((uint)i, (uint)(i + 100), false));
+                    }
+
+                    Container.ClientDatabaseList = clientDatabaseList.ToList();
+                }
+
+                return Container.ClientDatabaseList;
             }
         }
 
@@ -578,6 +588,67 @@
                     Container.TimeClientList.Add(Guid.NewGuid(), new TimeClientEntity(clientDatabaseId, lastConnected, disconnected));
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the total time spended on TS3 for all users.
+        /// </summary>
+        /// <param name="fromTime">From time.</param>
+        /// <param name="toTime">To time.</param>
+        /// <returns></returns>
+        public Dictionary<uint, double> GetTime(DateTime? fromTime, DateTime? toTime)
+        {
+            IEnumerable<KeyValuePair<Guid, TimeClientEntity>> times;
+
+            lock (Container.lockTimeClientList)
+            {
+                times = Container.TimeClientList.AsEnumerable();
+
+                if (fromTime.HasValue)
+                {
+                    times = times.Where(m => m.Value.Disconnected > fromTime);
+                }
+
+                if (toTime.HasValue)
+                {
+                    times = times.Where(m => m.Value.Joined < toTime);
+                }
+
+                times = times.ToList();
+            }
+
+            return times.GroupBy(m => m.Value.User).ToDictionary(g => g.Key, g => g.Sum(m => m.Value.GetTime(fromTime, toTime).TotalMinutes));
+        }
+
+        /// <summary>
+        /// Gets the total time spended on TS3 for specified clients.
+        /// </summary>
+        /// <param name="clientDatabaseIds">The client database ids.</param>
+        /// <param name="fromTime">From time.</param>
+        /// <param name="toTime">To time.</param>
+        /// <returns></returns>
+        public Dictionary<uint, double> GetTime(IEnumerable<uint> clientDatabaseIds, DateTime? fromTime, DateTime? toTime)
+        {
+            IEnumerable<KeyValuePair<Guid, TimeClientEntity>> times;
+
+            lock (Container.lockTimeClientList)
+            {
+                times = Container.TimeClientList.Where(m => clientDatabaseIds.Any(c => c == m.Value.User)).AsEnumerable();
+
+                if (fromTime.HasValue)
+                {
+                    times = times.Where(m => m.Value.Disconnected > fromTime);
+                }
+
+                if (toTime.HasValue)
+                {
+                    times = times.Where(m => m.Value.Joined < toTime);
+                }
+
+                times = times.ToList();
+            }
+
+            return times.GroupBy(m => m.Value.User).ToDictionary(g => g.Key, g => g.Sum(m => m.Value.GetTime(fromTime, toTime).TotalMinutes));
         }
 
         /// <summary>
