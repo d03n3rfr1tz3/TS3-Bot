@@ -524,8 +524,8 @@
                                              ServerName = server.Name,
                                              ServerId = server.Id,
                                              ServerPort = server.Port,
-                                             ClientDatabaseId = moderatorEntity.DatabaseId,
-                                             ClientNickname = moderatorEntity.NickName,
+                                             ClientDatabaseId = moderatorEntity == null ? default(uint) : moderatorEntity.DatabaseId,
+                                             ClientNickname = moderatorEntity == null ? default(string) : moderatorEntity.NickName,
                                              ModeratorVerified = entity.Count()
                                          };
                 QueryRunner.SendTextMessage(Repository.Settings.Control.Moderator.Target,

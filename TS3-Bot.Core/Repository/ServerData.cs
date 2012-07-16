@@ -37,7 +37,7 @@
         /// <returns></returns>
         public ServerInfoResponse GetCurrentServer()
         {
-            return QueryRunner.GetServerInfo();
+            return QueryRunner.GetServerInfo() ?? new ServerInfoResponse();
         }
 
         /// <summary>
