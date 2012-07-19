@@ -93,6 +93,7 @@
   <ItemGroup>
     <Compile Include="Entity\ClientDatabaseEntity.cs" />
     <Compile Include="BotInstance.cs" />
+    <Compile Include="Entity\AwayClientEntity.cs" />
     <Compile Include="Entity\CredentialEntity.cs" />
     <Compile Include="Entity\AsyncDispatcher.cs" />
     <Compile Include="Entity\Messages\UnpunishMessage.cs" />

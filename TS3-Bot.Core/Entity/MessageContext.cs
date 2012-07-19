@@ -41,6 +41,14 @@ namespace DirkSarodnick.TS3_Bot.Core.Entity
         public string ClientLastSeen { get; set; }
 
         /// <summary>
+        /// Gets or sets the client away time.
+        /// </summary>
+        /// <value>
+        /// The client away time.
+        /// </value>
+        public string ClientAwayTime { get; set; }
+
+        /// <summary>
         /// Gets or sets the client hours.
         /// </summary>
         /// <value>The client hours.</value>

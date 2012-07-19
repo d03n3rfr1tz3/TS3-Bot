@@ -29,7 +29,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         internal List<ClientWarningEntity> ClientWarningList = new List<ClientWarningEntity>();
 
         // Persistent Dictionaries
-        private PersistentDictionary<uint, uint> clientLastChannelList;
+        private PersistentDictionary<uint, AwayClientEntity> awayClientList;
         private PersistentDictionary<Guid, StickyClientEntity> stickyClientList;
         private PersistentDictionary<Guid, VotedClientEntity> votedClientList;
         private PersistentDictionary<uint, DateTime> clientLastSeen;
@@ -37,9 +37,9 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         private PersistentDictionary<Guid, TimeClientEntity> timeClientList;
         private PersistentDictionary<uint, string> previousServerGroupsList;
 
-        internal PersistentDictionary<uint, uint> ClientLastChannelList
+        internal PersistentDictionary<uint, AwayClientEntity> AwayClientList
         {
-            get { return this.clientLastChannelList ?? (this.clientLastChannelList = new PersistentDictionary<uint, uint>(string.Format(@"{0}\{1}\LastChannel", BasicHelper.DataDirectory, name))); }
+            get { return this.awayClientList ?? (this.awayClientList = new PersistentDictionary<uint, AwayClientEntity>(string.Format(@"{0}\{1}\Away", BasicHelper.DataDirectory, name))); }
         }
 
         internal PersistentDictionary<Guid, StickyClientEntity> StickyClientList
@@ -140,7 +140,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
 
             lock (lockClientLastChannelList)
             {
-                if (clientLastChannelList != null) clientLastChannelList.Flush();
+                if (awayClientList != null) awayClientList.Flush();
             }
 
             lock (lockStickyClientList)
@@ -195,11 +195,11 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
 
             lock (lockClientLastChannelList)
             {
-                if (clientLastChannelList != null)
+                if (awayClientList != null)
                 {
-                    clientLastChannelList.Flush();
-                    clientLastChannelList.Dispose();
-                    clientLastChannelList = null;
+                    awayClientList.Flush();
+                    awayClientList.Dispose();
+                    awayClientList = null;
                 }
             }
 
@@ -274,11 +274,11 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
             if (disposed) return;
             disposed = true;
 
-            if (clientLastChannelList != null)
+            if (awayClientList != null)
             {
-                clientLastChannelList.Flush();
-                clientLastChannelList.Dispose();
-                this.clientLastChannelList = null;
+                awayClientList.Flush();
+                awayClientList.Dispose();
+                this.awayClientList = null;
             }
 
             if (stickyClientList != null)

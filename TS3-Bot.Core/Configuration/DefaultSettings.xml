@@ -12,6 +12,7 @@
         <Channel>0</Channel>
 		    <MuteHeadphoneChannel>0</MuteHeadphoneChannel>
 		    <MuteMicrophoneChannel>0</MuteMicrophoneChannel>
+        <TextMessage></TextMessage>
         <Permitted/>
         <Denied/>
     </Away>

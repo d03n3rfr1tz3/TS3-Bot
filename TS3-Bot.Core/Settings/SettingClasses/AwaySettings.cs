@@ -1,5 +1,7 @@
 namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
 {
+    using System.ComponentModel.DataAnnotations;
+
     /// <summary>
     /// Defines the AwaySettings class.
     /// </summary>
@@ -28,6 +30,13 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
         public uint MuteMicrophoneChannel { get; set; }
 
         /// <summary>
+        /// Gets or sets the message.
+        /// </summary>
+        /// <value>The message.</value>
+        [DataType(DataType.MultilineText)]
+        public string TextMessage { get; set; }
+
+        /// <summary>
         /// Applies the setting.
         /// </summary>
         /// <param name="setting">The setting.</param>
@@ -38,6 +47,9 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
             this.Channel = setting.Channel;
             this.MuteHeadphoneChannel = setting.MuteHeadphoneChannel;
             this.MuteMicrophoneChannel = setting.MuteMicrophoneChannel;
+
+            if (!string.IsNullOrEmpty(setting.TextMessage))
+                this.TextMessage = setting.TextMessage;
         }
     }
 }

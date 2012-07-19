@@ -50,8 +50,13 @@
 		
         <!-- The ID of the away channel, where someone will be moved, when he/she mutes his/her microphone. An empty Value will also disable this. -->
         <MuteMicrophoneChannel>4</MuteMicrophoneChannel>
-		
-        <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
+
+        <!-- This Message will be sent, when the client comes back from away state. -->
+        <TextMessage>
+          Client '[B][CLIENT_NICKNAME][/B]' was [B][CLIENT_AWAYTIME][/B] away.
+        </TextMessage>
+
+      <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
     </Away>
 
     <!-- Enabled: true/false    | Enables/Disables the Bad-Nickname filter. -->
@@ -278,6 +283,11 @@
 		
         <!-- The time in minutes, after which the user becomes idling. -->
         <IdleTime>30</IdleTime>
+
+        <!-- This Message will be sent, when the client comes back from idle state. -->
+        <TextMessage>
+          Client '[B][CLIENT_NICKNAME][/B]' idled [B][CLIENT_AWAYTIME][/B].
+        </TextMessage>
 		
         <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
     </Idle>

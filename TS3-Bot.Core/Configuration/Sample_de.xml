@@ -50,6 +50,11 @@
         
         <!-- Die ID des Away-Channels, in welchen ein Nutzer verschoben wird, wenn er sein Mikrofon stumm schaltet. Ein leerer Wert deaktiviert diesen Teil. -->
         <MuteMicrophoneChannel>4</MuteMicrophoneChannel>
+
+        <!-- Diese Nachricht wird gesendet, wenn der Nutzer aus seinem Away-Status zurückkehrt. -->
+        <TextMessage>
+          '[B][CLIENT_NICKNAME][/B]' war [B][CLIENT_AWAYTIME][/B] abwesend.
+        </TextMessage>
         
         <!-- Denied/Permitted-Tags können hier platziert werden. Weitere Details dazu sind unten im Abstimmungs-Feature zu finden.-->
     </Away>
@@ -281,6 +286,13 @@
         
         <!-- Die Zeit in Minuten, nach welchen der Nutzer als Inaktiv gilt. -->
         <IdleTime>30</IdleTime>
+
+        <!-- Diese Nachricht wird gesendet, wenn der Nutzer aus seinem Idle-Status zurückkehrt. -->
+        <TextMessage>
+          '[B][CLIENT_NICKNAME][/B]' war [B][CLIENT_AWAYTIME][/B] inaktiv.
+        </TextMessage>
+
+        <!-- Denied/Permitted-Tags können hier platziert werden. Weitere Details dazu sind unten im Abstimmungs-Feature zu finden.-->
     </Idle>
 
     <!-- Enabled: true/false | Aktiviert/Deaktiviert das Nachrichten Feature. -->

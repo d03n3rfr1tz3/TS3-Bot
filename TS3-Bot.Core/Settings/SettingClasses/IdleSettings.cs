@@ -1,5 +1,7 @@
 namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
 {
+    using System.ComponentModel.DataAnnotations;
+
     /// <summary>
     /// Defines the IdleSettings class.
     /// </summary>
@@ -18,6 +20,13 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
         public uint IdleTime { get; set; }
 
         /// <summary>
+        /// Gets or sets the message.
+        /// </summary>
+        /// <value>The message.</value>
+        [DataType(DataType.MultilineText)]
+        public string TextMessage { get; set; }
+
+        /// <summary>
         /// Applies the setting.
         /// </summary>
         /// <param name="setting">The setting.</param>
@@ -27,6 +36,9 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
 
             this.Channel = setting.Channel;
             this.IdleTime = setting.IdleTime;
+
+            if (!string.IsNullOrEmpty(setting.TextMessage))
+                this.TextMessage = setting.TextMessage;
         }
     }
 }

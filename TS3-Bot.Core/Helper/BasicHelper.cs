@@ -93,6 +93,31 @@
         }
 
         /// <summary>
+        /// Gets the timespan as readable string.
+        /// </summary>
+        /// <param name="timeSpan">The time span.</param>
+        /// <returns>The readable timespan string.</returns>
+        public static string GetTimespanString(TimeSpan timeSpan)
+        {
+            if (timeSpan.Days > 0)
+            {
+                return string.Format("{0}d, {1}h, {2}min, {3}s", timeSpan.Days, timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
+            }
+
+            if (timeSpan.Hours > 0)
+            {
+                return string.Format("{0}h, {1}min, {2}s", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
+            }
+
+            if (timeSpan.Minutes > 0)
+            {
+                return string.Format("{0}min, {1}s", timeSpan.Minutes, timeSpan.Seconds);
+            }
+
+            return string.Format("{0}s", timeSpan.Seconds);
+        }
+
+        /// <summary>
         /// Gets the size of the file.
         /// </summary>
         /// <param name="fileSize">Size of the file.</param>

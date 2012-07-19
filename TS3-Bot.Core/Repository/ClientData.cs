@@ -258,7 +258,7 @@
         {
             lock (Container.lockClientLastChannelList)
             {
-                return Container.ClientLastChannelList.ContainsKey(clientDatabaseId);
+                return Container.AwayClientList.ContainsKey(clientDatabaseId);
             }
         }
 
@@ -267,11 +267,11 @@
         /// </summary>
         /// <param name="clientDatabaseId">The client database id.</param>
         /// <returns></returns>
-        public uint GetLastChannelByClientId(uint clientDatabaseId)
+        public AwayClientEntity GetLastChannelByClientId(uint clientDatabaseId)
         {
             lock (Container.lockClientLastChannelList)
             {
-                return Container.ClientLastChannelList[clientDatabaseId];
+                return Container.AwayClientList[clientDatabaseId];
             }
         }
 
@@ -285,7 +285,7 @@
             lock (Container.lockClientLastChannelList)
             {
                 if (!HasLastChannelByClientId(clientDatabaseId))
-                    Container.ClientLastChannelList.Add(clientDatabaseId, channelId);
+                    Container.AwayClientList.Add(clientDatabaseId, new AwayClientEntity(channelId));
             }
         }
 
@@ -297,7 +297,7 @@
         {
             lock (Container.lockClientLastChannelList)
             {
-                Container.ClientLastChannelList.Remove(clientDatabaseId);
+                Container.AwayClientList.Remove(clientDatabaseId);
             }
         }
 

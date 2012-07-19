@@ -51,6 +51,11 @@ namespace DirkSarodnick.TS3_Bot.Core.Helper
                 result.Replace("[CLIENT_LASTSEEN]", context.ClientLastSeen);
             }
 
+            if (context.ClientAwayTime != null)
+            {
+                result.Replace("[CLIENT_AWAYTIME]", context.ClientAwayTime);
+            }
+
             if (context.ClientHours.HasValue)
             {
                 result.Replace("[CLIENT_HOURS]", Math.Round(context.ClientHours.Value, 1).ToString(CultureInfo.InvariantCulture));

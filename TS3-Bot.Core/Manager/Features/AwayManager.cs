@@ -2,9 +2,11 @@
 {
     using System.Linq;
     using Base;
+    using Entity;
     using Helper;
     using Repository;
     using Settings;
+    using TS3QueryLib.Core.CommandHandling;
 
     /// <summary>
     /// Defines the AwayManager class.
@@ -41,8 +43,8 @@
         {
             MoveIdleClients();
             MoveAwayClients();
-            MoveIdleClientsBack();
             MoveAwayClientsBack();
+            MoveIdleClientsBack();
         }
 
         #endregion
@@ -125,13 +127,27 @@
             {
                 if (!Repository.Channel.GetClientSticky(client.ClientDatabaseId).HasValue)
                 {
-                    var channelId = Repository.Client.GetLastChannelByClientId(client.ClientDatabaseId);
-                    var channel = Repository.Channel.GetChannelListInfo(channelId);
-                    QueryRunner.MoveClient(client.ClientId, channelId);
+                    var awayClient = Repository.Client.GetLastChannelByClientId(client.ClientDatabaseId);
+                    var channel = Repository.Channel.GetChannelListInfo(awayClient.LastChannelId);
+                    QueryRunner.MoveClient(client.ClientId, awayClient.LastChannelId);
 
                     Log(Repository.Settings.Away,
                         string.Format("Client '{0}'(id:{1}) successfully moved back from Away Channel to '{2}'(id:{3}).",
-                                      client.Nickname, client.ClientDatabaseId, channel.Name, channelId));
+                                      client.Nickname, client.ClientDatabaseId, channel.Name, awayClient.LastChannelId));
+
+                    if (!string.IsNullOrEmpty(Repository.Settings.Away.TextMessage))
+                    {
+                        var awayTimespan = Repository.Static.Now - awayClient.Creation;
+                        var messageContext = new MessageContext
+                        {
+                            ClientDatabaseId = client.ClientDatabaseId,
+                            ClientNickname = client.Nickname,
+                            ClientAwayTime = BasicHelper.GetTimespanString(awayTimespan),
+                            ChannelId = awayClient.LastChannelId,
+                            ChannelName = channel.Name
+                        };
+                        QueryRunner.SendTextMessage(MessageTarget.Server, Repository.Connection.CredentialEntity.Self.VirtualServerId, Repository.Settings.Away.TextMessage.ToMessage(messageContext));
+                    }
                 }
                 Repository.Client.RemoveLastChannelByClientId(client.ClientDatabaseId);
             }
@@ -152,13 +168,27 @@
             {
                 if (!Repository.Channel.GetClientSticky(client.ClientDatabaseId).HasValue)
                 {
-                    var channelId = Repository.Client.GetLastChannelByClientId(client.ClientDatabaseId);
-                    var channel = Repository.Channel.GetChannelListInfo(channelId);
-                    QueryRunner.MoveClient(client.ClientId, channelId);
+                    var idleClient = Repository.Client.GetLastChannelByClientId(client.ClientDatabaseId);
+                    var channel = Repository.Channel.GetChannelListInfo(idleClient.LastChannelId);
+                    QueryRunner.MoveClient(client.ClientId, idleClient.LastChannelId);
 
                     Log(Repository.Settings.Idle,
                         string.Format("Client '{0}'(id:{1}) successfully moved back from Idle Channel to '{2}'(id:{3}).",
-                                      client.Nickname, client.ClientDatabaseId, channel.Name, channelId));
+                                      client.Nickname, client.ClientDatabaseId, channel.Name, idleClient.LastChannelId));
+
+                    if (!string.IsNullOrEmpty(Repository.Settings.Idle.TextMessage))
+                    {
+                        var idleTimespan = Repository.Static.Now - idleClient.Creation;
+                        var messageContext = new MessageContext
+                        {
+                            ClientDatabaseId = client.ClientDatabaseId,
+                            ClientNickname = client.Nickname,
+                            ClientAwayTime = BasicHelper.GetTimespanString(idleTimespan),
+                            ChannelId = idleClient.LastChannelId,
+                            ChannelName = channel.Name
+                        };
+                        QueryRunner.SendTextMessage(MessageTarget.Server, Repository.Connection.CredentialEntity.Self.VirtualServerId, Repository.Settings.Idle.TextMessage.ToMessage(messageContext));
+                    }
                 }
                 Repository.Client.RemoveLastChannelByClientId(client.ClientDatabaseId);
             }
