@@ -108,6 +108,7 @@
     <Compile Include="Entity\ModeratedClientEntity.cs" />
     <Compile Include="Entity\ModerationType.cs" />
     <Compile Include="Entity\TimeClientEntity.cs" />
+    <Compile Include="Helper\AwayClientExtension.cs" />
     <Compile Include="Manager\Features\NickManager.cs" />
     <Compile Include="Manager\Features\RecordManager.cs" />
     <Compile Include="Manager\Features\TimeManager.cs" />

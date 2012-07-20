@@ -13,12 +13,12 @@ namespace DirkSarodnick.TS3_Bot.Core.Helper
         /// <returns>True or False</returns>
         public static bool EqualsAny(this uint obj, params uint[] objArray)
         {
-            var result = true;
+            var result = false;
 
             var count = objArray.Length;
             for (var i = 0; i < count; i++)
             {
-                result &= obj == objArray[i];
+                result |= obj == objArray[i];
             }
 
             return result;

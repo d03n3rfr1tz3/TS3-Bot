@@ -68,11 +68,7 @@
             {
                 if (!PermissionHelper.IsGranted(Repository.Settings.Away, client.ServerGroups)) continue;
 
-                uint? awayChannel = null;
-                if (Repository.Settings.Away.MuteHeadphoneChannel > 0 && client.IsClientOutputMuted.GetValueOrDefault()) awayChannel = Repository.Settings.Away.MuteHeadphoneChannel;
-                if (Repository.Settings.Away.MuteMicrophoneChannel > 0 && client.IsClientInputMuted.GetValueOrDefault()) awayChannel = Repository.Settings.Away.MuteMicrophoneChannel;
-                if (Repository.Settings.Away.Channel > 0 && client.IsClientAway.GetValueOrDefault()) awayChannel = Repository.Settings.Away.Channel;
-
+                var awayChannel = client.GetAwayChannelByState(Repository.Settings.Away);
                 if (awayChannel.HasValue && !client.ChannelId.EqualsAny(awayChannel.Value) && !Repository.Channel.GetClientSticky(client.ClientDatabaseId).HasValue)
                 {
                     Repository.Client.SetLastChannelByClientId(client.ClientDatabaseId, client.ChannelId);
@@ -92,8 +88,7 @@
         {
             if (!Repository.Settings.Idle.Enabled) return;
 
-            foreach (var client in Repository.Client.GetClientList()
-                .Where(m => m.ClientIdleDuration.HasValue && m.ClientIdleDuration.Value.TotalMinutes >= Repository.Settings.Idle.IdleTime))
+            foreach (var client in Repository.Client.GetClientList().Where(m => m.IsIdle(Repository.Settings.Idle)))
             {
                 if (!PermissionHelper.IsGranted(Repository.Settings.Idle, client.ServerGroups)) continue;
 
@@ -118,11 +113,11 @@
             if (!Repository.Settings.Away.Enabled) return;
 
             foreach (var client in Repository.Client.GetClientList()
-                .Where(m => (m.ChannelId == Repository.Settings.Away.Channel || m.ChannelId == Repository.Settings.Away.MuteHeadphoneChannel || m.ChannelId == Repository.Settings.Away.MuteMicrophoneChannel) &&       // Check for Channel
-                            (Repository.Settings.Away.Channel == 0 || (Repository.Settings.Away.Channel > 0 && m.IsClientAway.HasValue && !m.IsClientAway.Value)) &&                                                    // Check if not Away
-                            (Repository.Settings.Away.MuteMicrophoneChannel == 0 || (Repository.Settings.Away.MuteMicrophoneChannel > 0 && m.IsClientInputMuted.HasValue && !m.IsClientInputMuted.Value)) &&               // Check if not muted Microphone
-                            (Repository.Settings.Away.MuteHeadphoneChannel == 0 || (Repository.Settings.Away.MuteHeadphoneChannel > 0 && m.IsClientOutputMuted.HasValue && !m.IsClientOutputMuted.Value)) &&               // Check if not muted Headphones
-                            ((!Repository.Settings.Idle.Enabled || Repository.Settings.Idle.IdleTime == 0) || (m.ClientIdleDuration.HasValue && m.ClientIdleDuration.Value.TotalMinutes < Repository.Settings.Idle.IdleTime)) && // Check if not idle (to prevent endless loop)
+                .Where(m => m.ChannelId.EqualsAny(Repository.Settings.Away.Channel, Repository.Settings.Away.MuteMicrophoneChannel, Repository.Settings.Away.MuteHeadphoneChannel) && // Check for Channel
+                            !m.IsAway(Repository.Settings.Away) &&        // Check if not Away
+                            !m.IsInputMuted(Repository.Settings.Away) &&  // Check if not muted Microphone
+                            !m.IsOutputMuted(Repository.Settings.Away) && // Check if not muted Headphones
+                            !m.IsIdle(Repository.Settings.Idle) &&        // Check if not idle (to prevent endless loop)
                             Repository.Client.HasLastChannelByClientId(m.ClientDatabaseId))) // Check for an last-channel entry
             {
                 if (!Repository.Channel.GetClientSticky(client.ClientDatabaseId).HasValue)
@@ -161,9 +156,11 @@
             if (!Repository.Settings.Idle.Enabled) return;
 
             foreach (var client in Repository.Client.GetClientList()
-                .Where(m => m.ChannelId == Repository.Settings.Idle.Channel &&         // Check for Channel
-                            m.IsClientAway.HasValue && !m.IsClientAway.Value &&                // Check if not away (to prevent endless loop)
-                            m.ClientIdleDuration.HasValue && m.ClientIdleDuration.Value.TotalMinutes < Repository.Settings.Idle.IdleTime && // Check if not idle
+                .Where(m => m.ChannelId == Repository.Settings.Idle.Channel &&    // Check for Channel
+                            !m.IsAway(Repository.Settings.Away) &&                // Check if not away (to prevent endless loop)
+                            !m.IsInputMuted(Repository.Settings.Away) &&          // Check if not muted Microphone
+                            !m.IsOutputMuted(Repository.Settings.Away) &&         // Check if not muted Headphones
+                            !m.IsIdle(Repository.Settings.Idle) &&                // Check if not idle
                             Repository.Client.HasLastChannelByClientId(m.ClientDatabaseId)))   // Check for last-channel entry
             {
                 if (!Repository.Channel.GetClientSticky(client.ClientDatabaseId).HasValue)
