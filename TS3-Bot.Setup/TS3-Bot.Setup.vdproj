@@ -447,7 +447,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:TS3-Bot.Core.XmlSerializers, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:TS3-Bot.Core.XmlSerializers, Version=1.0.0.7, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_920722F522E917685264D1F092A0BFA9"
@@ -478,7 +478,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:TS3-Bot.Core, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:TS3-Bot.Core, Version=1.0.0.7, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_A72C7A3F7BB92E7D11364B61B668C923"
@@ -581,15 +581,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TeamSpeak 3 Bot"
-        "ProductCode" = "8:{8E338D0B-141C-41A1-890A-8C4B9B4D2FB8}"
-        "PackageCode" = "8:{7B19AA28-9F93-4B11-AA09-34230FF00CC5}"
+        "ProductCode" = "8:{6A59A62F-7975-4845-B00E-0962C5E4AE4D}"
+        "PackageCode" = "8:{72FF9B6D-BD6E-4EC8-B05B-AB28ECA24121}"
         "UpgradeCode" = "8:{01D6B1B4-F9ED-4B1A-963D-119DE514A665}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.7"
+        "ProductVersion" = "8:1.0.8"
         "Manufacturer" = "8:Dirk Sarodnick"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://www.d03n3r.de"

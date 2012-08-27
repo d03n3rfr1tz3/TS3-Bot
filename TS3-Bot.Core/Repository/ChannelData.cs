@@ -109,15 +109,18 @@
         /// Removes the sticky clients.
         /// </summary>
         /// <param name="clientDatabaseId">The client database id.</param>
-        /// <param name="tempOnly">if set to <c>true</c> [temp only].</param>
-        public void RemoveStickyClients(uint clientDatabaseId, bool tempOnly)
+        /// <param name="channelId">The channel id.</param>
+        public void RemoveStickyClients(uint clientDatabaseId, uint? channelId = null)
         {
             lock (Container.lockStickyClientList)
             {
-                var entities = tempOnly ? Container.StickyClientList.Where(m => m.Value.ClientDatabaseId == clientDatabaseId && m.Value.ChannelId != Repository.Settings.Sticky.Channel) : Container.StickyClientList.Where(m => m.Value.ClientDatabaseId == clientDatabaseId && m.Value.ChannelId == Repository.Settings.Sticky.Channel);
-                foreach (var entity in entities.ToList())
+                List<Guid> entities = channelId.HasValue
+                                        ? Container.StickyClientList.Where(m => m.Value.ClientDatabaseId == clientDatabaseId && m.Value.ChannelId == channelId.Value).Select(m => m.Key).ToList()
+                                        : Container.StickyClientList.Where(m => m.Value.ClientDatabaseId == clientDatabaseId).Select(m => m.Key).ToList();
+
+                foreach (var entity in entities)
                 {
-                    Container.StickyClientList.Remove(entity.Key);
+                    Container.StickyClientList.Remove(entity);
                 }
             }
         }

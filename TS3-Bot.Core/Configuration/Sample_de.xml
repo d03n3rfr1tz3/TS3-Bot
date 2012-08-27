@@ -181,7 +181,7 @@
             <HelpMessage>
                 [B]!stick {Nickname|Datenbank ID} {Channel ID} [StickTime][/B]
                 Gibt dem angegebenen Client im angegebenen Channel einen Sticky-Status. Die StickTime (optional) gibt die Dauer in Minuten an, die ein Client darin festgehalten wird.
-                Beispiel: [I]!stick 5[/I]
+                Beispiel: [I]!stick 5 2[/I]
 
                 [B]!unstick {Nickname|Datenbank ID}[/B]
                 Löst vom angegebenen Client jeden Sticky-Status.

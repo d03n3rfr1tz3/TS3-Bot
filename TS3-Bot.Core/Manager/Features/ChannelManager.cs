@@ -159,7 +159,7 @@
             }
             else
             {
-                Repository.Channel.RemoveStickyClients(clientEntry.DatabaseId, false);
+                Repository.Channel.RemoveStickyClients(clientEntry.DatabaseId, Repository.Settings.Sticky.Channel);
                 
                 Log(Repository.Settings.Sticky,
                     string.Format("Client '{0}'(id:{1}) were removed from sticky (id:{4}) by '{2}'(id:{3})",

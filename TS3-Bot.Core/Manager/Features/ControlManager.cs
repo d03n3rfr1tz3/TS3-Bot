@@ -399,15 +399,22 @@
         /// <param name="message">The message.</param>
         private void Execute(StickMessage message)
         {
-            foreach (uint clientDatabaseId in message.ClientDatabaseIds)
+            if (message.ErrorMessage != null)
             {
-                Repository.Channel.AddStickyClients(clientDatabaseId, message.ChannelId, message.StickTime);
+                Log(LogLevel.Warning, message.ErrorMessage);
+                return;
             }
 
             var clientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
             Log(Repository.Settings.Control.Stick,
                 string.Format("Client '{1}'(id:{2}) used {0}.", Repository.Settings.Control.Stick.Command,
                               clientEntry.Nickname, clientEntry.DatabaseId));
+
+            foreach (uint clientDatabaseId in message.ClientDatabaseIds)
+            {
+                Repository.Channel.AddStickyClients(clientDatabaseId, message.ChannelId, message.StickTime);
+                Log(Repository.Settings.Control.Stick, string.Format("Client (id:{0}) got sticked.", clientDatabaseId));
+            }
         }
 
         /// <summary>
@@ -416,15 +423,22 @@
         /// <param name="message">The message.</param>
         private void Execute(UnstickMessage message)
         {
-            foreach (uint clientDatabaseId in message.ClientDatabaseIds)
+            if (message.ErrorMessage != null)
             {
-                Repository.Channel.RemoveStickyClients(clientDatabaseId, true);
+                Log(LogLevel.Warning, message.ErrorMessage);
+                return;
             }
 
             var clientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
             Log(Repository.Settings.Control.Stick,
                 string.Format("Client '{1}'(id:{2}) used {0}.", Repository.Settings.Control.Stick.UndoCommand,
                               clientEntry.Nickname, clientEntry.DatabaseId));
+
+            foreach (uint clientDatabaseId in message.ClientDatabaseIds)
+            {
+                Repository.Channel.RemoveStickyClients(clientDatabaseId);
+                Log(Repository.Settings.Control.Stick, string.Format("Client (id:{0}) got unsticked.", clientDatabaseId));
+            }
         }
 
         /// <summary>

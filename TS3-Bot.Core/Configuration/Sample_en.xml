@@ -176,9 +176,9 @@
         <Stick Enabled="true" LogEnabled="true">
             <!-- The Help-Message part, which will explain the !stick- and !unstick-Command -->
             <HelpMessage>
-                [B]!stick {Nickname|Database ID} [Channel ID] [StickTime][/B]
+                [B]!stick {Nickname|Database ID} {Channel ID} [StickTime][/B]
                 Sets the Sticky-State to given client in given channel. The StickTime (optional) specifies the duration in minutes that a client is detained therein.
-                Example: [I]!stick 5[/I]
+                Example: [I]!stick 5 2[/I]
 
                 [B]!unstick {Nickname|Database ID}[/B]
                 Releases every Sticky-State from given client.

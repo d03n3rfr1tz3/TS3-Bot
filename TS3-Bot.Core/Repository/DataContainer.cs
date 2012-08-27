@@ -198,8 +198,8 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
                 if (awayClientList != null)
                 {
                     awayClientList.Flush();
-                    awayClientList.Dispose();
-                    awayClientList = null;
+                    //awayClientList.Dispose();
+                    //awayClientList = null;
                 }
             }
 
@@ -208,8 +208,8 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
                 if (stickyClientList != null)
                 {
                     stickyClientList.Flush();
-                    stickyClientList.Dispose();
-                    stickyClientList = null;
+                    //stickyClientList.Dispose();
+                    //stickyClientList = null;
                 }
             }
 
@@ -218,8 +218,8 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
                 if (votedClientList != null)
                 {
                     votedClientList.Flush();
-                    votedClientList.Dispose();
-                    votedClientList = null;
+                    //votedClientList.Dispose();
+                    //votedClientList = null;
                 }
             }
 
@@ -228,8 +228,8 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
                 if (clientLastSeen != null)
                 {
                     clientLastSeen.Flush();
-                    clientLastSeen.Dispose();
-                    clientLastSeen = null;
+                    //clientLastSeen.Dispose();
+                    //clientLastSeen = null;
                 }
             }
 
@@ -238,8 +238,8 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
                 if (moderatedClientList != null)
                 {
                     moderatedClientList.Flush();
-                    moderatedClientList.Dispose();
-                    moderatedClientList = null;
+                    //moderatedClientList.Dispose();
+                    //moderatedClientList = null;
                 }
             }
 
@@ -248,8 +248,8 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
                 if (timeClientList != null)
                 {
                     timeClientList.Flush();
-                    timeClientList.Dispose();
-                    timeClientList = null;
+                    //timeClientList.Dispose();
+                    //timeClientList = null;
                 }
             }
 
@@ -258,8 +258,8 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
                 if (previousServerGroupsList != null)
                 {
                     previousServerGroupsList.Flush();
-                    previousServerGroupsList.Dispose();
-                    previousServerGroupsList = null;
+                    //previousServerGroupsList.Dispose();
+                    //previousServerGroupsList = null;
                 }
             }
         }

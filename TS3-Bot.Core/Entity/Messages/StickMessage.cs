@@ -60,9 +60,10 @@
         /// <returns></returns>
         public override bool Validate(string[] parameters)
         {
-            return parameters.Length > 1 &&
+            return parameters.Length > 2 &&
                    parameters[0].Equals(Command, StringComparison.InvariantCultureIgnoreCase) &&
-                   !string.IsNullOrEmpty(parameters[1]);
+                   !string.IsNullOrEmpty(parameters[1]) &&
+                   !string.IsNullOrEmpty(parameters[2]);
         }
 
         /// <summary>
