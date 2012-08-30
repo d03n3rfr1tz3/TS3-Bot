@@ -25,11 +25,12 @@
         /// Determines whether this instance can invoke.
         /// </summary>
         /// <returns>True or False</returns>
-        public override bool CanSlowInvoke()
+        public override bool CanInvoke()
         {
             return CanInvoke(new ISettings[]
                                  {
-                                     Repository.Settings.Sticky
+                                     Repository.Settings.Sticky,
+                                     Repository.Settings.Control.Stick
                                  });
         }
 
@@ -81,7 +82,7 @@
         /// <summary>
         /// Invokes this instance.
         /// </summary>
-        public override void SlowInvoke()
+        public override void Invoke()
         {
             StickyChannel();
         }
@@ -122,7 +123,7 @@
         /// </summary>
         protected void StickyChannel()
         {
-            if (!Repository.Settings.Control.Stick.Enabled) return;
+            if (!Repository.Settings.Sticky.Enabled && !Repository.Settings.Control.Stick.Enabled) return;
 
             var stickyClients = Repository.Channel.GetStickyClients();
             foreach (var stickyClient in stickyClients)
