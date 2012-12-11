@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using Base;
     using Entity;
@@ -445,7 +446,7 @@
             var lastModerated = Container.ModeratedClientList.Count > 0 ? Container.ModeratedClientList.Max(m => m.Value.Moderated) : DateTime.MinValue;
 
             uint index = 0;
-            const ushort length = 100;
+            const ushort length = 10;
             try
             {
                 while (true)
@@ -482,8 +483,12 @@
             {
                 lock (Container.lockModeratedClientList)
                 {
-                    if (!Container.ModeratedClientList.Any(m => m.Value.Type == entity.Value.Type && m.Value.User == entity.Value.User && m.Value.ServerGroup == entity.Value.ServerGroup))
-                        Container.ModeratedClientList.Add(Guid.NewGuid(), entity.Value);
+                    var key = string.Format("{0}.{1}.", entity.Value.Type, entity.Value.ServerGroup);
+                    var moderations = Container.ModeratedClientList.Where(m => m.Key.StartsWith(key));
+                    if (!moderations.Any(m => m.Value.User == entity.Value.User))
+                    {
+                        Container.ModeratedClientList.Add(key + Guid.NewGuid(), entity.Value);
+                    }
                 }
             }
         }
@@ -499,8 +504,12 @@
         {
             lock (Container.lockModeratedClientList)
             {
-                if (!Container.ModeratedClientList.Any(m => m.Value.Type == type && m.Value.User == clientDatabaseId && m.Value.ServerGroup == serverGroupId))
-                    Container.ModeratedClientList.Add(Guid.NewGuid(), new ModeratedClientEntity(type, moderatorDatabaseId, clientDatabaseId, serverGroupId));
+                var key = string.Format("{0}.{1}.", type, serverGroupId);
+                var moderations = Container.ModeratedClientList.Where(m => m.Key.StartsWith(key));
+                if (!moderations.Any(m => m.Value.User == clientDatabaseId))
+                {
+                    Container.ModeratedClientList.Add(key + Guid.NewGuid(), new ModeratedClientEntity(type, moderatorDatabaseId, clientDatabaseId, serverGroupId));
+                }
             }
         }
 
@@ -515,7 +524,7 @@
         {
             lock (Container.lockModeratedClientList)
             {
-                var entities = Container.ModeratedClientList.Where(m => m.Value.Type == type).AsEnumerable();
+                var entities = Container.ModeratedClientList.Where(m => m.Key.StartsWith(string.Format("{0}.", type))).AsEnumerable();
 
                 if (fromDate.HasValue)
                 {
@@ -541,9 +550,9 @@
         {
             lock (Container.lockModeratedClientList)
             {
-                var joins = Container.ModeratedClientList.Where(m => m.Value.Type == ModerationType.Added && m.Value.User == clientDatabaseId && m.Value.ServerGroup == serverGroupId);
+                var joins = Container.ModeratedClientList.Where(m => m.Key.StartsWith(string.Format("{0}.{1}.", ModerationType.Added, serverGroupId))).ToList().Where(m => m.Value.User == clientDatabaseId).ToList();
                 if (joins.Any()) return joins.Max(m => m.Value.Moderated);
-                if (Container.ModeratedClientList.Any()) return Container.ModeratedClientList.Where(m => m.Value.ServerGroup == serverGroupId).Min(m => m.Value.Moderated);
+                if (Container.ModeratedClientList.Any()) return Container.ModeratedClientList.Where(m => m.Key.StartsWith(string.Format("{0}.{1}.", ModerationType.Added, serverGroupId))).Min(m => m.Value.Moderated);
                 return DateTime.MinValue;
             }
         }
@@ -577,7 +586,8 @@
 
             lock (Container.lockTimeClientList)
             {
-                var times = Container.TimeClientList.Where(m => m.Value.User == clientDatabaseId && m.Value.Joined == lastConnected);
+                var key = string.Format("{0}.{1}", clientDatabaseId, lastConnected.ToString(CultureInfo.InvariantCulture));
+                var times = Container.TimeClientList.Where(m => m.Key.StartsWith(key));
                 if (times.Any())
                 {
                     var time = times.Single();
@@ -585,7 +595,7 @@
                 }
                 else
                 {
-                    Container.TimeClientList.Add(Guid.NewGuid(), new TimeClientEntity(clientDatabaseId, lastConnected, disconnected));
+                    Container.TimeClientList.Add(key, new TimeClientEntity(clientDatabaseId, lastConnected, disconnected));
                 }
             }
         }
@@ -598,7 +608,7 @@
         /// <returns></returns>
         public Dictionary<uint, double> GetTime(DateTime? fromTime, DateTime? toTime)
         {
-            IEnumerable<KeyValuePair<Guid, TimeClientEntity>> times;
+            IEnumerable<KeyValuePair<string, TimeClientEntity>> times;
 
             lock (Container.lockTimeClientList)
             {
@@ -629,11 +639,17 @@
         /// <returns></returns>
         public Dictionary<uint, double> GetTime(IEnumerable<uint> clientDatabaseIds, DateTime? fromTime, DateTime? toTime)
         {
-            IEnumerable<KeyValuePair<Guid, TimeClientEntity>> times;
+            IEnumerable<KeyValuePair<string, TimeClientEntity>> times;
 
             lock (Container.lockTimeClientList)
             {
-                times = Container.TimeClientList.Where(m => clientDatabaseIds.Any(c => c == m.Value.User)).AsEnumerable();
+                var tempTimes = new List<KeyValuePair<string, TimeClientEntity>>();
+                foreach (var clientDatabaseId in clientDatabaseIds)
+                {
+                    tempTimes.AddRange(Container.TimeClientList.Where(m => m.Key.StartsWith(string.Format("{0}.", clientDatabaseId))).AsEnumerable());
+                }
+
+                times = tempTimes.AsEnumerable();
 
                 if (fromTime.HasValue)
                 {
@@ -660,11 +676,11 @@
         /// <returns></returns>
         public double GetTime(uint clientDatabaseId, DateTime? fromTime, DateTime? toTime)
         {
-            IEnumerable<KeyValuePair<Guid, TimeClientEntity>> times;
+            IEnumerable<KeyValuePair<string, TimeClientEntity>> times;
 
             lock (Container.lockTimeClientList)
             {
-                times = Container.TimeClientList.Where(m => m.Value.User == clientDatabaseId).AsEnumerable();
+                times = Container.TimeClientList.Where(m => m.Key.StartsWith(string.Format("{0}.", clientDatabaseId))).AsEnumerable();
                 
                 if (fromTime.HasValue)
                 {

@@ -10,8 +10,8 @@
 
     <Away Enabled="false" LogEnabled="false">
         <Channel>0</Channel>
-		    <MuteHeadphoneChannel>0</MuteHeadphoneChannel>
-		    <MuteMicrophoneChannel>0</MuteMicrophoneChannel>
+        <MuteHeadphoneChannel>0</MuteHeadphoneChannel>
+        <MuteMicrophoneChannel>0</MuteMicrophoneChannel>
         <TextMessage></TextMessage>
         <Permitted/>
         <Denied/>

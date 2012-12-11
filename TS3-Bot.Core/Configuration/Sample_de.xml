@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<InstanceSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://files.d03n3r.de/TS3bot_Settings_v1.0.0.1.xsd">
+<InstanceSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://files.d03n3r.de/TS3bot_Settings_v1.0.0.2.xsd">
 
     <!-- true/false | Aktiviert/Deaktiviert den gesamten Bot. -->
     <Enabled>false</Enabled>
@@ -105,9 +105,9 @@
         <Seen Enabled="true">
             <!-- Der Teil der Hilfenachricht, welcher den !seen-Befehl erklärt. -->
             <HelpMessage>
-                [B]!seen {Nickname|Datenbank ID}[/B]
-                Gibt dir Informationen, wann jemand zuletzt gesehen wurde. Es reicht einen Teil des Nicks anzugeben. Alternativ kann auch die Datenbank ID angegeben werden.
-                Beispiel: [I]!seen Stefan[/I]
+              [B]!seen [COLOR=DarkRed]{Nickname|Datenbank ID}[/COLOR][/B]
+              Gibt dir Informationen, wann jemand zuletzt gesehen wurde. Es reicht einen Teil des Nicks anzugeben. Alternativ kann auch die Datenbank ID angegeben werden.
+              Beispiel: [I]!seen [COLOR=DarkRed]Stefan[/COLOR][/I]
             </HelpMessage>
             
             <!-- Die Nachricht, welche angezeigt wird, wenn jemand den !seen-Befehl benutzt. -->
@@ -128,9 +128,9 @@
           
             <!-- Der Teil der Hilfenachricht, welcher den !seengroup-Befehl erklärt. -->
             <HelpMessage>
-              [B]!seengroup {ServerGruppe ID}[/B]
+              [B]!seengroup [COLOR=DarkRed]{ServerGruppe ID}[/COLOR][/B]
               Gibt dir Informationen, wann jemand die Mitglieder der angegebenen Gruppe zuletzt gesehen wurden.
-              Beispiel: [I]!seengroup 6[/I]
+              Beispiel: [I]!seengroup [COLOR=DarkRed]6[/COLOR][/I]
             </HelpMessage>
 
             <!-- Die Nachricht, welche angezeigt wird, wenn jemand den !seengroup-Befehl benutzt. -->
@@ -179,13 +179,13 @@
         <Stick Enabled="true" LogEnabled="true">
             <!-- Der Teil der Hilfenachricht, welcher die !stick- und !unstick-Befehle erklärt. -->
             <HelpMessage>
-                [B]!stick {Nickname|Datenbank ID} {Channel ID} [StickTime][/B]
-                Gibt dem angegebenen Client im angegebenen Channel einen Sticky-Status. Die StickTime (optional) gibt die Dauer in Minuten an, die ein Client darin festgehalten wird.
-                Beispiel: [I]!stick 5 2[/I]
+              [B]!stick [COLOR=DarkRed]{Nickname|Datenbank ID} {Channel ID}[/COLOR] [COLOR=Gray][StickTime][/COLOR][/B]
+              Gibt dem angegebenen Client im angegebenen Channel einen Sticky-Status. Die StickTime (optional) gibt die Dauer in Minuten an, die ein Client darin festgehalten wird.
+              Beispiel: [I]!stick [COLOR=DarkRed]5 2[/COLOR] [COLOR=Gray]30[/COLOR][/I]
 
-                [B]!unstick {Nickname|Datenbank ID}[/B]
-                Löst vom angegebenen Client jeden Sticky-Status.
-                Beispiel: [I]!unstick 5[/I]
+              [B]!unstick [COLOR=DarkRed]{Nickname|Datenbank ID}[/COLOR][/B]
+              Löst vom angegebenen Client jeden Sticky-Status.
+              Beispiel: [I]!unstick [COLOR=DarkRed]5[/COLOR][/I]
             </HelpMessage>
             
             <!-- Denied/Permitted-Tags können hier platziert werden. Weitere Details dazu sind unten im Abstimmungs-Feature zu finden.-->
@@ -200,10 +200,10 @@
         <Hours Enabled="true">
             <!-- Der Teil der Hilfenachricht, welcher den !hours-Befehl erklärt. -->
             <HelpMessage>
-              [B]!hours [Zeitraum] [Nickname|Datenbank ID][/B]
+              [B]!hours [COLOR=Gray][Zeitraum] [Nickname|Datenbank ID][/COLOR][/B]
               Gibt dir eine Auflistung aller aktiven Mitglieder sortiert nach der längsten Onlinezeit.
               Der Zeitraum ist optional und kann folgende Werte haben: today, week, month.
-			  Kann optional auch nach einer Datenbank ID oder einem Teil eines Nicknamen gefiltert werden.
+              Kann optional auch nach einer Datenbank ID oder einem Teil eines Nicknamen gefiltert werden.
             </HelpMessage>
 
             <!-- Das Limit, bis zu wieviele Mitglieder aufgelistet werden. Standard sind die Top10. -->
@@ -227,13 +227,13 @@
         <Punish Enabled="false" LogEnabled="true">
             <!-- Der Teil der Hilfenachricht, welcher die !punish- und !unpunish-Befehle erklärt. -->
             <HelpMessage>
-              [B]!punish {Nickname|Datenbank ID} {Channel ID}[/B]
+              [B]!punish [COLOR=DarkRed]{Nickname|Datenbank ID} {ServerGroup ID}[/COLOR][/B]
               Nimmt dem angegebenen Client alle Server Gruppen und ersetzt diese durch eine vorkonfigurierte Server Gruppe.
-              Beispiel: [I]!punish 5[/I]
+              Beispiel: [I]!punish [COLOR=DarkRed]5 8[/COLOR][/I]
 
-              [B]!unpunish {Nickname|Datenbank ID}[/B]
+              [B]!unpunish [COLOR=DarkRed]{Nickname|Datenbank ID}[/COLOR][/B]
               Nimmt dem angegebenen Client die vorkonfiguriert Server Gruppe und stellt alle vorherigen Server Gruppen wieder her.
-              Beispiel: [I]!unpunish 5[/I]
+              Beispiel: [I]!unpunish [COLOR=DarkRed]5[/COLOR][/I]
             </HelpMessage>
 
             <!-- Die Server Gruppe, welche dem Benutzer stattdessen gegeben wird. -->

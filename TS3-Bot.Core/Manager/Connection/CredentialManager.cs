@@ -98,20 +98,20 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Connection
             TcpDispatcher = new SyncTcpDispatcher(BotInstance.Settings);
             QueryRunner = new QueryRunner(TcpDispatcher);
             QueryRunner.Login(BotInstance.Settings.TeamSpeak.Username, BotInstance.Settings.TeamSpeak.Password);
-            if (BotInstance.Settings.TeamSpeak.InstancePort > 0)
-                QueryRunner.SelectVirtualServerByPort(BotInstance.Settings.TeamSpeak.InstancePort);
+            if (BotInstance.Settings.TeamSpeak.InstancePort.GetValueOrDefault() > 0)
+                QueryRunner.SelectVirtualServerByPort(BotInstance.Settings.TeamSpeak.InstancePort.GetValueOrDefault());
             else
-                QueryRunner.SelectVirtualServerById(BotInstance.Settings.TeamSpeak.Instance);
+                QueryRunner.SelectVirtualServerById(BotInstance.Settings.TeamSpeak.Instance.GetValueOrDefault());
             Self = QueryRunner.SendWhoAmI();
 
             WorkerTcpDispatcher = new SyncTcpDispatcher(BotInstance.Settings);
             WorkerQueryRunner = new QueryRunner(WorkerTcpDispatcher);
             WorkerQueryRunner.Login(BotInstance.Settings.TeamSpeak.Username, BotInstance.Settings.TeamSpeak.Password);
 
-            if (BotInstance.Settings.TeamSpeak.InstancePort > 0)
-                WorkerQueryRunner.SelectVirtualServerByPort(BotInstance.Settings.TeamSpeak.InstancePort);
+            if (BotInstance.Settings.TeamSpeak.InstancePort.GetValueOrDefault() > 0)
+                WorkerQueryRunner.SelectVirtualServerByPort(BotInstance.Settings.TeamSpeak.InstancePort.GetValueOrDefault());
             else
-                WorkerQueryRunner.SelectVirtualServerById(BotInstance.Settings.TeamSpeak.Instance);
+                WorkerQueryRunner.SelectVirtualServerById(BotInstance.Settings.TeamSpeak.Instance.GetValueOrDefault());
             
             WorkerQueryRunner.UpdateCurrentQueryClient(new ClientModification { Nickname = BotInstance.Settings.Global.BotNickname });
             SelfWorker = WorkerQueryRunner.SendWhoAmI();
@@ -144,9 +144,9 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Connection
         {
             NotificationQueryRunner.Login(BotInstance.Settings.TeamSpeak.Username, BotInstance.Settings.TeamSpeak.Password);
             if (BotInstance.Settings.TeamSpeak.InstancePort > 0)
-                NotificationQueryRunner.SelectVirtualServerByPort(BotInstance.Settings.TeamSpeak.InstancePort);
+                NotificationQueryRunner.SelectVirtualServerByPort(BotInstance.Settings.TeamSpeak.InstancePort.GetValueOrDefault());
             else
-                NotificationQueryRunner.SelectVirtualServerById(BotInstance.Settings.TeamSpeak.Instance);
+                NotificationQueryRunner.SelectVirtualServerById(BotInstance.Settings.TeamSpeak.Instance.GetValueOrDefault());
 
             NotificationQueryRunner.RegisterForNotifications(ServerNotifyRegisterEvent.Server);
             NotificationQueryRunner.RegisterForNotifications(ServerNotifyRegisterEvent.Channel, BotInstance.Settings.Sticky.Channel);

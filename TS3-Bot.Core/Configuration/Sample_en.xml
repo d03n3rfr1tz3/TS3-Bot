@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<InstanceSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://files.d03n3r.de/TS3bot_Settings_v1.0.0.1.xsd">
+<InstanceSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://files.d03n3r.de/TS3bot_Settings_v1.0.0.2.xsd">
 
     <!-- true/false | Enables/Disables the whole Bot. -->
     <Enabled>false</Enabled>
@@ -17,22 +17,22 @@
     <TeamSpeak>
         <!-- Specify the IP or Host of your TeamSpeak Server. -->
         <Host>127.0.0.1</Host>
-		
+    
         <!-- Specify the Username of any ServerQuery-User. Be sure that this account has enough rights to do, what you configure below ;-) -->
         <Username></Username>
-		
+    
         <!-- Specify the Password for the Username above. -->
         <Password></Password>
-		
+    
         <!-- Specify the Server Instance ID, on which this Bot will be running. You have to specify an Instance OR an InstancePort! -->
         <Instance>1</Instance>
       
         <!-- Specify the Server Instance Port, on which this Bot will be running. You have to specify an Instance OR an InstancePort! -->
         <InstancePort>9987</InstancePort>
-		
+    
         <!-- Specify the Server Query Port, on which this Bot has to connect. -->
         <QueryPort>10011</QueryPort>
-		
+    
         <!-- Specify the ID of the Guest Group. -->
         <GuestGroups>
             <Group>8</Group>
@@ -44,10 +44,10 @@
     <Away Enabled="true">
         <!-- The ID of the away channel, where someone will be moved, when he/she is away. An empty Value will also disable this. -->
         <Channel>2</Channel>
-		
+    
         <!-- The ID of the away channel, where someone will be moved, when he/she mutes his/her headphones. An empty Value will also disable this. -->
         <MuteHeadphoneChannel>3</MuteHeadphoneChannel>
-		
+    
         <!-- The ID of the away channel, where someone will be moved, when he/she mutes his/her microphone. An empty Value will also disable this. -->
         <MuteMicrophoneChannel>4</MuteMicrophoneChannel>
 
@@ -75,7 +75,7 @@
         
         <!-- The Message that will be shown, when someone get kicked by this feature. -->
         <KickMessage>Thats a bad nickname!</KickMessage>
-		
+    
         <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
     </BadNickname>
 
@@ -93,7 +93,7 @@
                 [B]!help[/B]
                 Opens this help. Who would have thought it.
             </HelpMessage>
-			
+      
             <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
         </Help>
 
@@ -102,18 +102,18 @@
         <Seen Enabled="true">
             <!-- The Help-Message part, which will explain the !seen-Command -->
             <HelpMessage>
-                [B]!seen {Nickname|Database ID}[/B]
-                Gives you information about when someone was last seen. It is enough to specify a part of the nickname. Alternatively, the database ID can be specified.
-                Example: [I]!seen Stefan[/I]
+              [B]!seen [COLOR=DarkRed]{Nickname|Database ID}[/COLOR][/B]
+              Gives you information about when someone was last seen. It is enough to specify a part of the nickname. Alternatively, the database ID can be specified.
+              Example: [I]!seen [COLOR=DarkRed]Stefan[/COLOR][/I]
             </HelpMessage>
-			
+      
             <!-- The text message, which will be shown, when someone uses the !seen-Command -->
             <TextMessage>
                 About '[B][CLIENT_NICKNAME][/B]'(id:[CLIENT_ID]):
                 Last logged in: [B][CLIENT_LASTLOGIN][/B]
                 Last seen: [B][CLIENT_LASTSEEN][/B]
             </TextMessage>
-			
+      
             <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
         </Seen>
 
@@ -125,9 +125,9 @@
 
             <!-- The Help-Message part, which will explain the !seengroup-Command -->
             <HelpMessage>
-              [B]!seengroup {ServerGroup ID}[/B]
+              [B]!seengroup [COLOR=DarkRed]{ServerGroup ID}[/COLOR][/B]
               Gives you information about when the clients of the specified ServerGroup were last seen.
-              Example: [I]!seengroup 6[/I]
+              Example: [I]!seengroup [COLOR=DarkRed]6[/COLOR][/I]
             </HelpMessage>
         
             <!-- This Message will be sent first. -->
@@ -151,16 +151,16 @@
                 [B]!files[/B]
                 Gives you a list of all files in all rooms, grouped by virtual servers, if you are server admin :-)
             </HelpMessage>
-			
+      
             <!-- The message, which will be repeated for every server -->
             <MessagePerServer>Files on server '[B][SERVER_NAME][/B]' (Id: [SERVER_ID], Port: [SERVER_PORT]):</MessagePerServer>
-			
+      
             <!-- The message, which will be shown, when no files were found. -->
             <MessageNoFilesFound>No files were found.</MessageNoFilesFound>
-			
+      
             <!-- The message, which will be shown, when files were found. -->
             <MessageFilesFound>The following files were found:</MessageFilesFound>
-			
+      
             <!-- The message, which will be repeated for every file, which were found. -->
             <MessageFile>'[B][CHANNEL_NAME][/B]'(id:[CHANNEL_ID]) > '[B][FILE_NAME][/B]' (Created: [FILE_CREATED], Size: [FILE_SIZE])</MessageFile>
             
@@ -176,15 +176,15 @@
         <Stick Enabled="true" LogEnabled="true">
             <!-- The Help-Message part, which will explain the !stick- and !unstick-Command -->
             <HelpMessage>
-                [B]!stick {Nickname|Database ID} {Channel ID} [StickTime][/B]
-                Sets the Sticky-State to given client in given channel. The StickTime (optional) specifies the duration in minutes that a client is detained therein.
-                Example: [I]!stick 5 2[/I]
+              [B]!stick [COLOR=DarkRed]{Nickname|Database ID} {Channel ID}[/COLOR] [COLOR=Gray][StickTime][/COLOR][/B]
+              Sets the Sticky-State to given client in given channel. The StickTime (optional) specifies the duration in minutes that a client is detained therein.
+              Example: [I]!stick [COLOR=DarkRed]5 2[/COLOR] [COLOR=Gray]30[/COLOR][/I]
 
-                [B]!unstick {Nickname|Database ID}[/B]
-                Releases every Sticky-State from given client.
-                Example: [I]!unstick 5[/I]
+              [B]!unstick [COLOR=DarkRed]{Nickname|Database ID}[/COLOR][/B]
+              Releases every Sticky-State from given client.
+              Example: [I]!unstick [COLOR=DarkRed]5[/COLOR][/I]
             </HelpMessage>
-			
+      
             <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
             <Permitted>
                 <Group>2</Group>
@@ -197,10 +197,10 @@
         <Hours Enabled="true">
             <!-- The Help-Message part, which will explain the !hours-Command -->
             <HelpMessage>
-              [B]!hours [Period] [Nickname|Database ID][/B]
+              [B]!hours [COLOR=Gray][Period] [Nickname|Database ID][/COLOR][/B]
               Gives you a list of active Clients sorted by the highest online time.
-			  The Period is optional and can be one of the following values: today, week, month.
-			  Can optionally be filtered by specifying a Client Database ID or a part of the nickname.
+              The Period is optional and can be one of the following values: today, week, month.
+              Can optionally be filtered by specifying a Client Database ID or a part of the nickname.
             </HelpMessage>
 
             <!-- Limits the clients that will be listed. Default are the Top10. -->
@@ -224,13 +224,13 @@
         <Punish Enabled="false" LogEnabled="true">
             <!-- The Help-Message part, which will explain the !stick- and !unstick-Command -->
             <HelpMessage>
-              [B]!punish {Nickname|Database ID} {Channel ID}[/B]
+              [B]!punish [COLOR=DarkRed]{Nickname|Database ID} {Channel ID}[/COLOR][/B]
               Strips all ServerGroups of the specified Client and adds a single ServerGroup instead.
-              Example: [I]!punish 5[/I]
+              Example: [I]!punish [COLOR=DarkRed]5[/COLOR][/I]
 
-              [B]!unpunish {Nickname|Database ID}[/B]
+              [B]!unpunish [COLOR=DarkRed]{Nickname|Database ID}[/COLOR][/B]
               Restores all ServerGroups that were stripped by this command.
-              Example: [I]!unpunish 5[/I]
+              Example: [I]!unpunish [COLOR=DarkRed]5[/COLOR][/I]
             </HelpMessage>
 
             <!-- The Server Group, that will be applied instead. -->
@@ -249,7 +249,7 @@
             <EventDefinition Enabled="false" LogEnabled="true">
                 <!-- The event name -->
                 <Name>Random</Name>
-				
+        
                 <!-- The list of behaviors, which will be raised, when the random event is fired. -->
                 <EventBehaviors>
                     <EventBehavior>
@@ -258,15 +258,15 @@
                         <!-- Message: Sends a private message to the picked user. -->
                         <!-- Web: Silently calls a web page with some arguments. -->
                         <Behavior>Poke</Behavior>
-						
+            
                         <!-- The message, which will be used, when the event is fired. -->
                         <TextMessage>Hey [CLIENT_NICKNAME], you were just chosen by [EVENT_NAME].</TextMessage>
                     </EventBehavior>
                 </EventBehaviors>
-				
+        
                 <!-- Specifies the Interval in which this event fires. -->
                 <Interval>30</Interval>
-				
+        
                 <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
                 <Denied>
                     <Group>8</Group>
@@ -280,7 +280,7 @@
     <Idle Enabled="true">
         <!-- The ID of the Idle-Channel, where the user will be moved, when idling. -->
         <Channel>3</Channel>
-		
+    
         <!-- The time in minutes, after which the user becomes idling. -->
         <IdleTime>30</IdleTime>
 
@@ -288,7 +288,7 @@
         <TextMessage>
           Client '[B][CLIENT_NICKNAME][/B]' idled [B][CLIENT_AWAYTIME][/B].
         </TextMessage>
-		
+    
         <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
     </Idle>
 
@@ -300,7 +300,7 @@
             <MessageDefinition Enabled="true">
                 <!-- MessageType: Advert/Global/Welcome | Specifies the type of this Message. -->
                 <MessageType>Advert</MessageType>
-				
+        
                 <!-- The message, which will be send. -->
                 <TextMessage>This is an advertising message from the [url=http://www.d03n3r.de/Project/Detail/TS3-Bot.html]TS3-Bot[/url].</TextMessage>
                 
@@ -313,10 +313,10 @@
             <MessageDefinition Enabled="false">
                 <!-- MessageType: Advert/Global/Welcome | Specifies the type of this Message. -->
                 <MessageType>Global</MessageType>
-				
+        
                 <!-- The message, which will be send. -->
                 <TextMessage>This is a global advertising message.</TextMessage>
-				
+        
                 <!-- The interval in minutes in which this global message will be repeated. -->
                 <Interval>60</Interval>
             </MessageDefinition>
@@ -326,10 +326,10 @@
             <MessageDefinition Enabled="true">
                 <!-- MessageType: Advert/Global/Welcome | Specifies the type of this Message. -->
                 <MessageType>Welcome</MessageType>
-				
+        
                 <!-- The message, which will be send. -->
                 <TextMessage>Welcome [B][CLIENT_NICKNAME][/B]!</TextMessage>
-				
+        
                 <!-- The ID of the home-channel. -->
                 <Channel>1</Channel>
             </MessageDefinition>
@@ -344,10 +344,10 @@
         <!-- Server: Kicks the user from the server. -->
         <!-- Sticky: Moves the user into the sticky channel. -->
         <Behavior>Channel</Behavior>
-		
+    
         <!-- The Message that will be shown, when someone get kicked by this feature. -->
         <KickMessage>Recording prohibited!</KickMessage>
-		
+    
         <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
     </Record>
 
@@ -356,10 +356,10 @@
     <Sticky Enabled="true">
         <!-- The ID of the sticky-channel. -->
         <Channel>4</Channel>
-		
+    
         <!-- The time in minutes in which the user is locked into the sticky channel. -->
         <StickTime>30</StickTime>
-		
+    
         <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
     </Sticky>
 
@@ -368,13 +368,13 @@
     <Vote Enabled="true">
         <!-- The number of compliants needed to punish the voted user. -->
         <NeededCompliants>4</NeededCompliants>
-		
+    
         <!-- Behavior: Channel/Server/Sticky | The punishment behavior, which will be used. -->
         <!-- Channel: Kicks the user from current channel. -->
         <!-- Server: Kicks the user from the server. -->
         <!-- Sticky: Moves the user into the sticky channel. -->
         <Behavior>Sticky</Behavior>
-		
+    
         <!-- The Message that will be shown, when someone get punished by this feature. -->
         <KickMessage>There are complains against you!</KickMessage>
         

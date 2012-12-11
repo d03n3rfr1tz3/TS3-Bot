@@ -131,7 +131,7 @@
                     QueryRunner.KickClient(clientEntry.ClientId, KickReason.Server, Repository.Settings.Record.KickMessage.ToMessage(context));
                     break;
                 case PunishBehavior.MoveToSticky:
-                    Repository.Channel.AddStickyClients(clientEntry.ClientDatabaseId, Repository.Settings.Sticky.Channel, Repository.Settings.Sticky.StickTime);
+                    Repository.Channel.AddStickyClients(clientEntry.ClientDatabaseId, Repository.Settings.Sticky.Channel.GetValueOrDefault(), Repository.Settings.Sticky.StickTime.GetValueOrDefault());
                     break;
             }
 

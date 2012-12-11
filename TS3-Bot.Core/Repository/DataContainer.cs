@@ -2,6 +2,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using Entity;
     using Helper;
@@ -21,6 +22,62 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         public DataContainer(string name)
         {
             this.name = name;
+
+            ConvertOldModerated();
+            ConvertOldTimes();
+        }
+
+        internal readonly object convertTimesLock = new object();
+        private void ConvertOldTimes()
+        {
+            lock (convertTimesLock)
+            {
+                var directory = string.Format(@"{0}\{1}\Time", BasicHelper.DataDirectory, name);
+                if (PersistentDictionaryFile.Exists(directory))
+                {
+                    foreach (var oldTimeClientEntity in OldTimeClientList)
+                    {
+                        var key = string.Format("{0}.{1}", oldTimeClientEntity.Value.User, oldTimeClientEntity.Value.Joined.ToString(CultureInfo.InvariantCulture));
+                        if (TimeClientList.Any(m => m.Key == key))
+                        {
+                            TimeClientList[key] = oldTimeClientEntity.Value;
+                        }
+                        else
+                        {
+                            TimeClientList.Add(key, oldTimeClientEntity.Value);
+                        }
+                    }
+
+                    TimeClientList.Flush();
+                    OldTimeClientList.Flush();
+                    OldTimeClientList.Dispose();
+
+                    PersistentDictionaryFile.DeleteFiles(directory);
+                }
+            }
+        }
+
+        internal readonly object convertModeratedLock = new object();
+        private void ConvertOldModerated()
+        {
+            lock (convertModeratedLock)
+            {
+                var directory = string.Format(@"{0}\{1}\Moderated", BasicHelper.DataDirectory, name);
+                if (PersistentDictionaryFile.Exists(directory))
+                {
+                    foreach (var oldModeratedClientEntity in OldModeratedClientList)
+                    {
+                        var key = string.Format("{0}.{1}.{2}", oldModeratedClientEntity.Value.Type, oldModeratedClientEntity.Value.ServerGroup, oldModeratedClientEntity.Key);
+                        ModeratedClientList.Add(key, oldModeratedClientEntity.Value);
+                    }
+
+                    ModeratedClientList.Flush();
+                    OldModeratedClientList.Flush();
+                    OldModeratedClientList.Dispose();
+
+                    PersistentDictionaryFile.DeleteFiles(directory);
+                }
+            }
         }
 
         #region Specified Data
@@ -33,8 +90,10 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         private PersistentDictionary<Guid, StickyClientEntity> stickyClientList;
         private PersistentDictionary<Guid, VotedClientEntity> votedClientList;
         private PersistentDictionary<uint, DateTime> clientLastSeen;
-        private PersistentDictionary<Guid, ModeratedClientEntity> moderatedClientList;
-        private PersistentDictionary<Guid, TimeClientEntity> timeClientList;
+        private PersistentDictionary<Guid, ModeratedClientEntity> oldModeratedClientList;
+        private PersistentDictionary<string, ModeratedClientEntity> moderatedClientList;
+        private PersistentDictionary<Guid, TimeClientEntity> oldTimeClientList;
+        private PersistentDictionary<string, TimeClientEntity> timeClientList;
         private PersistentDictionary<uint, string> previousServerGroupsList;
 
         internal PersistentDictionary<uint, AwayClientEntity> AwayClientList
@@ -57,14 +116,24 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
             get { return this.clientLastSeen ?? (this.clientLastSeen = new PersistentDictionary<uint, DateTime>(string.Format(@"{0}\{1}\Seen", BasicHelper.DataDirectory, name))); }
         }
 
-        internal PersistentDictionary<Guid, ModeratedClientEntity> ModeratedClientList
+        internal PersistentDictionary<Guid, ModeratedClientEntity> OldModeratedClientList
         {
-            get { return this.moderatedClientList ?? (this.moderatedClientList = new PersistentDictionary<Guid, ModeratedClientEntity>(string.Format(@"{0}\{1}\Moderated", BasicHelper.DataDirectory, name))); }
+            get { return this.oldModeratedClientList ?? (this.oldModeratedClientList = new PersistentDictionary<Guid, ModeratedClientEntity>(string.Format(@"{0}\{1}\Moderated", BasicHelper.DataDirectory, name))); }
         }
 
-        internal PersistentDictionary<Guid, TimeClientEntity> TimeClientList
+        internal PersistentDictionary<string, ModeratedClientEntity> ModeratedClientList
         {
-            get { return this.timeClientList ?? (this.timeClientList = new PersistentDictionary<Guid, TimeClientEntity>(string.Format(@"{0}\{1}\Time", BasicHelper.DataDirectory, name))); }
+            get { return this.moderatedClientList ?? (this.moderatedClientList = new PersistentDictionary<string, ModeratedClientEntity>(string.Format(@"{0}\{1}\Moderates", BasicHelper.DataDirectory, name))); }
+        }
+
+        internal PersistentDictionary<Guid, TimeClientEntity> OldTimeClientList
+        {
+            get { return this.oldTimeClientList ?? (this.oldTimeClientList = new PersistentDictionary<Guid, TimeClientEntity>(string.Format(@"{0}\{1}\Time", BasicHelper.DataDirectory, name))); }
+        }
+
+        internal PersistentDictionary<string, TimeClientEntity> TimeClientList
+        {
+            get { return this.timeClientList ?? (this.timeClientList = new PersistentDictionary<string, TimeClientEntity>(string.Format(@"{0}\{1}\Times", BasicHelper.DataDirectory, name))); }
         }
 
         internal PersistentDictionary<uint, string> PreviousServerGroupsList

@@ -11,13 +11,13 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
         /// Gets or sets the channel.
         /// </summary>
         /// <value>The channel.</value>
-        public uint Channel { get; set; }
+        public uint? Channel { get; set; }
 
         /// <summary>
         /// Gets or sets the idle time.
         /// </summary>
         /// <value>The idle time.</value>
-        public uint IdleTime { get; set; }
+        public uint? IdleTime { get; set; }
 
         /// <summary>
         /// Gets or sets the message.

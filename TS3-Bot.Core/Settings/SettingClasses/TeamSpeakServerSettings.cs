@@ -11,7 +11,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
         /// Gets or sets the instance.
         /// </summary>
         /// <value>The instance.</value>
-        public ushort Instance { get; set; }
+        public ushort? Instance { get; set; }
 
         /// <summary>
         /// Gets or sets the instance port.
@@ -19,13 +19,13 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
         /// <value>
         /// The instance port.
         /// </value>
-        public uint InstancePort { get; set; }
+        public uint? InstancePort { get; set; }
 
         /// <summary>
         /// Gets or sets the query port.
         /// </summary>
         /// <value>The query port.</value>
-        public ushort QueryPort { get; set; }
+        public ushort? QueryPort { get; set; }
 
         /// <summary>
         /// Gets or sets the guest groups.

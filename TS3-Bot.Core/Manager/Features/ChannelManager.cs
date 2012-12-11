@@ -152,7 +152,7 @@
 
             if (Repository.Settings.Sticky.Channel == e.TargetChannelId)
             {
-                Repository.Channel.AddStickyClients(clientEntry.DatabaseId, e.TargetChannelId, Repository.Settings.Sticky.StickTime);
+                Repository.Channel.AddStickyClients(clientEntry.DatabaseId, e.TargetChannelId, Repository.Settings.Sticky.StickTime.GetValueOrDefault());
                 
                 Log(Repository.Settings.Sticky,
                     string.Format("Client '{0}'(id:{1}) were added to sticky (id:{4}) by '{2}'(id:{3})",
@@ -160,7 +160,7 @@
             }
             else
             {
-                Repository.Channel.RemoveStickyClients(clientEntry.DatabaseId, Repository.Settings.Sticky.Channel);
+                Repository.Channel.RemoveStickyClients(clientEntry.DatabaseId, Repository.Settings.Sticky.Channel.GetValueOrDefault());
                 
                 Log(Repository.Settings.Sticky,
                     string.Format("Client '{0}'(id:{1}) were removed from sticky (id:{4}) by '{2}'(id:{3})",
@@ -185,7 +185,7 @@
                     string.Format("Client '{0}'(id:{1}) added himself to sticky (id:{2})",
                                   clientEntry.Nickname, clientEntry.DatabaseId, e.TargetChannelId));
 
-                Repository.Channel.AddStickyClients(clientEntry.DatabaseId, e.TargetChannelId, Repository.Settings.Sticky.StickTime);
+                Repository.Channel.AddStickyClients(clientEntry.DatabaseId, e.TargetChannelId, Repository.Settings.Sticky.StickTime.GetValueOrDefault());
             }
             else if (Repository.Channel.GetClientSticky(clientEntry.DatabaseId).HasValue)
             {

@@ -154,8 +154,8 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Features
                     QueryRunner.KickClient(clientEntry.ClientId, KickReason.Server, Repository.Settings.Vote.KickMessage.ToMessage(context));
                     break;
                 case PunishBehavior.MoveToSticky:
-                    QueryRunner.MoveClient(clientEntry.ClientId, Repository.Settings.Sticky.Channel);
-                    Repository.Channel.AddStickyClients(clientEntry.ClientDatabaseId, Repository.Settings.Sticky.Channel, Repository.Settings.Sticky.StickTime);
+                    QueryRunner.MoveClient(clientEntry.ClientId, Repository.Settings.Sticky.Channel.GetValueOrDefault());
+                    Repository.Channel.AddStickyClients(clientEntry.ClientDatabaseId, Repository.Settings.Sticky.Channel.GetValueOrDefault(), Repository.Settings.Sticky.StickTime.GetValueOrDefault());
                     Repository.Client.AddVotedClients(new VotedClientEntity(clientEntry.ClientDatabaseId, clientEntry.ChannelId));
                     break;
             }

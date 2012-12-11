@@ -9,7 +9,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
         /// Gets or sets the channel.
         /// </summary>
         /// <value>The channel.</value>
-        public uint Channel { get; set; }
+        public uint? Channel { get; set; }
 
         /// <summary>
         /// Gets or sets the stick time.
@@ -17,7 +17,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
         /// <value>
         /// The stick time.
         /// </value>
-        public uint StickTime { get; set; }
+        public uint? StickTime { get; set; }
 
         /// <summary>
         /// Applies the setting.

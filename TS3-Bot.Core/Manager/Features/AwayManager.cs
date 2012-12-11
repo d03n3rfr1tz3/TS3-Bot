@@ -92,11 +92,11 @@
             {
                 if (!PermissionHelper.IsGranted(Repository.Settings.Idle, client.ServerGroups)) continue;
 
-                if (!client.ChannelId.EqualsAny(Repository.Settings.Away.Channel, Repository.Settings.Away.MuteMicrophoneChannel, Repository.Settings.Away.MuteHeadphoneChannel, Repository.Settings.Idle.Channel) &&
+                if (!client.ChannelId.EqualsAny(Repository.Settings.Away.Channel.GetValueOrDefault(), Repository.Settings.Away.MuteMicrophoneChannel.GetValueOrDefault(), Repository.Settings.Away.MuteHeadphoneChannel.GetValueOrDefault(), Repository.Settings.Idle.Channel.GetValueOrDefault()) &&
                     !Repository.Channel.GetClientSticky(client.ClientDatabaseId).HasValue)
                 {
                     Repository.Client.SetLastChannelByClientId(client.ClientDatabaseId, client.ChannelId);
-                    QueryRunner.MoveClient(client.ClientId, Repository.Settings.Idle.Channel);
+                    QueryRunner.MoveClient(client.ClientId, Repository.Settings.Idle.Channel.GetValueOrDefault());
 
                     Log(Repository.Settings.Idle,
                         string.Format("Client '{0}'(id:{1}) successfully moved to Idle Channel.",
@@ -113,7 +113,7 @@
             if (!Repository.Settings.Away.Enabled) return;
 
             foreach (var client in Repository.Client.GetClientList()
-                .Where(m => m.ChannelId.EqualsAny(Repository.Settings.Away.Channel, Repository.Settings.Away.MuteMicrophoneChannel, Repository.Settings.Away.MuteHeadphoneChannel) && // Check for Channel
+                .Where(m => m.ChannelId.EqualsAny(Repository.Settings.Away.Channel.GetValueOrDefault(), Repository.Settings.Away.MuteMicrophoneChannel.GetValueOrDefault(), Repository.Settings.Away.MuteHeadphoneChannel.GetValueOrDefault()) && // Check for Channel
                             !m.IsAway(Repository.Settings.Away) &&        // Check if not Away
                             !m.IsInputMuted(Repository.Settings.Away) &&  // Check if not muted Microphone
                             !m.IsOutputMuted(Repository.Settings.Away) && // Check if not muted Headphones
