@@ -22,6 +22,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -34,7 +35,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -74,6 +74,10 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -102,6 +106,7 @@
     <Compile Include="Entity\Messages\SeenModeratorMessage.cs" />
     <Compile Include="Entity\Messages\SeenGroupMessage.cs" />
     <Compile Include="Entity\Messages\ModeratorMessage.cs" />
+    <Compile Include="Entity\TimeEntity.cs" />
     <Compile Include="Entity\TimeSpanEntity.cs" />
     <Compile Include="Entity\Messages\UnstickMessage.cs" />
     <Compile Include="Entity\Messages\StickMessage.cs" />
@@ -112,6 +117,11 @@
     <Compile Include="Manager\Features\NickManager.cs" />
     <Compile Include="Manager\Features\RecordManager.cs" />
     <Compile Include="Manager\Features\TimeManager.cs" />
+    <Compile Include="BotDatabaseModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BotDatabaseModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Repository\ChannelData.cs" />
     <Compile Include="Manager\Connection\TeamSpeakConnection.cs" />
     <Compile Include="Manager\Features\AwayManager.cs" />
@@ -141,6 +151,7 @@
     <Compile Include="Helper\BasicHelper.cs" />
     <Compile Include="Helper\EqualsExtension.cs" />
     <Compile Include="Helper\ForEachExtension.cs" />
+    <Compile Include="Repository\DataMigrator.cs" />
     <Compile Include="Service\DataService.cs" />
     <Compile Include="Service\SettingsDirectoryService.cs" />
     <Compile Include="Service\LogService.cs" />
@@ -201,9 +212,17 @@
     <EmbeddedResource Include="Configuration\DefaultSettings.xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.Config" />
     <None Include="Configuration\Settings.xsd" />
+    <EntityDeploy Include="BotDatabaseModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>BotDatabaseModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BotDatabase.sdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Configuration\Sample_en.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -211,6 +230,36 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TS3-Bot.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.3.5">
+      <Visible>False</Visible>
+      <ProductName>SQL Server Compact 3.5 SP2</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

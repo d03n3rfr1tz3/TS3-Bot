@@ -128,10 +128,10 @@
             var stickyClients = Repository.Channel.GetStickyClients();
             foreach (var stickyClient in stickyClients)
             {
-                var client = Repository.Client.GetClientSimple(stickyClient.ClientDatabaseId);
+                var client = Repository.Client.GetClientSimple((uint)stickyClient.ClientDatabaseId);
                 if (client != null && client.ChannelId != stickyClient.ChannelId)
                 {
-                    MoveClientToSticky(client.ClientId, stickyClient.ChannelId);
+                    MoveClientToSticky(client.ClientId, (uint)stickyClient.ChannelId);
                 }
             }
         }

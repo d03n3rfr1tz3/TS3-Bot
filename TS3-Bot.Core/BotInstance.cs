@@ -45,6 +45,17 @@
                                                  ex.StackTrace));
                 Repository.Static.LastConnectionError = Repository.Static.Now;
             }
+            catch (InvalidOperationException ex)
+            {
+                if (ex.Message.Contains("banned"))
+                {
+                    LogService.Warning(ex.Message + ". Please whitelist the Bot!");
+                }
+                else
+                {
+                    LogService.Error(ex.ToString());
+                }
+            }
             catch (Exception ex)
             {
                 LogService.Error(ex.ToString());
