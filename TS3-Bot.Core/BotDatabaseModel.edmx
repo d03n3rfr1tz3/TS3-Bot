@@ -69,6 +69,7 @@
           <Property Name="ClientDatabaseId" Type="int" Nullable="false" />
           <Property Name="Joined" Type="datetime" Nullable="false" />
           <Property Name="Disconnected" Type="datetime" Nullable="false" />
+          <Property Name="TotalMinutes" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="Vote">
           <Key>
@@ -147,6 +148,7 @@
           <Property Type="Int32" Name="ClientDatabaseId" Nullable="false" />
           <Property Type="DateTime" Name="Joined" Nullable="false" />
           <Property Type="DateTime" Name="Disconnected" Nullable="false" />
+          <Property Type="Double" Name="TotalMinutes" Nullable="false" />
         </EntityType>
         <EntityType Name="Vote">
           <Key>
@@ -218,6 +220,7 @@
           <EntitySetMapping Name="Time">
             <EntityTypeMapping TypeName="BotDatabaseModel.Time">
               <MappingFragment StoreEntitySet="Time">
+                <ScalarProperty Name="TotalMinutes" ColumnName="TotalMinutes" />
                 <ScalarProperty Name="Disconnected" ColumnName="Disconnected" />
                 <ScalarProperty Name="Joined" ColumnName="Joined" />
                 <ScalarProperty Name="ClientDatabaseId" ColumnName="ClientDatabaseId" />

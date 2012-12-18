@@ -65,7 +65,7 @@
             }
             else
             {
-                var clientIds = Repository.Client.GetClientsFromDatabase()
+                var clientIds = Repository.Client.GetClientsFromDatabase().Values
                     .Where(m => m.NickName.ToLower().Contains(nickname.ToLower()))
                     .Select(m => m.DatabaseId).ToList();
                 if (clientIds.Any())

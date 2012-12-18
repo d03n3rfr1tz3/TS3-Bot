@@ -978,13 +978,15 @@ namespace DirkSarodnick.TS3_Bot.Core
         /// <param name="clientDatabaseId">Initial value of the ClientDatabaseId property.</param>
         /// <param name="joined">Initial value of the Joined property.</param>
         /// <param name="disconnected">Initial value of the Disconnected property.</param>
-        public static Time CreateTime(global::System.Guid id, global::System.Int32 clientDatabaseId, global::System.DateTime joined, global::System.DateTime disconnected)
+        /// <param name="totalMinutes">Initial value of the TotalMinutes property.</param>
+        public static Time CreateTime(global::System.Guid id, global::System.Int32 clientDatabaseId, global::System.DateTime joined, global::System.DateTime disconnected, global::System.Double totalMinutes)
         {
             Time time = new Time();
             time.Id = id;
             time.ClientDatabaseId = clientDatabaseId;
             time.Joined = joined;
             time.Disconnected = disconnected;
+            time.TotalMinutes = totalMinutes;
             return time;
         }
 
@@ -1089,6 +1091,30 @@ namespace DirkSarodnick.TS3_Bot.Core
         private global::System.DateTime _Disconnected;
         partial void OnDisconnectedChanging(global::System.DateTime value);
         partial void OnDisconnectedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Double TotalMinutes
+        {
+            get
+            {
+                return _TotalMinutes;
+            }
+            set
+            {
+                OnTotalMinutesChanging(value);
+                ReportPropertyChanging("TotalMinutes");
+                _TotalMinutes = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("TotalMinutes");
+                OnTotalMinutesChanged();
+            }
+        }
+        private global::System.Double _TotalMinutes;
+        partial void OnTotalMinutesChanging(global::System.Double value);
+        partial void OnTotalMinutesChanged();
 
         #endregion
     

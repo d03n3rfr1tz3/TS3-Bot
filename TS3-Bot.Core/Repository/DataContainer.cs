@@ -39,7 +39,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         internal Dictionary<uint, ClientInfoResponse> ClientInfoList = new Dictionary<uint, ClientInfoResponse>();
         internal List<ChannelListEntry> ChannelList;
         internal Dictionary<uint, ChannelInfoResponse> ChannelInfoList = new Dictionary<uint, ChannelInfoResponse>();
-        internal List<ClientDbEntry> ClientDatabaseList = new List<ClientDbEntry>();
+        internal Dictionary<uint, ClientDbEntry> ClientDatabaseList = new Dictionary<uint, ClientDbEntry>();
         internal List<FileEntity> FileList = new List<FileEntity>();
         internal List<ComplainListEntry> CompliantList;
         internal List<ServerListItem> ServerList;
@@ -53,6 +53,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         internal readonly object lockGetClientInfo = new object();
         internal readonly object lockGetClientList = new object();
         internal readonly object lockGetClientsFromDatabase = new object();
+        internal readonly object lockGetClientFromDatabase = new object();
         internal readonly object lockGetRawClientsFromDatabase = new object();
         internal readonly object lockGetChannelInfo = new object();
         internal readonly object lockGetChannelList = new object();

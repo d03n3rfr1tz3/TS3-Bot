@@ -74,11 +74,11 @@
             }
         }
 
-        /// <summary>
-        /// Gets the clients from database.
-        /// </summary>
-        /// <returns></returns>
-        public List<ClientDbEntry> GetClientsFromDatabase()
+        /// <summary> 
+        /// Gets the clients from database. 
+        /// </summary> 
+        /// <returns></returns> 
+        public Dictionary<uint, ClientDbEntry> GetClientsFromDatabase()
         {
             lock (Container.lockGetClientsFromDatabase)
             {
@@ -89,24 +89,30 @@
 
                     for (int i = 100; i < (response.TotalClientsInDatabase ?? uint.MaxValue); i = i + 100)
                     {
-                        clientDatabaseList.AddRange(QueryRunner.GetClientDatabaseList((uint)i, (uint)(i + 100), false));
+                        var moreResponse = QueryRunner.GetClientDatabaseList((uint)i, (uint)(i + 100), false);
+                        if (!moreResponse.Any()) break;
+                        clientDatabaseList.AddRange(moreResponse);
                     }
 
-                    Container.ClientDatabaseList = clientDatabaseList.ToList();
+                    Container.ClientDatabaseList = clientDatabaseList.ToDictionary(m => m.DatabaseId, m => m);
                 }
 
                 return Container.ClientDatabaseList;
             }
         }
 
-        /// <summary>
-        /// Gets the client data base info.
-        /// </summary>
-        /// <param name="clientDatabaseId">The client database id.</param>
-        /// <returns></returns>
+        /// <summary> 
+        /// Gets the client data base info. 
+        /// </summary> 
+        /// <param name="clientDatabaseId">The client database id.</param> 
+        /// <returns></returns> 
         public ClientDbEntry GetClientDataBaseInfo(uint clientDatabaseId)
         {
-            return GetClientsFromDatabase().FirstOrDefault(c => c.DatabaseId == clientDatabaseId);
+            lock (Container.lockGetClientFromDatabase)
+            {
+                var clientDatabaseList = GetClientsFromDatabase();
+                return clientDatabaseList.ContainsKey(clientDatabaseId) ? clientDatabaseList[clientDatabaseId] : null;
+            }
         }
 
         /// <summary>
@@ -655,7 +661,8 @@
                             Id = Guid.NewGuid(),
                             ClientDatabaseId = (int)clientDatabaseId,
                             Joined = lastConnected,
-                            Disconnected = disconnected ?? Repository.Static.Now
+                            Disconnected = disconnected ?? Repository.Static.Now,
+                            TotalMinutes = ((disconnected ?? Repository.Static.Now) - lastConnected).TotalMinutes
                         });
                     }
 
@@ -688,7 +695,7 @@
                         times = times.Where(m => m.Joined < toTime);
                     }
 
-                    return times.GroupBy(m => (uint)m.ClientDatabaseId).ToList().ToDictionary(g => g.Key, g => g.Sum(m => m.GetTime(fromTime, toTime).TotalMinutes));
+                    return times.GroupBy(m => (uint)m.ClientDatabaseId).ToList().ToDictionary(g => g.Key, g => g.Sum(m => m.GetTime(fromTime, toTime)));
                 }
             }
         }
@@ -718,7 +725,7 @@
                         times = times.Where(m => m.Joined < toTime);
                     }
 
-                    return times.GroupBy(m => (uint)m.ClientDatabaseId).ToList().Where(m => clientDatabaseIds.Contains(m.Key)).ToDictionary(g => g.Key, g => g.Sum(m => m.GetTime(fromTime, toTime).TotalMinutes));
+                    return times.GroupBy(m => (uint)m.ClientDatabaseId).ToList().Where(m => clientDatabaseIds.Contains(m.Key)).ToDictionary(g => g.Key, g => g.Sum(m => m.GetTime(fromTime, toTime)));
                 }
             }
         }
@@ -748,7 +755,7 @@
                         times = times.Where(m => m.Joined < toTime);
                     }
 
-                    return times.ToList().Sum(m => m.GetTime(fromTime, toTime).TotalMinutes);
+                    return times.ToList().Sum(m => m.GetTime(fromTime, toTime));
                 }
             }
         }

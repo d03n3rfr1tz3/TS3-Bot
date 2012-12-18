@@ -285,7 +285,8 @@
                                 Id = Guid.NewGuid(),
                                 ClientDatabaseId = (int)oldDictionaryEntry.Value.User,
                                 Joined = oldDictionaryEntry.Value.Joined,
-                                Disconnected = oldDictionaryEntry.Value.Disconnected
+                                Disconnected = oldDictionaryEntry.Value.Disconnected,
+                                TotalMinutes = (oldDictionaryEntry.Value.Disconnected - oldDictionaryEntry.Value.Joined).TotalMinutes
                             });
                         }
 
@@ -323,7 +324,8 @@
                                 Id = Guid.NewGuid(),
                                 ClientDatabaseId = (int)oldDictionaryEntry.Value.User,
                                 Joined = oldDictionaryEntry.Value.Joined,
-                                Disconnected = oldDictionaryEntry.Value.Disconnected
+                                Disconnected = oldDictionaryEntry.Value.Disconnected,
+                                TotalMinutes = (oldDictionaryEntry.Value.Disconnected - oldDictionaryEntry.Value.Joined).TotalMinutes
                             });
                         }
 

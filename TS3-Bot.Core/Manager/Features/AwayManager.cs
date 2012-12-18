@@ -7,6 +7,7 @@
     using Repository;
     using Settings;
     using TS3QueryLib.Core.CommandHandling;
+    using TS3QueryLib.Core.Server.Notification.EventArgs;
 
     /// <summary>
     /// Defines the AwayManager class.
@@ -36,6 +37,21 @@
                                  });
         }
 
+        /// <summary> 
+        /// Determines whether this instance can invoke the specified e. 
+        /// </summary> 
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param> 
+        /// <returns> 
+        ///   <c>true</c> if this instance can invoke the specified e; otherwise, <c>false</c>. 
+        /// </returns> 
+        public override bool CanInvoke(ClientJoinedEventArgs e)
+        {
+            return CanInvoke(new ISettings[] 
+                            { 
+                                Repository.Settings.Away
+                            });
+        }
+
         /// <summary>
         /// Invokes this instance.
         /// </summary>
@@ -45,6 +61,15 @@
             MoveAwayClients();
             MoveAwayClientsBack();
             MoveIdleClientsBack();
+        }
+
+        /// <summary> 
+        /// Invokes the specified e. 
+        /// </summary> 
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param> 
+        public override void Invoke(ClientJoinedEventArgs e)
+        {
+            ClearAwayClients(e);
         }
 
         #endregion
@@ -189,6 +214,17 @@
                 }
                 Repository.Client.RemoveLastChannelByClientId(client.ClientDatabaseId);
             }
+        }
+
+        /// <summary>
+        /// Clears the away clients.
+        /// </summary>
+        /// <param name="e">The <see cref="TS3QueryLib.Core.Server.Notification.EventArgs.ClientJoinedEventArgs"/> instance containing the event data.</param>
+        protected void ClearAwayClients(ClientJoinedEventArgs e)
+        {
+            if (!Repository.Settings.Away.Enabled) return;
+
+            if (!e.IsClientAway && !e.IsClientInputMuted && !e.IsClientOutputMuted) Repository.Client.RemoveLastChannelByClientId(e.ClientId);
         }
 
         #endregion

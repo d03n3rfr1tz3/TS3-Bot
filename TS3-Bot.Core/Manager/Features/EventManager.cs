@@ -70,7 +70,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Features
         {
             if (!setting.Enabled) return;
 
-            var databaseIds = Repository.Client.GetClientsFromDatabase().Select(c => c.DatabaseId).ToList();
+            var databaseIds = Repository.Client.GetClientsFromDatabase().Keys.ToList();
             var databaseId = Repository.Static.Random.Next((int)databaseIds.Min(), (int)databaseIds.Max());
             var client = Repository.Client.GetClientSimple((uint)databaseId);
 
