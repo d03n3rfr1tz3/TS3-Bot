@@ -105,7 +105,8 @@
                         Id = Guid.NewGuid(),
                         ClientDatabaseId = (int)clientDatabaseId,
                         ChannelId = (int)channelId,
-                        StickTime = (int)stickTime
+                        StickTime = (int)stickTime,
+                        Creation = Repository.Static.Now
                     });
                     database.SaveChanges();
                 }

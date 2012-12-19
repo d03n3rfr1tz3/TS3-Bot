@@ -364,7 +364,8 @@
                                 {
                                     Id = Guid.NewGuid(),
                                     ClientDatabaseId = (int)oldDictionaryEntry.Key,
-                                    ServerGroup = oldServerGroup
+                                    ServerGroup = oldServerGroup,
+                                    Creation = DateTime.UtcNow
                                 });
                             });
                         }

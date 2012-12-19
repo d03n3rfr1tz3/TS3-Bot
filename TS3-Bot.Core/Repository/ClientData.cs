@@ -85,16 +85,26 @@
                 if (!Container.ClientDatabaseList.Any())
                 {
                     var response = QueryRunner.GetClientDatabaseList(0, 100, true);
-                    var clientDatabaseList = response.ToList();
+                    response.ToList().ForEach(m =>
+                    {
+                        if (!Container.ClientDatabaseList.ContainsKey(m.DatabaseId))
+                        {
+                            Container.ClientDatabaseList.Add(m.DatabaseId, m);
+                        }
+                    });
 
                     for (int i = 100; i < (response.TotalClientsInDatabase ?? uint.MaxValue); i = i + 100)
                     {
                         var moreResponse = QueryRunner.GetClientDatabaseList((uint)i, (uint)(i + 100), false);
                         if (!moreResponse.Any()) break;
-                        clientDatabaseList.AddRange(moreResponse);
+                        moreResponse.ToList().ForEach(m =>
+                        {
+                            if (!Container.ClientDatabaseList.ContainsKey(m.DatabaseId))
+                            {
+                                Container.ClientDatabaseList.Add(m.DatabaseId, m);
+                            }
+                        });
                     }
-
-                    Container.ClientDatabaseList = clientDatabaseList.ToDictionary(m => m.DatabaseId, m => m);
                 }
 
                 return Container.ClientDatabaseList;
@@ -321,7 +331,8 @@
                         {
                             Id = Guid.NewGuid(),
                             ClientDatabaseId = (int)clientDatabaseId,
-                            LastChannelId = (int)channelId
+                            LastChannelId = (int)channelId,
+                            Creation = Repository.Static.Now
                         });
                         database.SaveChanges();
                     }
@@ -434,7 +445,8 @@
                     {
                         Id = Guid.NewGuid(),
                         ClientDatabaseId = (int)votedClient.ClientDatabaseId,
-                        ChannelId = (int?)votedClient.ChannelId
+                        ChannelId = (int?)votedClient.ChannelId,
+                        Creation = Repository.Static.Now
                     });
                     database.SaveChanges();
                 }
@@ -506,7 +518,7 @@
                 var lastModerated = database.Moderate.Any() ? database.Moderate.Max(m => m.Creation) : DateTime.MinValue;
 
                 uint index = 0;
-                const ushort length = 10;
+                ushort length = 10;
                 try
                 {
                     while (true)
@@ -516,6 +528,7 @@
 
                         if (!logEntries.Any() || logEntries.Any(l => l.TimeStamp < lastModerated)) break;
                         index += length;
+                        length = 50;
                     }
                 }
                 catch (ArgumentException) { }
@@ -581,7 +594,8 @@
             {
                 using (var database = new BotDatabaseEntities())
                 {
-                    var entities = database.Moderate.Where(m => m.Type == (byte)type);
+                    var moderationType = (byte)type;
+                    var entities = database.Moderate.Where(m => m.Type == moderationType);
 
                     if (fromDate.HasValue)
                     {
@@ -610,9 +624,10 @@
             {
                 using (var database = new BotDatabaseEntities())
                 {
-                    var joins = database.Moderate.Where(m => m.Type == (byte)ModerationType.Added && m.ServerGroup == serverGroupId && m.ClientDatabaseId == clientDatabaseId);
+                    const byte moderationType = (byte)ModerationType.Added;
+                    var joins = database.Moderate.Where(m => m.Type == moderationType && m.ServerGroup == serverGroupId && m.ClientDatabaseId == clientDatabaseId);
                     if (joins.Any()) return joins.Max(m => m.Creation);
-                    if (database.Moderate.Any()) return database.Moderate.Where(m => m.Type == (byte)ModerationType.Added && m.ServerGroup == serverGroupId).Min(m => m.Creation);
+                    if (database.Moderate.Any()) return database.Moderate.Where(m => m.Type == moderationType && m.ServerGroup == serverGroupId).Min(m => m.Creation);
                     return DateTime.MinValue;
                 }
             }
@@ -695,7 +710,7 @@
                         times = times.Where(m => m.Joined < toTime);
                     }
 
-                    return times.GroupBy(m => (uint)m.ClientDatabaseId).ToList().ToDictionary(g => g.Key, g => g.Sum(m => m.GetTime(fromTime, toTime)));
+                    return times.GroupBy(m => m.ClientDatabaseId).ToList().ToDictionary(g => (uint)g.Key, g => g.Sum(m => m.GetTime(fromTime, toTime)));
                 }
             }
         }
@@ -725,7 +740,7 @@
                         times = times.Where(m => m.Joined < toTime);
                     }
 
-                    return times.GroupBy(m => (uint)m.ClientDatabaseId).ToList().Where(m => clientDatabaseIds.Contains(m.Key)).ToDictionary(g => g.Key, g => g.Sum(m => m.GetTime(fromTime, toTime)));
+                    return times.GroupBy(m => m.ClientDatabaseId).ToList().Where(m => clientDatabaseIds.Contains((uint)m.Key)).ToDictionary(g => (uint)g.Key, g => g.Sum(m => m.GetTime(fromTime, toTime)));
                 }
             }
         }
@@ -784,7 +799,7 @@
                         users = users.Where(m => m.Joined < toTime);
                     }
 
-                    return users.Select(m => (uint)m.ClientDatabaseId).Distinct().ToList();
+                    return users.Select(m => m.ClientDatabaseId).Distinct().ToList().Cast<uint>().ToList();
                 }
             }
         }
@@ -813,7 +828,8 @@
                         {
                             Id = Guid.NewGuid(),
                             ClientDatabaseId = (int)clientDatabaseId,
-                            ServerGroup = (int)currentGroup
+                            ServerGroup = (int)currentGroup,
+                            Creation = Repository.Static.Now
                         });
                     }
 
@@ -834,7 +850,7 @@
             {
                 using (var database = new BotDatabaseEntities())
                 {
-                    var serverGroups = database.PreviousServerGroup.Where(m => m.ClientDatabaseId == clientDatabaseId).Select(m => (uint)m.ServerGroup).ToList();
+                    var serverGroups = database.PreviousServerGroup.Where(m => m.ClientDatabaseId == clientDatabaseId).ToList().Select(m => (uint)m.ServerGroup).ToList();
                     Repository.Client.AddClientServerGroups(clientDatabaseId, serverGroups);
                     database.PreviousServerGroup.Where(m => m.ClientDatabaseId == clientDatabaseId).ToList().ForEach(m => database.PreviousServerGroup.DeleteObject(m));
                 }

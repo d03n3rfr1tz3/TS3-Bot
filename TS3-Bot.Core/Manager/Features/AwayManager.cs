@@ -148,25 +148,28 @@
                 if (!Repository.Channel.GetClientSticky(client.ClientDatabaseId).HasValue)
                 {
                     var awayClient = Repository.Client.GetLastChannelByClientId(client.ClientDatabaseId);
-                    var channel = Repository.Channel.GetChannelListInfo((uint)awayClient.LastChannelId);
-                    QueryRunner.MoveClient(client.ClientId, (uint)awayClient.LastChannelId);
-
-                    Log(Repository.Settings.Away,
-                        string.Format("Client '{0}'(id:{1}) successfully moved back from Away Channel to '{2}'(id:{3}).",
-                                      client.Nickname, client.ClientDatabaseId, channel.Name, awayClient.LastChannelId));
-
-                    if (!string.IsNullOrEmpty(Repository.Settings.Away.TextMessage))
+                    if (awayClient != null)
                     {
-                        var awayTimespan = Repository.Static.Now - awayClient.Creation;
-                        var messageContext = new MessageContext
+                        var channel = Repository.Channel.GetChannelListInfo((uint)awayClient.LastChannelId);
+                        QueryRunner.MoveClient(client.ClientId, (uint)awayClient.LastChannelId);
+
+                        Log(Repository.Settings.Away,
+                            string.Format("Client '{0}'(id:{1}) successfully moved back from Away Channel to '{2}'(id:{3}).",
+                                          client.Nickname, client.ClientDatabaseId, channel.Name, awayClient.LastChannelId));
+
+                        if (!string.IsNullOrEmpty(Repository.Settings.Away.TextMessage))
                         {
-                            ClientDatabaseId = client.ClientDatabaseId,
-                            ClientNickname = client.Nickname,
-                            ClientAwayTime = BasicHelper.GetTimespanString(awayTimespan),
-                            ChannelId = (uint)awayClient.LastChannelId,
-                            ChannelName = channel.Name
-                        };
-                        QueryRunner.SendTextMessage(MessageTarget.Server, Repository.Connection.CredentialEntity.Self.VirtualServerId, Repository.Settings.Away.TextMessage.ToMessage(messageContext));
+                            var awayTimespan = Repository.Static.Now - awayClient.Creation;
+                            var messageContext = new MessageContext
+                            {
+                                ClientDatabaseId = client.ClientDatabaseId,
+                                ClientNickname = client.Nickname,
+                                ClientAwayTime = BasicHelper.GetTimespanString(awayTimespan),
+                                ChannelId = (uint)awayClient.LastChannelId,
+                                ChannelName = channel.Name
+                            };
+                            QueryRunner.SendTextMessage(MessageTarget.Server, Repository.Connection.CredentialEntity.Self.VirtualServerId, Repository.Settings.Away.TextMessage.ToMessage(messageContext));
+                        }
                     }
                 }
                 Repository.Client.RemoveLastChannelByClientId(client.ClientDatabaseId);
@@ -191,25 +194,28 @@
                 if (!Repository.Channel.GetClientSticky(client.ClientDatabaseId).HasValue)
                 {
                     var idleClient = Repository.Client.GetLastChannelByClientId(client.ClientDatabaseId);
-                    var channel = Repository.Channel.GetChannelListInfo((uint)idleClient.LastChannelId);
-                    QueryRunner.MoveClient(client.ClientId, (uint)idleClient.LastChannelId);
-
-                    Log(Repository.Settings.Idle,
-                        string.Format("Client '{0}'(id:{1}) successfully moved back from Idle Channel to '{2}'(id:{3}).",
-                                      client.Nickname, client.ClientDatabaseId, channel.Name, idleClient.LastChannelId));
-
-                    if (!string.IsNullOrEmpty(Repository.Settings.Idle.TextMessage))
+                    if (idleClient != null)
                     {
-                        var idleTimespan = Repository.Static.Now - idleClient.Creation;
-                        var messageContext = new MessageContext
+                        var channel = Repository.Channel.GetChannelListInfo((uint)idleClient.LastChannelId);
+                        QueryRunner.MoveClient(client.ClientId, (uint)idleClient.LastChannelId);
+
+                        Log(Repository.Settings.Idle,
+                            string.Format("Client '{0}'(id:{1}) successfully moved back from Idle Channel to '{2}'(id:{3}).",
+                                          client.Nickname, client.ClientDatabaseId, channel.Name, idleClient.LastChannelId));
+
+                        if (!string.IsNullOrEmpty(Repository.Settings.Idle.TextMessage))
                         {
-                            ClientDatabaseId = client.ClientDatabaseId,
-                            ClientNickname = client.Nickname,
-                            ClientAwayTime = BasicHelper.GetTimespanString(idleTimespan),
-                            ChannelId = (uint)idleClient.LastChannelId,
-                            ChannelName = channel.Name
-                        };
-                        QueryRunner.SendTextMessage(MessageTarget.Server, Repository.Connection.CredentialEntity.Self.VirtualServerId, Repository.Settings.Idle.TextMessage.ToMessage(messageContext));
+                            var idleTimespan = Repository.Static.Now - idleClient.Creation;
+                            var messageContext = new MessageContext
+                            {
+                                ClientDatabaseId = client.ClientDatabaseId,
+                                ClientNickname = client.Nickname,
+                                ClientAwayTime = BasicHelper.GetTimespanString(idleTimespan),
+                                ChannelId = (uint)idleClient.LastChannelId,
+                                ChannelName = channel.Name
+                            };
+                            QueryRunner.SendTextMessage(MessageTarget.Server, Repository.Connection.CredentialEntity.Self.VirtualServerId, Repository.Settings.Idle.TextMessage.ToMessage(messageContext));
+                        }
                     }
                 }
                 Repository.Client.RemoveLastChannelByClientId(client.ClientDatabaseId);

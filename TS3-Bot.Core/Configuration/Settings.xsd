@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:simpleType name="T_Username">
+<xs:simpleType name="T_Username">
       <xs:restriction base="xs:string"/>
   </xs:simpleType>
-	<xs:simpleType name="T_QueryPort">
+  <xs:simpleType name="T_QueryPort">
         <xs:restriction base="xs:short"/>
-	</xs:simpleType>
+  </xs:simpleType>
   <xs:simpleType name="T_Password">
       <xs:restriction base="xs:string"/>
   </xs:simpleType>
@@ -16,55 +16,67 @@
   <xs:simpleType name="T_Name">
       <xs:restriction base="xs:string"/>
   </xs:simpleType>
-	<xs:simpleType name="T_TextMessageNoFilesFound">
+  <xs:simpleType name="T_TextMessageNoFilesFound">
         <xs:restriction base="xs:string"/>
-	</xs:simpleType>
-	<xs:simpleType name="T_TextMessageFilesFound">
+  </xs:simpleType>
+  <xs:simpleType name="T_TextMessageFilesFound">
         <xs:restriction base="xs:string"/>
-	</xs:simpleType>
-	<xs:simpleType name="T_TextMessage">
+  </xs:simpleType>
+  <xs:simpleType name="T_TextMessage">
         <xs:restriction base="xs:string"/>
-	</xs:simpleType>
-	<xs:simpleType name="T_KickMessage">
+  </xs:simpleType>
+  <xs:simpleType name="T_TargetId">
+    <xs:restriction base="xs:int"/>
+  </xs:simpleType>
+  <xs:simpleType name="T_ServerGroup">
+    <xs:restriction base="xs:int"/>
+  </xs:simpleType>
+  <xs:simpleType name="T_KickMessage">
         <xs:restriction base="xs:string"/>
-	</xs:simpleType>
-	<xs:simpleType name="T_Interval">
+  </xs:simpleType>
+  <xs:simpleType name="T_Interval">
         <xs:restriction base="xs:int"/>
-	</xs:simpleType>
-	<xs:simpleType name="T_InstancePort">
+  </xs:simpleType>
+  <xs:simpleType name="T_InstancePort">
         <xs:restriction base="xs:int"/>
-	</xs:simpleType>
-	<xs:simpleType name="T_Instance">
+  </xs:simpleType>
+  <xs:simpleType name="T_Instance">
         <xs:restriction base="xs:int"/>
-	</xs:simpleType>
-	<xs:simpleType name="T_Time">
+  </xs:simpleType>
+  <xs:simpleType name="T_Time">
         <xs:restriction base="xs:int"/>
-	</xs:simpleType>
-	<xs:simpleType name="T_Host">
+  </xs:simpleType>
+  <xs:simpleType name="T_Limit">
+    <xs:restriction base="xs:int"/>
+  </xs:simpleType>
+  <xs:simpleType name="T_Host">
         <xs:restriction base="xs:string"/>
-	</xs:simpleType>
-	<xs:simpleType name="T_Group">
+  </xs:simpleType>
+  <xs:simpleType name="T_Group">
         <xs:restriction base="xs:int"/>
-	</xs:simpleType>
-	<xs:simpleType name="T_Globalization">
+  </xs:simpleType>
+  <xs:simpleType name="T_Globalization">
         <xs:restriction base="xs:string"/>
-	</xs:simpleType>
-	<xs:simpleType name="T_Entry">
+  </xs:simpleType>
+  <xs:simpleType name="T_Entry">
         <xs:restriction base="xs:string"/>
-	</xs:simpleType>
-	<xs:simpleType name="T_Channel">
+  </xs:simpleType>
+  <xs:simpleType name="T_Command">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="T_Channel">
         <xs:restriction base="xs:int"/>
-	</xs:simpleType>
-	<xs:simpleType name="T_BotNickname">
+  </xs:simpleType>
+  <xs:simpleType name="T_BotNickname">
         <xs:restriction base="xs:string"/>
-	</xs:simpleType>
-	<xs:simpleType name="T_BehaviorType">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="Channel"/>
+  </xs:simpleType>
+  <xs:simpleType name="T_BehaviorType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Channel"/>
       <xs:enumeration value="Server"/>
-			<xs:enumeration value="Sticky"/>
-		</xs:restriction>
-	</xs:simpleType>
+      <xs:enumeration value="Sticky"/>
+    </xs:restriction>
+  </xs:simpleType>
   <xs:simpleType name="T_EventBehaviorType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Message"/>
@@ -79,90 +91,133 @@
       <xs:enumeration value="Welcome"/>
     </xs:restriction>
   </xs:simpleType>
+  <xs:simpleType name="T_Target">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Client"/>
+      <xs:enumeration value="Channel"/>
+      <xs:enumeration value="Server"/>
+    </xs:restriction>
+  </xs:simpleType>
     
-	<xs:complexType name="T_Vote">
+  <xs:complexType name="T_Vote">
     <xs:all>
-			<xs:element ref="NeededCompliants" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="Behavior" type="T_BehaviorType" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="KickMessage" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
-		</xs:all>
+      <xs:element ref="NeededCompliants" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="Behavior" type="T_BehaviorType" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="KickMessage" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
         <xs:attribute ref="Enabled" use="required"/>
         <xs:attribute ref="LogEnabled"/>
-	</xs:complexType>
-	<xs:complexType name="T_TeamSpeak">
+  </xs:complexType>
+  <xs:complexType name="T_TeamSpeak">
     <xs:all>
-			<xs:element ref="Host" minOccurs="1" maxOccurs="1"/>
-			<xs:element ref="Username" minOccurs="1" maxOccurs="1"/>
-			<xs:element ref="Password" minOccurs="1" maxOccurs="1"/>
-			<xs:element ref="Instance" minOccurs="1" maxOccurs="1"/>
-			<xs:element ref="InstancePort" minOccurs="1" maxOccurs="1"/>
-			<xs:element ref="QueryPort" minOccurs="1" maxOccurs="1"/>
-			<xs:element ref="GuestGroups" minOccurs="1" maxOccurs="1"/>
-		</xs:all>
-	</xs:complexType>
-	<xs:complexType name="T_Sticky">
+      <xs:element ref="Host" minOccurs="1" maxOccurs="1"/>
+      <xs:element ref="Username" minOccurs="1" maxOccurs="1"/>
+      <xs:element ref="Password" minOccurs="1" maxOccurs="1"/>
+      <xs:element ref="Instance" minOccurs="1" maxOccurs="1"/>
+      <xs:element ref="InstancePort" minOccurs="1" maxOccurs="1"/>
+      <xs:element ref="QueryPort" minOccurs="1" maxOccurs="1"/>
+      <xs:element ref="GuestGroups" minOccurs="1" maxOccurs="1"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="T_Sticky">
     <xs:all>
-			<xs:element ref="Channel" minOccurs="1" maxOccurs="1"/>
-			<xs:element ref="StickTime" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
-		</xs:all>
+      <xs:element ref="Channel" minOccurs="1" maxOccurs="1"/>
+      <xs:element ref="StickTime" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
         <xs:attribute ref="Enabled" use="required"/>
         <xs:attribute ref="LogEnabled"/>
-	</xs:complexType>
-	<xs:complexType name="T_Stick">
+  </xs:complexType>
+  <xs:complexType name="T_Stick">
     <xs:all>
-			<xs:element ref="HelpMessage" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
-		</xs:all>
+      <xs:element ref="Command" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="UndoCommand" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="HelpMessage" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Target" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="TargetId" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
     <xs:attribute ref="Enabled" use="required"/>
     <xs:attribute ref="LogEnabled"/>
-	</xs:complexType>
-	<xs:complexType name="T_Seen">
+  </xs:complexType>
+  <xs:complexType name="T_SeenGroup">
     <xs:all>
-			<xs:element ref="HelpMessage" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Command" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="HelpMessage" minOccurs="0" maxOccurs="1"/>
       <xs:element ref="TextMessage" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
-		</xs:all>
+      <xs:element ref="MessagePerClient" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Target" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="TargetId" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
     <xs:attribute ref="Enabled" use="required"/>
     <xs:attribute ref="LogEnabled"/>
-	</xs:complexType>
-	<xs:complexType name="T_Record">
+  </xs:complexType>
+  <xs:complexType name="T_Seen">
     <xs:all>
-			<xs:element name="Behavior" type="T_BehaviorType" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="KickMessage" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
-		</xs:all>
+      <xs:element ref="Command" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="HelpMessage" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="TextMessage" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Target" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="TargetId" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
     <xs:attribute ref="Enabled" use="required"/>
     <xs:attribute ref="LogEnabled"/>
-	</xs:complexType>
-	<xs:complexType name="T_Permitted">
-		<xs:sequence>
-			<xs:element ref="Group" minOccurs="0" maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
+  </xs:complexType>
+  <xs:complexType name="T_Record">
+    <xs:all>
+      <xs:element name="Behavior" type="T_BehaviorType" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="KickMessage" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
+    <xs:attribute ref="Enabled" use="required"/>
+    <xs:attribute ref="LogEnabled"/>
+  </xs:complexType>
+  <xs:complexType name="T_Permitted">
+    <xs:sequence>
+      <xs:element ref="Group" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="T_Punish">
+    <xs:all>
+      <xs:element ref="Command" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="UndoCommand" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="HelpMessage" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Channel" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="ServerGroup" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Target" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="TargetId" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
+    <xs:attribute ref="Enabled" use="required"/>
+    <xs:attribute ref="LogEnabled"/>
+  </xs:complexType>
     
-	<xs:complexType name="T_InstanceSettings">
-		<xs:all>
-			<xs:element ref="Enabled" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Global" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Away" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="BadNickname" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Control" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Event" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Idle" minOccurs="0" maxOccurs="1"/>
+  <xs:complexType name="T_InstanceSettings">
+    <xs:all>
+      <xs:element ref="Enabled" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Global" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Away" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="BadNickname" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Control" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Event" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Idle" minOccurs="0" maxOccurs="1"/>
       <xs:element ref="Message" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Record" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Sticky" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="TeamSpeak" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Vote" minOccurs="0" maxOccurs="1"/>
-		</xs:all>
-	</xs:complexType>
+      <xs:element ref="Record" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Sticky" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="TeamSpeak" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Vote" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
+  </xs:complexType>
   <xs:complexType name="T_Messages">
     <xs:sequence>
       <xs:element ref="MessageDefinition" minOccurs="0" maxOccurs="unbounded"/>
@@ -186,55 +241,77 @@
     </xs:sequence>
     <xs:attribute ref="Enabled" use="required"/>
   </xs:complexType>
-	<xs:complexType name="T_Idle">
+  <xs:complexType name="T_Idle">
     <xs:all>
-			<xs:element ref="Channel" minOccurs="1" maxOccurs="1"/>
-			<xs:element ref="IdleTime" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
-		</xs:all>
+      <xs:element ref="Channel" minOccurs="1" maxOccurs="1"/>
+      <xs:element ref="IdleTime" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="TextMessage" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
     <xs:attribute ref="Enabled" use="required"/>
     <xs:attribute ref="LogEnabled"/>
-	</xs:complexType>
-	<xs:complexType name="T_Help">
+  </xs:complexType>
+  <xs:complexType name="T_Hours">
     <xs:all>
-			<xs:element ref="HelpMessage" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
-		</xs:all>
+      <xs:element ref="Command" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="HelpMessage" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="TextMessage" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="MessagePerClient" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Limit" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Target" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="TargetId" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
     <xs:attribute ref="Enabled" use="required"/>
     <xs:attribute ref="LogEnabled"/>
-	</xs:complexType>
-	<xs:complexType name="T_GuestGroups">
-		<xs:sequence>
-			<xs:element ref="Group" minOccurs="0" maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="T_Global">
+  </xs:complexType>
+  <xs:complexType name="T_Help">
+    <xs:all>
+      <xs:element ref="Command" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="HelpMessage" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Target" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="TargetId" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
+    <xs:attribute ref="Enabled" use="required"/>
+    <xs:attribute ref="LogEnabled"/>
+  </xs:complexType>
+  <xs:complexType name="T_GuestGroups">
+    <xs:sequence>
+      <xs:element ref="Group" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="T_Global">
     <xs:all>
       <xs:element ref="BotNickname" minOccurs="0" maxOccurs="1"/>
       <xs:element ref="Globalization" minOccurs="0" maxOccurs="1"/>
     </xs:all>
-	</xs:complexType>
-	<xs:complexType name="T_Files">
+  </xs:complexType>
+  <xs:complexType name="T_Files">
     <xs:all>
-			<xs:element ref="HelpMessage" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="MessagePerServer" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="MessageNoFilesFound" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="MessageFilesFound" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="MessageFile" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
-		</xs:all>
+      <xs:element ref="Command" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="HelpMessage" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="MessagePerServer" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="MessageNoFilesFound" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="MessageFilesFound" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="MessageFile" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Target" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="TargetId" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
     <xs:attribute ref="Enabled" use="required"/>
     <xs:attribute ref="LogEnabled"/>
-	</xs:complexType>
-	<xs:complexType name="T_Events">
-		<xs:sequence>
-			<xs:element ref="EventDefinition" minOccurs="0" maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="T_EventDefinition">
+  </xs:complexType>
+  <xs:complexType name="T_Events">
+    <xs:sequence>
+      <xs:element ref="EventDefinition" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="T_EventDefinition">
     <xs:all>
       <xs:element ref="Name" minOccurs="1" maxOccurs="1"/>
       <xs:element ref="EventBehaviors" minOccurs="1" maxOccurs="1"/>
@@ -244,44 +321,47 @@
     </xs:all>
     <xs:attribute ref="Enabled" use="required"/>
     <xs:attribute ref="LogEnabled"/>
-	</xs:complexType>
-	<xs:complexType name="T_EventBehaviors">
-		<xs:sequence>
-			<xs:element ref="EventBehavior" minOccurs="1" maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="T_EventBehavior">
-		<xs:sequence>
-			<xs:element name="Behavior" type="T_EventBehaviorType" minOccurs="1" maxOccurs="1"/>
+  </xs:complexType>
+  <xs:complexType name="T_EventBehaviors">
+    <xs:sequence>
+      <xs:element ref="EventBehavior" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="T_EventBehavior">
+    <xs:sequence>
+      <xs:element name="Behavior" type="T_EventBehaviorType" minOccurs="1" maxOccurs="1"/>
       <xs:element ref="TextMessage" minOccurs="0" maxOccurs="1"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="T_Event">
-		<xs:sequence>
-			<xs:element ref="Events" minOccurs="0" maxOccurs="1"/>
-		</xs:sequence>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="T_Event">
+    <xs:sequence>
+      <xs:element ref="Events" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
     <xs:attribute ref="Enabled" use="required"/>
-	</xs:complexType>
-	<xs:complexType name="T_Denied">
-		<xs:sequence>
-			<xs:element ref="Group" minOccurs="0" maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="T_Control">
+  </xs:complexType>
+  <xs:complexType name="T_Denied">
+    <xs:sequence>
+      <xs:element ref="Group" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="T_Control">
     <xs:all>
-			<xs:element ref="HelpMessage" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Help" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Seen" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Files" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Stick" minOccurs="0" maxOccurs="1"/>
-		</xs:all>
-	</xs:complexType>
-	<xs:complexType name="T_Blacklist">
-		<xs:sequence>
-			<xs:element ref="Entry" minOccurs="0" maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="T_BadNickname">
+      <xs:element ref="HelpMessage" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Help" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Hours" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Seen" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="SeenGroup" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Files" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Stick" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Punish" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="T_Blacklist">
+    <xs:sequence>
+      <xs:element ref="Entry" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="T_BadNickname">
     <xs:all>
       <xs:element ref="Blacklist" minOccurs="0" maxOccurs="1"/>
       <xs:element ref="KickMessage" minOccurs="0" maxOccurs="1"/>
@@ -290,72 +370,83 @@
     </xs:all>
     <xs:attribute ref="Enabled" use="required"/>
     <xs:attribute ref="LogEnabled"/>
-	</xs:complexType>
-	<xs:complexType name="T_Away">
+  </xs:complexType>
+  <xs:complexType name="T_Away">
     <xs:all>
-			<xs:element ref="Channel" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="MuteHeadphoneChannel" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="MuteMicrophoneChannel" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
-			<xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
-		</xs:all>
+      <xs:element ref="Channel" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="MuteHeadphoneChannel" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="MuteMicrophoneChannel" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="TextMessage" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
     <xs:attribute ref="Enabled" use="required"/>
     <xs:attribute ref="LogEnabled"/>
-	</xs:complexType>
-	<xs:attribute name="Enabled" type="xs:boolean"/>
+  </xs:complexType>
+  <xs:attribute name="Enabled" type="xs:boolean"/>
   <xs:attribute name="LogEnabled" type="xs:boolean"/>
     
-	<xs:element name="WarnMessage" type="xs:string" nillable="true"/>
-	<xs:element name="Vote" type="T_Vote" nillable="true"/>
-	<xs:element name="Username" type="T_Username" nillable="true"/>
+  <xs:element name="WarnMessage" type="xs:string" nillable="true"/>
+  <xs:element name="Vote" type="T_Vote" nillable="true"/>
+  <xs:element name="Username" type="T_Username" nillable="true"/>
+  <xs:element name="UndoCommand" type="T_Command" nillable="true"/>
   <xs:element name="TextMessage" type="T_TextMessage" nillable="true"/>
-	<xs:element name="TeamSpeak" type="T_TeamSpeak" nillable="true"/>
-	<xs:element name="Sticky" type="T_Sticky" nillable="true"/>
-	<xs:element name="StickTime" type="T_Time" nillable="true"/>
-	<xs:element name="Stick" type="T_Stick" nillable="true"/>
-	<xs:element name="Seen" type="T_Seen" nillable="true"/>
-	<xs:element name="Record" type="T_Record" nillable="true"/>
-	<xs:element name="QueryPort" type="T_QueryPort" nillable="true"/>
-	<xs:element name="Permitted" type="T_Permitted" nillable="true"/>
-	<xs:element name="Password" type="T_Password" nillable="true"/>
-	<xs:element name="NeededCompliants" type="T_NeededCompliants" nillable="true"/>
-	<xs:element name="Name" type="T_Name" nillable="true"/>
-	<xs:element name="MuteMicrophoneChannel" type="T_Channel" nillable="true"/>
-	<xs:element name="MuteHeadphoneChannel" type="T_Channel" nillable="true"/>
-	<xs:element name="MessagePerServer" type="xs:string" nillable="true"/>
-	<xs:element name="MessageNoFilesFound" type="T_TextMessageNoFilesFound" nillable="true"/>
-	<xs:element name="MessageFilesFound" type="T_TextMessageFilesFound" nillable="true"/>
-	<xs:element name="MessageFile" type="xs:string" nillable="true"/>
+  <xs:element name="TeamSpeak" type="T_TeamSpeak" nillable="true"/>
+  <xs:element name="TargetId" type="T_TargetId" nillable="true"/>
+  <xs:element name="Target" type="T_Target" nillable="true"/>
+  <xs:element name="Sticky" type="T_Sticky" nillable="true"/>
+  <xs:element name="StickTime" type="T_Time" nillable="true"/>
+  <xs:element name="Stick" type="T_Stick" nillable="true"/>
+  <xs:element name="ServerGroup" type="T_ServerGroup" nillable="true"/>
+  <xs:element name="SeenGroup" type="T_SeenGroup" nillable="true"/>
+  <xs:element name="Seen" type="T_Seen" nillable="true"/>
+  <xs:element name="Record" type="T_Record" nillable="true"/>
+  <xs:element name="QueryPort" type="T_QueryPort" nillable="true"/>
+  <xs:element name="Punish" type="T_Punish" nillable="true"/>
+  <xs:element name="Permitted" type="T_Permitted" nillable="true"/>
+  <xs:element name="Password" type="T_Password" nillable="true"/>
+  <xs:element name="NeededCompliants" type="T_NeededCompliants" nillable="true"/>
+  <xs:element name="Name" type="T_Name" nillable="true"/>
+  <xs:element name="MuteMicrophoneChannel" type="T_Channel" nillable="true"/>
+  <xs:element name="MuteHeadphoneChannel" type="T_Channel" nillable="true"/>
+  <xs:element name="MessagePerServer" type="xs:string" nillable="true"/>
+  <xs:element name="MessagePerClient" type="xs:string" nillable="true"/>
+  <xs:element name="MessageNoFilesFound" type="T_TextMessageNoFilesFound" nillable="true"/>
+  <xs:element name="MessageFilesFound" type="T_TextMessageFilesFound" nillable="true"/>
+  <xs:element name="MessageFile" type="xs:string" nillable="true"/>
   <xs:element name="Messages" type="T_Messages" nillable="true"/>
   <xs:element name="MessageDefinition" type="T_MessageDefinition" nillable="true"/>
   <xs:element name="Message" type="T_Message" nillable="true"/>
-	<xs:element name="KickMessage" type="T_KickMessage" nillable="true"/>
-	<xs:element name="Interval" type="T_Interval" nillable="true"/>
-	<xs:element name="InstanceSettings" type="T_InstanceSettings" nillable="true"/>
-	<xs:element name="InstancePort" type="T_InstancePort" nillable="true"/>
-	<xs:element name="Instance" type="T_Instance" nillable="true"/>
-	<xs:element name="IdleTime" type="T_Time" nillable="true"/>
-	<xs:element name="Idle" type="T_Idle" nillable="true"/>
-	<xs:element name="Host" type="T_Host" nillable="true"/>
-	<xs:element name="HelpMessage" type="xs:string" nillable="true"/>
-	<xs:element name="Help" type="T_Help" nillable="true"/>
-	<xs:element name="GuestGroups" type="T_GuestGroups" nillable="true"/>
-	<xs:element name="Group" type="T_Group" nillable="true"/>
-	<xs:element name="Globalization" type="T_Globalization" nillable="true"/>
-	<xs:element name="Global" type="T_Global" nillable="true"/>
-	<xs:element name="Files" type="T_Files" nillable="true"/>
-	<xs:element name="Events" type="T_Events" nillable="true"/>
-	<xs:element name="EventDefinition" type="T_EventDefinition" nillable="true"/>
-	<xs:element name="EventBehaviors" type="T_EventBehaviors" nillable="true"/>
-	<xs:element name="EventBehavior" type="T_EventBehavior" nillable="true"/>
-	<xs:element name="Event" type="T_Event" nillable="true"/>
-	<xs:element name="Entry" type="T_Entry" nillable="true"/>
-	<xs:element name="Enabled" type="xs:boolean"/>
-	<xs:element name="Denied" type="T_Denied" nillable="true"/>
-	<xs:element name="Control" type="T_Control" nillable="true"/>
-	<xs:element name="Channel" type="T_Channel" nillable="true"/>
-	<xs:element name="BotNickname" type="T_BotNickname" nillable="true"/>
-	<xs:element name="Blacklist" type="T_Blacklist" nillable="true"/>
-	<xs:element name="BadNickname" type="T_BadNickname" nillable="true"/>
-	<xs:element name="Away" type="T_Away" nillable="true"/>
+  <xs:element name="Limit" type="T_Limit" nillable="true"/>
+  <xs:element name="KickMessage" type="T_KickMessage" nillable="true"/>
+  <xs:element name="Interval" type="T_Interval" nillable="true"/>
+  <xs:element name="InstanceSettings" type="T_InstanceSettings" nillable="true"/>
+  <xs:element name="InstancePort" type="T_InstancePort" nillable="true"/>
+  <xs:element name="Instance" type="T_Instance" nillable="true"/>
+  <xs:element name="IdleTime" type="T_Time" nillable="true"/>
+  <xs:element name="Idle" type="T_Idle" nillable="true"/>
+  <xs:element name="Hours" type="T_Hours" nillable="true"/>
+  <xs:element name="Host" type="T_Host" nillable="true"/>
+  <xs:element name="HelpMessage" type="xs:string" nillable="true"/>
+  <xs:element name="Help" type="T_Help" nillable="true"/>
+  <xs:element name="GuestGroups" type="T_GuestGroups" nillable="true"/>
+  <xs:element name="Group" type="T_Group" nillable="true"/>
+  <xs:element name="Globalization" type="T_Globalization" nillable="true"/>
+  <xs:element name="Global" type="T_Global" nillable="true"/>
+  <xs:element name="Files" type="T_Files" nillable="true"/>
+  <xs:element name="Events" type="T_Events" nillable="true"/>
+  <xs:element name="EventDefinition" type="T_EventDefinition" nillable="true"/>
+  <xs:element name="EventBehaviors" type="T_EventBehaviors" nillable="true"/>
+  <xs:element name="EventBehavior" type="T_EventBehavior" nillable="true"/>
+  <xs:element name="Event" type="T_Event" nillable="true"/>
+  <xs:element name="Entry" type="T_Entry" nillable="true"/>
+  <xs:element name="Enabled" type="xs:boolean"/>
+  <xs:element name="Denied" type="T_Denied" nillable="true"/>
+  <xs:element name="Control" type="T_Control" nillable="true"/>
+  <xs:element name="Command" type="T_Command" nillable="true"/>
+  <xs:element name="Channel" type="T_Channel" nillable="true"/>
+  <xs:element name="BotNickname" type="T_BotNickname" nillable="true"/>
+  <xs:element name="Blacklist" type="T_Blacklist" nillable="true"/>
+  <xs:element name="BadNickname" type="T_BadNickname" nillable="true"/>
+  <xs:element name="Away" type="T_Away" nillable="true"/>
 </xs:schema>
