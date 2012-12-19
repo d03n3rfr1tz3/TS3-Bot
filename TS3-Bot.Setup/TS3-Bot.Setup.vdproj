@@ -136,12 +136,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_DF1E504F995D4B65AF4AAC7B0923B760"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_A72C7A3F7BB92E7D11364B61B668C923"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -167,6 +161,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_37033F6E967E75A2730676053406A4EB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_DF1E504F995D4B65AF4AAC7B0923B760"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -447,7 +447,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:TS3-Bot.Core.XmlSerializers, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:TS3-Bot.Core.XmlSerializers, Version=1.0.0.10, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_920722F522E917685264D1F092A0BFA9"
@@ -581,15 +581,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TeamSpeak 3 Bot"
-        "ProductCode" = "8:{05A3F57E-EC37-484E-9A5D-D24152BBBB7D}"
-        "PackageCode" = "8:{CD7D3470-B85C-410F-874A-7AF3F9C7124D}"
+        "ProductCode" = "8:{F6E9CE92-A8B4-43E2-80F1-353607992407}"
+        "PackageCode" = "8:{A7BF3F86-52AD-405D-BF71-9A32ABF9C2DC}"
         "UpgradeCode" = "8:{01D6B1B4-F9ED-4B1A-963D-119DE514A665}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.10"
+        "ProductVersion" = "8:1.0.11"
         "Manufacturer" = "8:Dirk Sarodnick"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://www.d03n3r.de"
