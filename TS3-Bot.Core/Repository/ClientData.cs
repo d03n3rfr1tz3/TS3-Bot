@@ -6,6 +6,7 @@
     using Base;
     using Entity;
     using Helper;
+    using Service;
     using TS3QueryLib.Core.CommandHandling;
     using TS3QueryLib.Core.Server.Entities;
     using TS3QueryLib.Core.Server.Responses;
@@ -75,7 +76,7 @@
         }
 
         /// <summary> 
-        /// Gets the clients from database. 
+        /// Gets the clients from Repository.Container.Database. 
         /// </summary> 
         /// <returns></returns> 
         public Dictionary<uint, ClientDbEntry> GetClientsFromDatabase()
@@ -230,9 +231,9 @@
         {
             lock (Container.lockSeenClientList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    var entity = database.Seen.FirstOrDefault(c => c.ClientDatabaseId == clientDatabaseId);
+                    var entity = Repository.Container.Database.Seen.FirstOrDefault(c => c.ClientDatabaseId == clientDatabaseId);
                     return entity == null ? default(DateTime) : entity.LastSeen;
                 }
             }
@@ -246,24 +247,22 @@
         {
             lock (Container.lockSeenClientList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    var entity = database.Seen.FirstOrDefault(c => c.ClientDatabaseId == clientDatabaseId);
+                    var entity = Repository.Container.Database.Seen.FirstOrDefault(c => c.ClientDatabaseId == clientDatabaseId);
                     if (entity != null)
                     {
                         entity.LastSeen = Repository.Static.Now;
                     }
                     else
                     {
-                        database.Seen.AddObject(new Seen
+                        Repository.Container.Database.Seen.AddObject(new Seen
                         {
                             Id = Guid.NewGuid(),
                             ClientDatabaseId = (int)clientDatabaseId,
                             LastSeen = Repository.Static.Now
                         });
                     }
-
-                    database.SaveChanges();
                 }
             }
         }
@@ -291,9 +290,9 @@
         {
             lock (Container.lockClientLastChannelList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    return database.Away.Any(m => m.ClientDatabaseId == clientDatabaseId);
+                    return Repository.Container.Database.Away.Any(m => m.ClientDatabaseId == clientDatabaseId);
                 }
             }
         }
@@ -307,9 +306,9 @@
         {
             lock (Container.lockClientLastChannelList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    return database.Away.FirstOrDefault(m => m.ClientDatabaseId == clientDatabaseId);
+                    return Repository.Container.Database.Away.FirstOrDefault(m => m.ClientDatabaseId == clientDatabaseId);
                 }
             }
         }
@@ -323,18 +322,17 @@
         {
             lock (Container.lockClientLastChannelList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    if (!database.Away.Any(m => m.ClientDatabaseId == clientDatabaseId))
+                    if (!Repository.Container.Database.Away.Any(m => m.ClientDatabaseId == clientDatabaseId))
                     {
-                        database.Away.AddObject(new Away
+                        Repository.Container.Database.Away.AddObject(new Away
                         {
                             Id = Guid.NewGuid(),
                             ClientDatabaseId = (int)clientDatabaseId,
                             LastChannelId = (int)channelId,
                             Creation = Repository.Static.Now
                         });
-                        database.SaveChanges();
                     }
                 }
             }
@@ -348,10 +346,9 @@
         {
             lock (Container.lockClientLastChannelList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    database.Away.Where(m => m.ClientDatabaseId == clientDatabaseId).ToList().ForEach(m => database.Away.DeleteObject(m));
-                    database.SaveChanges();
+                    Repository.Container.Database.Away.Where(m => m.ClientDatabaseId == clientDatabaseId).ToList().ForEach(m => Repository.Container.Database.Away.DeleteObject(m));
                 }
             }
         }
@@ -439,16 +436,16 @@
         {
             lock (Container.lockVotedClientList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    database.Vote.AddObject(new Vote
+                    Repository.Container.Database.Vote.AddObject(new Vote
                     {
                         Id = Guid.NewGuid(),
                         ClientDatabaseId = (int)votedClient.ClientDatabaseId,
                         ChannelId = (int?)votedClient.ChannelId,
                         Creation = Repository.Static.Now
                     });
-                    database.SaveChanges();
+                    Repository.Container.Database.SaveChanges();
                 }
             }
         }
@@ -461,10 +458,10 @@
         {
             lock (Container.lockVotedClientList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    database.Vote.Where(m => m.ClientDatabaseId == clientDatabaseId).ToList().ForEach(m => database.Vote.DeleteObject(m));
-                    database.SaveChanges();
+                    Repository.Container.Database.Vote.Where(m => m.ClientDatabaseId == clientDatabaseId).ToList().ForEach(m => Repository.Container.Database.Vote.DeleteObject(m));
+                    Repository.Container.Database.SaveChanges();
                 }
             }
         }
@@ -480,9 +477,9 @@
         {
             lock (Container.lockVotedClientList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    return database.Vote.Any(m => m.ClientDatabaseId == clientDatabaseId);
+                    return Repository.Container.Database.Vote.Any(m => m.ClientDatabaseId == clientDatabaseId);
                 }
             }
         }
@@ -496,9 +493,9 @@
         {
             lock (Container.lockVotedClientList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    return database.Vote.FirstOrDefault(m => m.ClientDatabaseId == clientDatabaseId);
+                    return Repository.Container.Database.Vote.FirstOrDefault(m => m.ClientDatabaseId == clientDatabaseId);
                 }
             }
         }
@@ -512,23 +509,30 @@
         /// </summary>
         public void CaptureModeration()
         {
-            using (var database = new BotDatabaseEntities())
+            lock (Container.lockModeratedClientList)
             {
                 var entries = new List<LogEntry>();
-                var lastModerated = database.Moderate.Any() ? database.Moderate.Max(m => m.Creation) : DateTime.MinValue;
+                var lastModerated = DateTime.MinValue;
+                lock (Repository.Container.lockDatabase)
+                {
+                    if (Repository.Container.Database.Moderate.Any()) lastModerated = Repository.Container.Database.Moderate.Max(m => m.Creation);
+                }
+                if (lastModerated == DateTime.MinValue) LogService.Debug("Start capturing previous Moderation data. This may take some time...");
 
-                uint index = 0;
+                uint? index = null;
                 ushort length = 10;
                 try
                 {
                     while (true)
                     {
-                        var logEntries = QueryRunner.GetLogEntries(length, false, index).LogEntries;
-                        entries.AddRange(logEntries.Where(m => m.LogLevel == LogLevel.Info && m.LogCategory == "VirtualServer"));
+                        var logEntriesResult = index.HasValue ? QueryRunner.GetLogEntries(length, false, index) : QueryRunner.GetLogEntries(length, false);
+                        entries.AddRange(logEntriesResult.LogEntries.Where(m => m.LogLevel == LogLevel.Info && m.LogCategory == "VirtualServer" && m.TimeStamp > lastModerated));
+                        index = logEntriesResult.LogPositionToContinueReading;
 
-                        if (!logEntries.Any() || logEntries.Any(l => l.TimeStamp < lastModerated)) break;
-                        index += length;
-                        length = 50;
+                        if (index == 0) break;
+                        if (!logEntriesResult.LogEntries.Any() || logEntriesResult.LogEntries.Min(l => l.TimeStamp) < lastModerated) break;
+                        if (entries.Count > 10000) break;
+                        length = 100;
                     }
                 }
                 catch (ArgumentException) { }
@@ -538,9 +542,9 @@
                     var entity = ModeratedClientEntity.Parse(logEntry);
                     if (entity.HasValue)
                     {
-                        lock (Container.lockModeratedClientList)
+                        lock (Repository.Container.lockDatabase)
                         {
-                            database.Moderate.AddObject(new Moderate
+                            Repository.Container.Database.Moderate.AddObject(new Moderate
                             {
                                 Id = Guid.NewGuid(),
                                 ClientDatabaseId = (int)entity.Value.User,
@@ -549,9 +553,12 @@
                                 ServerGroup = (int)entity.Value.ServerGroup,
                                 Type = (byte)entity.Value.Type
                             });
+                            Repository.Container.Database.SaveChanges();
                         }
                     }
                 }
+
+                if (lastModerated == DateTime.MinValue) LogService.Debug("Finished capturing Moderation data.");
             }
         }
 
@@ -566,9 +573,9 @@
         {
             lock (Container.lockModeratedClientList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    database.Moderate.AddObject(new Moderate
+                    Repository.Container.Database.Moderate.AddObject(new Moderate
                     {
                         Id = Guid.NewGuid(),
                         ClientDatabaseId = (int)clientDatabaseId,
@@ -577,6 +584,7 @@
                         ServerGroup = (int)serverGroupId,
                         Type = (byte)type
                     });
+                    Repository.Container.Database.SaveChanges();
                 }
             }
         }
@@ -592,10 +600,10 @@
         {
             lock (Container.lockModeratedClientList)
             {
-                using (var database = new BotDatabaseEntities())
+                var moderationType = (byte)type;
+                lock (Repository.Container.lockDatabase)
                 {
-                    var moderationType = (byte)type;
-                    var entities = database.Moderate.Where(m => m.Type == moderationType);
+                    var entities = Repository.Container.Database.Moderate.Where(m => m.Type == moderationType);
 
                     if (fromDate.HasValue)
                     {
@@ -622,14 +630,14 @@
         {
             lock (Container.lockModeratedClientList)
             {
-                using (var database = new BotDatabaseEntities())
+                const byte moderationType = (byte)ModerationType.Added;
+                lock (Repository.Container.lockDatabase)
                 {
-                    const byte moderationType = (byte)ModerationType.Added;
-                    var joins = database.Moderate.Where(m => m.Type == moderationType && m.ServerGroup == serverGroupId && m.ClientDatabaseId == clientDatabaseId);
+                    var joins = Repository.Container.Database.Moderate.Where(m => m.Type == moderationType && m.ServerGroup == serverGroupId && m.ClientDatabaseId == clientDatabaseId);
                     if (joins.Any()) return joins.Max(m => m.Creation);
-                    if (database.Moderate.Any()) return database.Moderate.Where(m => m.Type == moderationType && m.ServerGroup == serverGroupId).Min(m => m.Creation);
-                    return DateTime.MinValue;
+                    if (Repository.Container.Database.Moderate.Any()) return Repository.Container.Database.Moderate.Where(m => m.Type == moderationType && m.ServerGroup == serverGroupId).Min(m => m.Creation);
                 }
+                return DateTime.MinValue;
             }
         }
 
@@ -662,16 +670,16 @@
 
             lock (Container.lockTimeClientList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    var entity = database.Time.FirstOrDefault(c => c.ClientDatabaseId == clientDatabaseId && c.Joined == lastConnected);
+                    var entity = Repository.Container.Database.Time.FirstOrDefault(c => c.ClientDatabaseId == clientDatabaseId && c.Joined == lastConnected);
                     if (entity != null)
                     {
                         entity.Disconnected = disconnected ?? Repository.Static.Now;
                     }
                     else
                     {
-                        database.Time.AddObject(new Time
+                        Repository.Container.Database.Time.AddObject(new Time
                         {
                             Id = Guid.NewGuid(),
                             ClientDatabaseId = (int)clientDatabaseId,
@@ -680,8 +688,7 @@
                             TotalMinutes = ((disconnected ?? Repository.Static.Now) - lastConnected).TotalMinutes
                         });
                     }
-
-                    database.SaveChanges();
+                    Repository.Container.Database.SaveChanges();
                 }
             }
         }
@@ -696,9 +703,9 @@
         {
             lock (Container.lockTimeClientList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    var times = database.Time.AsQueryable();
+                    var times = Repository.Container.Database.Time.AsQueryable();
 
                     if (fromTime.HasValue)
                     {
@@ -726,9 +733,9 @@
         {
             lock (Container.lockTimeClientList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    var times = database.Time.AsQueryable();
+                    var times = Repository.Container.Database.Time.AsQueryable();
 
                     if (fromTime.HasValue)
                     {
@@ -756,9 +763,9 @@
         {
             lock (Container.lockTimeClientList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    var times = database.Time.Where(c => c.ClientDatabaseId == clientDatabaseId);
+                    var times = Repository.Container.Database.Time.Where(c => c.ClientDatabaseId == clientDatabaseId);
 
                     if (fromTime.HasValue)
                     {
@@ -785,9 +792,9 @@
         {
             lock (Container.lockTimeClientList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    var users = database.Time.AsQueryable();
+                    var users = Repository.Container.Database.Time.AsQueryable();
 
                     if (fromTime.HasValue)
                     {
@@ -820,11 +827,11 @@
             lock (Container.lockPreviousServerGroupsList)
             {
                 // Save current Server Groups, that they can restored later
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
                     foreach (var currentGroup in currentGroups)
                     {
-                        database.PreviousServerGroup.AddObject(new PreviousServerGroup
+                        Repository.Container.Database.PreviousServerGroup.AddObject(new PreviousServerGroup
                         {
                             Id = Guid.NewGuid(),
                             ClientDatabaseId = (int)clientDatabaseId,
@@ -832,8 +839,7 @@
                             Creation = Repository.Static.Now
                         });
                     }
-
-                    database.SaveChanges();
+                    Repository.Container.Database.SaveChanges();
                 }
             }
 
@@ -848,11 +854,12 @@
         {
             lock (Container.lockPreviousServerGroupsList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    var serverGroups = database.PreviousServerGroup.Where(m => m.ClientDatabaseId == clientDatabaseId).ToList().Select(m => (uint)m.ServerGroup).ToList();
+                    var serverGroups = Repository.Container.Database.PreviousServerGroup.Where(m => m.ClientDatabaseId == clientDatabaseId).ToList().Select(m => (uint)m.ServerGroup).ToList();
                     Repository.Client.AddClientServerGroups(clientDatabaseId, serverGroups);
-                    database.PreviousServerGroup.Where(m => m.ClientDatabaseId == clientDatabaseId).ToList().ForEach(m => database.PreviousServerGroup.DeleteObject(m));
+                    Repository.Container.Database.PreviousServerGroup.Where(m => m.ClientDatabaseId == clientDatabaseId).ToList().ForEach(m => Repository.Container.Database.PreviousServerGroup.DeleteObject(m));
+                    Repository.Container.Database.SaveChanges();
                 }
             }
         }

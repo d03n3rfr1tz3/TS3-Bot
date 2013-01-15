@@ -62,21 +62,22 @@ namespace DirkSarodnick.TS3_Bot.Core.Manager.Connection
             if (disposed) return;
             disposed = true;
 
-            WorkerQueryRunner.AddLogEntry(new LogEntryLight(LogLevel.Info, string.Format("TS3-Bot '{0}' disconnected.", BotInstance.Settings.Global.BotNickname)));
+            if (WorkerQueryRunner != null)
+                WorkerQueryRunner.AddLogEntry(new LogEntryLight(LogLevel.Info, string.Format("TS3-Bot '{0}' disconnected.", BotInstance.Settings.Global.BotNickname)));
 
-            if (TcpDispatcher != null && TcpDispatcher.IsConnected && !TcpDispatcher.IsDisposed)
+            if (TcpDispatcher != null && TcpDispatcher.IsConnected && !TcpDispatcher.IsDisposed && QueryRunner != null)
             {
                 QueryRunner.Logout();
                 QueryRunner.Quit();
                 TcpDispatcher.Disconnect();
             }
-            if (WorkerTcpDispatcher != null && WorkerTcpDispatcher.IsConnected && !WorkerTcpDispatcher.IsDisposed)
+            if (WorkerTcpDispatcher != null && WorkerTcpDispatcher.IsConnected && !WorkerTcpDispatcher.IsDisposed && WorkerQueryRunner != null)
             {
                 WorkerQueryRunner.Logout();
                 WorkerQueryRunner.Quit();
                 WorkerTcpDispatcher.Disconnect();
             }
-            if (NotificationTcpDispatcher != null && NotificationTcpDispatcher.IsConnected && !NotificationTcpDispatcher.IsDisposed)
+            if (NotificationTcpDispatcher != null && NotificationTcpDispatcher.IsConnected && !NotificationTcpDispatcher.IsDisposed && NotificationQueryRunner != null)
             {
                 NotificationQueryRunner.Logout();
                 NotificationQueryRunner.Quit();

@@ -23,6 +23,24 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
 
         #region Specified Data
 
+        private BotDatabaseEntities database;
+        internal BotDatabaseEntities Database
+        {
+            get
+            {
+                lock (lockDatabase)
+                {
+                    if (database == null)
+                    {
+                        database = new BotDatabaseEntities();
+                        database.Connection.Open();
+                    }
+
+                    return this.database;
+                }
+            }
+        }
+
         internal Dictionary<uint, ClientServerGroupList> ClientServerGroupList = new Dictionary<uint, ClientServerGroupList>();
         internal List<ClientWarningEntity> ClientWarningList = new List<ClientWarningEntity>();
 
@@ -50,6 +68,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         #region Locks
 
         internal readonly object lockNow = new object();
+        internal readonly object lockDatabase = new object();
         internal readonly object lockGetClientInfo = new object();
         internal readonly object lockGetClientList = new object();
         internal readonly object lockGetClientsFromDatabase = new object();
@@ -93,12 +112,11 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
 
             lock (lockClientWarningList) ClientWarningList.RemoveAll(m => m.Creation.AddMinutes(5) < DateTime.UtcNow);
 
-
-            using (var database = new BotDatabaseEntities())
+            lock (lockDatabase)
             {
-                database.Sticky.ToList().Where(m => m.Creation.AddMinutes(m.StickTime) < DateTime.UtcNow).ForEach(m => database.Sticky.DeleteObject(m));
-                database.Vote.ToList().Where(m => m.Creation.AddHours(1) < DateTime.UtcNow).ForEach(m => database.Vote.DeleteObject(m));
-                database.SaveChanges();
+                Database.Sticky.ToList().Where(m => m.Creation.AddMinutes(m.StickTime) < DateTime.UtcNow).ForEach(m => Database.Sticky.DeleteObject(m));
+                Database.Vote.ToList().Where(m => m.Creation.AddHours(1) < DateTime.UtcNow).ForEach(m => Database.Vote.DeleteObject(m));
+                Database.SaveChanges();
             }
         }
 
@@ -120,6 +138,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
             if (disposed) return;
             disposed = true;
 
+            Database.Dispose();
             ClientList = null;
             ClientInfoList = null;
             ChannelList = null;

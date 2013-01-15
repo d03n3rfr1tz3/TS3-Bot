@@ -46,7 +46,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Service
             try
             {
                 var log = new EventLog { Log = "Application", Source = "TS3-Bot" };
-                log.WriteEntry(exception.ToString(), type);
+                log.WriteEntry(exception + (exception.InnerException != null ? exception.InnerException.ToString() : string.Empty), type);
                 log.Close();
             }
             catch

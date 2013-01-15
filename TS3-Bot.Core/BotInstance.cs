@@ -53,12 +53,12 @@
                 }
                 else
                 {
-                    LogService.Error(ex.ToString());
+                    LogService.Error(ex);
                 }
             }
             catch (Exception ex)
             {
-                LogService.Error(ex.ToString());
+                LogService.Error(ex);
             }
             finally
             {

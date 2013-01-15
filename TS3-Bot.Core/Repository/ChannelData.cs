@@ -80,9 +80,9 @@
         {
             lock (Container.lockStickyClientList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    return database.Sticky.ToList();
+                    return Repository.Container.Database.Sticky.ToList();
                 }
             }
         }
@@ -97,10 +97,10 @@
         {
             lock (Container.lockStickyClientList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    database.Sticky.Where(c => c.ClientDatabaseId == clientDatabaseId && c.ChannelId == channelId).ToList().ForEach(c => database.Sticky.DeleteObject(c));
-                    database.Sticky.AddObject(new Sticky
+                    Repository.Container.Database.Sticky.Where(c => c.ClientDatabaseId == clientDatabaseId && c.ChannelId == channelId).ToList().ForEach(c => Repository.Container.Database.Sticky.DeleteObject(c));
+                    Repository.Container.Database.Sticky.AddObject(new Sticky
                     {
                         Id = Guid.NewGuid(),
                         ClientDatabaseId = (int)clientDatabaseId,
@@ -108,7 +108,7 @@
                         StickTime = (int)stickTime,
                         Creation = Repository.Static.Now
                     });
-                    database.SaveChanges();
+                    Repository.Container.Database.SaveChanges();
                 }
             }
         }
@@ -122,13 +122,13 @@
         {
             lock (Container.lockStickyClientList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
                     List<Sticky> entities = channelId.HasValue
-                                            ? database.Sticky.Where(m => m.ClientDatabaseId == clientDatabaseId && m.ChannelId == channelId.Value).ToList()
-                                            : database.Sticky.Where(m => m.ClientDatabaseId == clientDatabaseId).ToList();
-                    entities.ForEach(c => database.Sticky.DeleteObject(c));
-                    database.SaveChanges();
+                                            ? Repository.Container.Database.Sticky.Where(m => m.ClientDatabaseId == clientDatabaseId && m.ChannelId == channelId.Value).ToList()
+                                            : Repository.Container.Database.Sticky.Where(m => m.ClientDatabaseId == clientDatabaseId).ToList();
+                    entities.ForEach(c => Repository.Container.Database.Sticky.DeleteObject(c));
+                    Repository.Container.Database.SaveChanges();
                 }
             }
         }
@@ -142,16 +142,16 @@
         {
             lock (Container.lockStickyClientList)
             {
-                using (var database = new BotDatabaseEntities())
+                lock (Repository.Container.lockDatabase)
                 {
-                    if (database.Sticky.Any(m => m.ClientDatabaseId == clientDatabaseId && m.ChannelId == Repository.Settings.Sticky.Channel))
+                    if (Repository.Container.Database.Sticky.Any(m => m.ClientDatabaseId == clientDatabaseId && m.ChannelId == Repository.Settings.Sticky.Channel))
                     {
                         return Repository.Settings.Sticky.Channel;
                     }
 
-                    if (database.Sticky.Any(m => m.ClientDatabaseId == clientDatabaseId))
+                    if (Repository.Container.Database.Sticky.Any(m => m.ClientDatabaseId == clientDatabaseId))
                     {
-                        return (uint?)database.Sticky.First(m => m.ClientDatabaseId == clientDatabaseId).ChannelId;
+                        return (uint?)Repository.Container.Database.Sticky.First(m => m.ClientDatabaseId == clientDatabaseId).ChannelId;
                     }
                 }
             }

@@ -1,5 +1,7 @@
 ﻿namespace DirkSarodnick.TS3_Bot.Service
 {
+    using System.Diagnostics;
+    using System.IO;
     using System.ServiceProcess;
     using System.Timers;
     using Core;
@@ -29,6 +31,9 @@
             timer.Interval = 800;
             timer.Enabled = true;
             timer.Start();
+
+            Process pc = Process.GetCurrentProcess();
+            Directory.SetCurrentDirectory(pc.MainModule.FileName.Substring(0, pc.MainModule.FileName.LastIndexOf(@"\", System.StringComparison.Ordinal)));
         }
 
         /// <summary>
