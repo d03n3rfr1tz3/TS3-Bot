@@ -676,6 +676,7 @@
                     if (entity != null)
                     {
                         entity.Disconnected = disconnected ?? Repository.Static.Now;
+                        entity.TotalMinutes = ((disconnected ?? Repository.Static.Now) - lastConnected).TotalMinutes;
                     }
                     else
                     {

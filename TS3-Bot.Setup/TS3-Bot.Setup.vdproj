@@ -136,6 +136,12 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_DF1E504F995D4B65AF4AAC7B0923B760"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_A72C7A3F7BB92E7D11364B61B668C923"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -161,12 +167,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_37033F6E967E75A2730676053406A4EB"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_DF1E504F995D4B65AF4AAC7B0923B760"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -591,15 +591,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TeamSpeak 3 Bot"
-        "ProductCode" = "8:{674CE02F-E570-4AC7-910F-26A64262041A}"
-        "PackageCode" = "8:{74800A9D-5CDD-4219-B27B-E879295EE0A7}"
+        "ProductCode" = "8:{5D0EEEED-7385-4390-BEB0-8335DCDD24BF}"
+        "PackageCode" = "8:{EB7D7E95-CB8E-424D-A63F-A73A9724CE01}"
         "UpgradeCode" = "8:{01D6B1B4-F9ED-4B1A-963D-119DE514A665}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.12"
+        "ProductVersion" = "8:1.0.13"
         "Manufacturer" = "8:Dirk Sarodnick"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://www.d03n3r.de"

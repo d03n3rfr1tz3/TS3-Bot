@@ -2,6 +2,8 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
+    using System.IO;
     using System.Linq;
     using Entity;
     using Helper;
@@ -11,6 +13,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
     public class DataContainer : IDisposable
     {
         private bool disposed;
+        private readonly string instanceName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContainer"/> class.
@@ -18,6 +21,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         /// <param name="name">The name.</param>
         public DataContainer(string name)
         {
+            this.instanceName = name;
             DataMigrator.MigrateAll(name);
         }
 
@@ -32,7 +36,10 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
                 {
                     if (database == null)
                     {
-                        database = new BotDatabaseEntities();
+                        if (!Directory.Exists(".\\Data\\")) Directory.CreateDirectory(".\\Data\\");
+                        if (!File.Exists(".\\Data\\" + instanceName + ".sdf")) File.Copy(".\\BotDatabase.sdf", ".\\Data\\" + instanceName + ".sdf");
+
+                        database = new BotDatabaseEntities(ConfigurationManager.ConnectionStrings["BotDatabaseEntities"].ConnectionString.Replace(".\\BotDatabase.sdf", ".\\Data\\" + instanceName + ".sdf"));
                         database.Connection.Open();
                     }
 

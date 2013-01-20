@@ -1,6 +1,7 @@
 ﻿namespace DirkSarodnick.TS3_Bot.Core.Entity
 {
     using System;
+    using System.Globalization;
 
     /// <summary>
     /// Defines the TimeSpanEntity struct.
@@ -74,7 +75,9 @@
                     timeSpanEntity = new TimeSpanEntity(today, today.AddDays(1));
                     return true;
                 case "week":
-                    timeSpanEntity = new TimeSpanEntity(today.AddDays(1 - (int)today.DayOfWeek), today.AddDays(1));
+                    var dayOfWeek = (int)today.DayOfWeek - (int)CultureInfo.CurrentUICulture.DateTimeFormat.FirstDayOfWeek;
+                    if (dayOfWeek < 0) dayOfWeek = dayOfWeek + 7;
+                    timeSpanEntity = new TimeSpanEntity(today.AddDays(0 - dayOfWeek), today.AddDays(1));
                     return true;
                 case "month":
                     timeSpanEntity = new TimeSpanEntity(new DateTime(today.Year, today.Month, 1, 0, 0, 0, 0), today.AddDays(1));

@@ -1,6 +1,7 @@
 ﻿namespace DirkSarodnick.TS3_Bot.Core.Repository
 {
     using System;
+    using System.Configuration;
     using System.IO;
     using System.Linq;
     using Entity;
@@ -31,6 +32,8 @@
             MigrateTime(name);
             MigrateTimes(name);
             MigratePrevServerGroups(name);
+            MigrateSingleServer(name);
+            MigrateCorruptedTimes(name);
         }
 
         public static void MigrateAway(string name)
@@ -44,7 +47,7 @@
 
                     var oldDictionary = new PersistentDictionary<uint, AwayClientEntity>(directory);
 
-                    using (var database = new BotDatabaseEntities())
+                    using (var database = new BotDatabaseEntities(GetInstanceConnectionString(name)))
                     {
                         foreach (var oldDictionaryEntry in oldDictionary)
                         {
@@ -82,7 +85,7 @@
 
                     var oldDictionary = new PersistentDictionary<Guid, StickyClientEntity>(directory);
 
-                    using (var database = new BotDatabaseEntities())
+                    using (var database = new BotDatabaseEntities(GetInstanceConnectionString(name)))
                     {
                         foreach (var oldDictionaryEntry in oldDictionary)
                         {
@@ -121,7 +124,7 @@
 
                     var oldDictionary = new PersistentDictionary<Guid, VotedClientEntity>(directory);
 
-                    using (var database = new BotDatabaseEntities())
+                    using (var database = new BotDatabaseEntities(GetInstanceConnectionString(name)))
                     {
                         foreach (var oldDictionaryEntry in oldDictionary)
                         {
@@ -159,7 +162,7 @@
 
                     var oldDictionary = new PersistentDictionary<uint, DateTime>(directory);
 
-                    using (var database = new BotDatabaseEntities())
+                    using (var database = new BotDatabaseEntities(GetInstanceConnectionString(name)))
                     {
                         foreach (var oldDictionaryEntry in oldDictionary)
                         {
@@ -196,7 +199,7 @@
 
                     var oldDictionary = new PersistentDictionary<Guid, ModeratedClientEntity>(directory);
 
-                    using (var database = new BotDatabaseEntities())
+                    using (var database = new BotDatabaseEntities(GetInstanceConnectionString(name)))
                     {
                         foreach (var oldDictionaryEntry in oldDictionary)
                         {
@@ -236,7 +239,7 @@
 
                     var oldDictionary = new PersistentDictionary<string, ModeratedClientEntity>(directory);
 
-                    using (var database = new BotDatabaseEntities())
+                    using (var database = new BotDatabaseEntities(GetInstanceConnectionString(name)))
                     {
                         foreach (var oldDictionaryEntry in oldDictionary)
                         {
@@ -276,7 +279,7 @@
 
                     var oldDictionary = new PersistentDictionary<Guid, TimeClientEntity>(directory);
 
-                    using (var database = new BotDatabaseEntities())
+                    using (var database = new BotDatabaseEntities(GetInstanceConnectionString(name)))
                     {
                         foreach (var oldDictionaryEntry in oldDictionary)
                         {
@@ -315,7 +318,7 @@
 
                     var oldDictionary = new PersistentDictionary<string, TimeClientEntity>(directory);
 
-                    using (var database = new BotDatabaseEntities())
+                    using (var database = new BotDatabaseEntities(GetInstanceConnectionString(name)))
                     {
                         foreach (var oldDictionaryEntry in oldDictionary)
                         {
@@ -354,7 +357,7 @@
 
                     var oldDictionary = new PersistentDictionary<uint, string>(directory);
 
-                    using (var database = new BotDatabaseEntities())
+                    using (var database = new BotDatabaseEntities(GetInstanceConnectionString(name)))
                     {
                         foreach (var oldDictionaryEntry in oldDictionary)
                         {
@@ -382,6 +385,45 @@
                     LogService.Debug("Finished migrating 'PrevServerGroups' data.");
                 }
             }
+        }
+
+        public static void MigrateSingleServer(string name)
+        {
+            if (!Directory.Exists(".\\Data\\")) Directory.CreateDirectory(".\\Data\\");
+            if (!File.Exists(".\\Data\\" + name + ".sdf")) File.Copy(".\\BotDatabase.sdf", ".\\Data\\" + name + ".sdf");
+
+            using (var oldDatabase = new BotDatabaseEntities())
+            {
+                oldDatabase.Away.ToList().ForEach(oldDatabase.DeleteObject);
+                oldDatabase.Moderate.ToList().ForEach(oldDatabase.DeleteObject);
+                oldDatabase.PreviousServerGroup.ToList().ForEach(oldDatabase.DeleteObject);
+                oldDatabase.Seen.ToList().ForEach(oldDatabase.DeleteObject);
+                oldDatabase.Sticky.ToList().ForEach(oldDatabase.DeleteObject);
+                oldDatabase.Time.ToList().ForEach(oldDatabase.DeleteObject);
+                oldDatabase.Vote.ToList().ForEach(oldDatabase.DeleteObject);
+                oldDatabase.SaveChanges();
+            }
+        }
+
+        private static void MigrateCorruptedTimes(string name)
+        {
+            using (var database = new BotDatabaseEntities(GetInstanceConnectionString(name)))
+            {
+                var migrationStartDate = new DateTime(2012, 12, 20);
+                var corruptedTimes = database.Time.Where(m => m.Disconnected > migrationStartDate).ToList();
+
+                foreach (var corruptedTime in corruptedTimes)
+                {
+                    corruptedTime.TotalMinutes = (corruptedTime.Disconnected - corruptedTime.Joined).TotalMinutes;
+                }
+
+                database.SaveChanges();
+            }
+        }
+
+        private static string GetInstanceConnectionString(string name)
+        {
+            return ConfigurationManager.ConnectionStrings["BotDatabaseEntities"].ConnectionString.Replace(".\\BotDatabase.sdf", ".\\Data\\" + name + ".sdf");
         }
     }
 }
