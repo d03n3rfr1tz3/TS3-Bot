@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<InstanceSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://files.d03n3r.de/TS3bot_Settings_v1.0.0.2.xsd">
+<InstanceSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://files.d03n3r.de/TS3bot_Settings_v1.0.0.3.xsd">
 
     <!-- true/false | Enables/Disables the whole Bot. -->
     <Enabled>false</Enabled>
@@ -238,6 +238,26 @@
 
             <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
         </Punish>
+
+        <!-- Enabled: true/false    | Enables/Disables the !punish- and !unpunish-Command. -->
+        <!-- LogEnabled: true/false | Enables/Disables the Logging of this feature. -->
+        <SelfGroup Enabled="false" LogEnabled="false">
+          <!-- The Help-Message part, which will explain the !stick- and !unstick-Command -->
+          <HelpMessage>
+            [B]!iam {Group ID/Name}[/B]
+            Adds the user to the specified ServerGroup.
+            Example: [I]!iam Cool[/I]
+
+            [B]!iamnot {Group ID/Name}[/B]
+            Removes the user from the specified ServerGroup.
+            Example: [I]!iamnot Cool[/I]
+          </HelpMessage>
+
+          <!-- The Server Groups, that are allowed for the user. -->
+          <AllowedServerGroups />
+
+          <!-- Denied/Permitted-Tags can be placed here. For further details look at the example in the Vote feature.-->
+        </SelfGroup>
     </Control>
 
     <!-- Enabled: true/false | Enables/Disables the Random-Event-Messages feature. -->

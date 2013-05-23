@@ -48,7 +48,8 @@
                                      Repository.Settings.Control.Moderator,
                                      Repository.Settings.Control.SeenGroup,
                                      Repository.Settings.Control.SeenModerator,
-                                     Repository.Settings.Control.Punish
+                                     Repository.Settings.Control.Punish,
+                                     Repository.Settings.Control.SelfGroup
                                  });
         }
 
@@ -69,6 +70,8 @@
             SeenModerator(e);
             Punish(e);
             Unpunish(e);
+            SelfGroupAdd(e);
+            SelfGroupRemove(e);
         }
 
         #endregion
@@ -261,6 +264,40 @@
                     .Any(m => PermissionHelper.IsGranted(Repository.Settings.Control.Punish, m)))
             {
                 Execute(MessageHelper.GetMessageInformation<UnpunishMessage>(e, e.Message));
+            }
+        }
+
+        /// <summary>
+        /// Validates the SelfGroupAdd message.
+        /// </summary>
+        /// <param name="e">The <see cref="MessageReceivedEventArgs" /> instance containing the event data.</param>
+        protected void SelfGroupAdd(MessageReceivedEventArgs e)
+        {
+            if (!Repository.Settings.Control.SelfGroup.Enabled) return;
+            if (Repository.Settings.Control.SelfGroup.AllowedServerGroups == null) return;
+
+            if (MessageHelper.CanBeMessage<SelfGroupAddMessage>(e.Message) &&
+                Repository.Client.GetClientInfo(e.InvokerClientId).ServerGroups
+                    .Any(m => PermissionHelper.IsGranted(Repository.Settings.Control.SelfGroup, m)))
+            {
+                Execute(MessageHelper.GetMessageInformation<SelfGroupAddMessage>(e, e.Message));
+            }
+        }
+
+        /// <summary>
+        /// Validates the SelfGroupRemove message.
+        /// </summary>
+        /// <param name="e">The <see cref="MessageReceivedEventArgs" /> instance containing the event data.</param>
+        protected void SelfGroupRemove(MessageReceivedEventArgs e)
+        {
+            if (!Repository.Settings.Control.SelfGroup.Enabled) return;
+            if (Repository.Settings.Control.SelfGroup.AllowedServerGroups == null) return;
+
+            if (MessageHelper.CanBeMessage<SelfGroupRemoveMessage>(e.Message) &&
+                Repository.Client.GetClientInfo(e.InvokerClientId).ServerGroups
+                    .Any(m => PermissionHelper.IsGranted(Repository.Settings.Control.SelfGroup, m)))
+            {
+                Execute(MessageHelper.GetMessageInformation<SelfGroupRemoveMessage>(e, e.Message));
             }
         }
 
@@ -717,6 +754,40 @@
             Log(Repository.Settings.Control.Punish,
                 string.Format("Client '{1}'(id:{2}) used {0}.", Repository.Settings.Control.Punish.UndoCommand,
                               clientEntry.Nickname, clientEntry.DatabaseId));
+        }
+
+        /// <summary>
+        /// Executes the SelfGroupAddMessage message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        private void Execute(SelfGroupAddMessage message)
+        {
+            var clientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
+            Repository.Client.AddClientServerGroups(clientEntry.DatabaseId, message.ServerGroupIds);
+
+            foreach (uint serverGroup in message.ServerGroupIds)
+            {
+                Log(Repository.Settings.Control.SelfGroup,
+                string.Format("Client '{1}'(id:{2}) used {0} with group '{3}'.", Repository.Settings.Control.SelfGroup.Command,
+                              clientEntry.Nickname, clientEntry.DatabaseId, serverGroup));
+            }
+        }
+
+        /// <summary>
+        /// Executes the SelfGroupRemoveMessage message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        private void Execute(SelfGroupRemoveMessage message)
+        {
+            var clientEntry = Repository.Client.GetClientInfo(message.SenderClientId);
+            Repository.Client.RemoveClientServerGroups(clientEntry.DatabaseId, message.ServerGroupIds);
+
+            foreach (uint serverGroup in message.ServerGroupIds)
+            {
+                Log(Repository.Settings.Control.SelfGroup,
+                string.Format("Client '{1}'(id:{2}) used {0} with group '{3}'.", Repository.Settings.Control.SelfGroup.UndoCommand,
+                              clientEntry.Nickname, clientEntry.DatabaseId, serverGroup));
+            }
         }
 
         #endregion

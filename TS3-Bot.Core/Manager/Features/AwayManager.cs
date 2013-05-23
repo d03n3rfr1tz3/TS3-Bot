@@ -7,7 +7,9 @@
     using Repository;
     using Settings;
     using TS3QueryLib.Core.CommandHandling;
+    using TS3QueryLib.Core.Server.Entities;
     using TS3QueryLib.Core.Server.Notification.EventArgs;
+    using TS3QueryLib.Core.Server.Responses;
 
     /// <summary>
     /// Defines the AwayManager class.
@@ -150,7 +152,7 @@
                     var awayClient = Repository.Client.GetLastChannelByClientId(client.ClientDatabaseId);
                     if (awayClient != null)
                     {
-                        var channel = Repository.Channel.GetChannelListInfo((uint)awayClient.LastChannelId);
+                        var channel = Repository.Channel.GetChannelListInfo((uint)awayClient.LastChannelId) ?? new ChannelListEntry();
                         QueryRunner.MoveClient(client.ClientId, (uint)awayClient.LastChannelId);
 
                         Log(Repository.Settings.Away,
@@ -168,7 +170,8 @@
                                 ChannelId = (uint)awayClient.LastChannelId,
                                 ChannelName = channel.Name
                             };
-                            QueryRunner.SendTextMessage(MessageTarget.Server, Repository.Connection.CredentialEntity.Self.VirtualServerId, Repository.Settings.Away.TextMessage.ToMessage(messageContext));
+
+                            if (Repository.Connection.CredentialEntity.Self != null) QueryRunner.SendTextMessage(MessageTarget.Server, Repository.Connection.CredentialEntity.Self.VirtualServerId, Repository.Settings.Away.TextMessage.ToMessage(messageContext));
                         }
                     }
                 }
@@ -196,7 +199,7 @@
                     var idleClient = Repository.Client.GetLastChannelByClientId(client.ClientDatabaseId);
                     if (idleClient != null)
                     {
-                        var channel = Repository.Channel.GetChannelListInfo((uint)idleClient.LastChannelId);
+                        var channel = Repository.Channel.GetChannelListInfo((uint)idleClient.LastChannelId) ?? new ChannelListEntry();
                         QueryRunner.MoveClient(client.ClientId, (uint)idleClient.LastChannelId);
 
                         Log(Repository.Settings.Idle,
@@ -214,7 +217,7 @@
                                 ChannelId = (uint)idleClient.LastChannelId,
                                 ChannelName = channel.Name
                             };
-                            QueryRunner.SendTextMessage(MessageTarget.Server, Repository.Connection.CredentialEntity.Self.VirtualServerId, Repository.Settings.Idle.TextMessage.ToMessage(messageContext));
+                            if (Repository.Connection.CredentialEntity.Self != null) QueryRunner.SendTextMessage(MessageTarget.Server, Repository.Connection.CredentialEntity.Self.VirtualServerId, Repository.Settings.Idle.TextMessage.ToMessage(messageContext));
                         }
                     }
                 }

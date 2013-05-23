@@ -2,6 +2,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Service
 {
     using System;
     using System.Diagnostics;
+    using System.Threading;
 
     /// <summary>
     /// Defines the LogService class.
@@ -19,7 +20,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Service
         public static void OnLog(EventLogEntryType type, string message)
         {
             LogHandler handler = Log;
-            if (handler != null) handler(type, message);
+            if (handler != null) handler(type, "(T"+ Thread.CurrentThread.ManagedThreadId +") " + message);
             if (type == EventLogEntryType.Information) return;
 
             try
@@ -40,7 +41,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Service
         public static void OnLog(EventLogEntryType type, Exception exception)
         {
             LogHandler handler = Log;
-            if (handler != null) handler(type, exception.Message);
+            if (handler != null) handler(type, "(T" + Thread.CurrentThread.ManagedThreadId + ") " + exception.Message);
             if (type == EventLogEntryType.Information) return;
 
             try

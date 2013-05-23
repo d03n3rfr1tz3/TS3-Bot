@@ -144,6 +144,20 @@
     <xs:attribute ref="Enabled" use="required"/>
     <xs:attribute ref="LogEnabled"/>
   </xs:complexType>
+  <xs:complexType name="T_SelfGroup">
+    <xs:all>
+      <xs:element ref="Command" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="UndoCommand" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="HelpMessage" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="AllowedServerGroups" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Target" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="TargetId" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Permitted" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="Denied" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
+    <xs:attribute ref="Enabled" use="required"/>
+    <xs:attribute ref="LogEnabled"/>
+  </xs:complexType>
   <xs:complexType name="T_SeenGroup">
     <xs:all>
       <xs:element ref="Command" minOccurs="0" maxOccurs="1"/>
@@ -354,6 +368,7 @@
       <xs:element ref="Files" minOccurs="0" maxOccurs="1"/>
       <xs:element ref="Stick" minOccurs="0" maxOccurs="1"/>
       <xs:element ref="Punish" minOccurs="0" maxOccurs="1"/>
+	  <xs:element ref="SelfGroup" minOccurs="0" maxOccurs="1"/>
     </xs:all>
   </xs:complexType>
   <xs:complexType name="T_Blacklist">
@@ -383,6 +398,11 @@
     <xs:attribute ref="Enabled" use="required"/>
     <xs:attribute ref="LogEnabled"/>
   </xs:complexType>
+  <xs:complexType name="T_AllowedServerGroups">
+    <xs:sequence>
+      <xs:element ref="Group" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
   <xs:attribute name="Enabled" type="xs:boolean"/>
   <xs:attribute name="LogEnabled" type="xs:boolean"/>
     
@@ -398,6 +418,7 @@
   <xs:element name="StickTime" type="T_Time" nillable="true"/>
   <xs:element name="Stick" type="T_Stick" nillable="true"/>
   <xs:element name="ServerGroup" type="T_ServerGroup" nillable="true"/>
+  <xs:element name="SelfGroup" type="T_SelfGroup" nillable="true"/>
   <xs:element name="SeenGroup" type="T_SeenGroup" nillable="true"/>
   <xs:element name="Seen" type="T_Seen" nillable="true"/>
   <xs:element name="Record" type="T_Record" nillable="true"/>
@@ -449,4 +470,5 @@
   <xs:element name="Blacklist" type="T_Blacklist" nillable="true"/>
   <xs:element name="BadNickname" type="T_BadNickname" nillable="true"/>
   <xs:element name="Away" type="T_Away" nillable="true"/>
+  <xs:element name="AllowedServerGroups" type="T_AllowedServerGroups" nillable="true"/>
 </xs:schema>

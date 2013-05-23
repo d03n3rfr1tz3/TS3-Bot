@@ -3,6 +3,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
     using System;
     using System.Collections.Generic;
     using System.Configuration;
+    using System.Data;
     using System.IO;
     using System.Linq;
     using Entity;
@@ -121,9 +122,23 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
 
             lock (lockDatabase)
             {
-                Database.Sticky.ToList().Where(m => m.Creation.AddMinutes(m.StickTime) < DateTime.UtcNow).ForEach(m => Database.Sticky.DeleteObject(m));
-                Database.Vote.ToList().Where(m => m.Creation.AddHours(1) < DateTime.UtcNow).ForEach(m => Database.Vote.DeleteObject(m));
-                Database.SaveChanges();
+                try
+                {
+                    Database.Sticky.ToList().Where(m => m.Creation.AddMinutes(m.StickTime) < DateTime.UtcNow).ForEach(m => Database.Sticky.DeleteObject(m));
+                    Database.Vote.ToList().Where(m => m.Creation.AddHours(1) < DateTime.UtcNow).ForEach(m => Database.Vote.DeleteObject(m));
+                    try
+                    {
+                        Database.SaveChanges();
+                    }
+                    catch (UpdateException exception)
+                    {
+                        throw new Exception("Error while saving database. DEBUG: " + string.Join(", ", exception.StateEntries.Select(m => m.EntitySet.Name + ":" + m.EntityKey + m.State)), exception);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    throw exception.InnerException ?? exception;
+                }
             }
         }
 

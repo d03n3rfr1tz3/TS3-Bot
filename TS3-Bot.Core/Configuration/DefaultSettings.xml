@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<InstanceSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://files.d03n3r.de/TS3bot_Settings_v1.0.0.2.xsd">
+<InstanceSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://files.d03n3r.de/TS3bot_Settings_v1.0.0.3.xsd">
 
     <Enabled>true</Enabled>
 
@@ -174,6 +174,23 @@
             <Channel>0</Channel>
             <ServerGroup>0</ServerGroup>
         </Punish>
+
+        <SelfGroup Enabled="false" LogEnabled="false">
+          <Command>!iam</Command>
+          <UndoCommand>!iamnot</UndoCommand>
+          <HelpMessage>
+            [B]!iam {Gruppen ID/Name}[/B]
+            Fügt den Nutzer zur angegebenen Server Gruppe hinzu.
+            Beispiel: [I]!iam Cool[/I]
+
+            [B]!iamnot {Gruppen ID/Name}[/B]
+            Entfernt den Nutzer von der angegebenen Server Gruppe.
+            Beispiel: [I]!iamnot Cool[/I]
+          </HelpMessage>
+          <AllowedServerGroups />
+          <Target>Client</Target>
+          <TargetId>0</TargetId>
+        </SelfGroup>
     </Control>
     
     <Event Enabled="false">

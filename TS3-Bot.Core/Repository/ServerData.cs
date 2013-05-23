@@ -41,6 +41,19 @@
         }
 
         /// <summary>
+        /// Gets the server groups.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<ServerGroupLight> GetServerGroups()
+        {
+            lock (Container.lockGetServerGroup)
+            {
+
+                return QueryRunner.GetServerGroupList();
+            }
+        }
+
+        /// <summary>
         /// Gets the server group.
         /// </summary>
         /// <param name="serverGroupId">The server group.</param>

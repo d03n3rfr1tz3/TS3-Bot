@@ -262,6 +262,7 @@
                             ClientDatabaseId = (int)clientDatabaseId,
                             LastSeen = Repository.Static.Now
                         });
+                        Repository.Container.Database.SaveChanges();
                     }
                 }
             }
@@ -333,6 +334,7 @@
                             LastChannelId = (int)channelId,
                             Creation = Repository.Static.Now
                         });
+                        Repository.Container.Database.SaveChanges();
                     }
                 }
             }
@@ -349,6 +351,7 @@
                 lock (Repository.Container.lockDatabase)
                 {
                     Repository.Container.Database.Away.Where(m => m.ClientDatabaseId == clientDatabaseId).ToList().ForEach(m => Repository.Container.Database.Away.DeleteObject(m));
+                    Repository.Container.Database.SaveChanges();
                 }
             }
         }

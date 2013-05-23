@@ -22,6 +22,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
             Moderator = new ModeratorControlSettings();
             Hours = new HourControlSettings();
             Punish = new PunishControlSettings();
+            SelfGroup = new SelfGroupControlSettings();
         }
 
         /// <summary>
@@ -79,6 +80,14 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
         public PunishControlSettings Punish { get; set; }
 
         /// <summary>
+        /// Gets or sets the self group.
+        /// </summary>
+        /// <value>
+        /// The self group.
+        /// </value>
+        public SelfGroupControlSettings SelfGroup { get; set; }
+
+        /// <summary>
         /// Gets or sets the help message.
         /// </summary>
         /// <value>The help message.</value>
@@ -103,6 +112,7 @@ namespace DirkSarodnick.TS3_Bot.Core.Settings.SettingClasses
             Moderator.ApplySetting(setting.Moderator);
             Hours.ApplySetting(setting.Hours);
             Punish.ApplySetting(setting.Punish);
+            SelfGroup.ApplySetting(setting.SelfGroup);
         }
     }
 }

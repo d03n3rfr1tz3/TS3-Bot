@@ -101,6 +101,8 @@
     <Compile Include="Entity\AwayClientEntity.cs" />
     <Compile Include="Entity\CredentialEntity.cs" />
     <Compile Include="Entity\AsyncDispatcher.cs" />
+    <Compile Include="Entity\Messages\SelfGroupRemoveMessage.cs" />
+    <Compile Include="Entity\Messages\SelfGroupAddMessage.cs" />
     <Compile Include="Entity\Messages\UnpunishMessage.cs" />
     <Compile Include="Entity\Messages\PunishMessage.cs" />
     <Compile Include="Entity\Messages\HoursMessage.cs" />
@@ -179,6 +181,7 @@
     <Compile Include="Settings\SettingClasses\BadNicknameSettings.cs" />
     <Compile Include="Settings\SettingClasses\ControlSettings.cs" />
     <Compile Include="Settings\SettingClasses\ControlSetting\ControlSettingsBase.cs" />
+    <Compile Include="Settings\SettingClasses\ControlSetting\SelfGroupControlSettings.cs" />
     <Compile Include="Settings\SettingClasses\ControlSetting\PunishControlSettings.cs" />
     <Compile Include="Settings\SettingClasses\ControlSetting\HourControlSettings.cs" />
     <Compile Include="Settings\SettingClasses\ControlSetting\ModeratorControlSettings.cs" />
@@ -214,6 +217,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
+    <None Include="BotDatabaseEntities.datasource" />
     <None Include="Configuration\Settings.xsd" />
     <EntityDeploy Include="BotDatabaseModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
