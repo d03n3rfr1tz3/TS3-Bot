@@ -1,13 +1,14 @@
 namespace DirkSarodnick.TS3_Bot.Core.Repository
 {
+    using Entity;
     using System;
     using System.Collections.Generic;
     using System.Configuration;
     using System.Data;
+    using System.Data.SQLite;
     using System.IO;
     using System.Linq;
-    using Entity;
-    using Helper;
+    using DirkSarodnick.TS3_Bot.Core.Helper;
     using TS3QueryLib.Core.Server.Entities;
     using TS3QueryLib.Core.Server.Responses;
 
@@ -23,28 +24,27 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
         public DataContainer(string name)
         {
             this.instanceName = name;
-            DataMigrator.MigrateAll(name);
         }
 
         #region Specified Data
 
-        private BotDatabaseEntities database;
-        internal BotDatabaseEntities Database
+        private SQLiteConnection databaseConnection;
+        internal SQLiteConnection DatabaseConnection
         {
             get
             {
                 lock (lockDatabase)
                 {
-                    if (database == null)
+                    if (databaseConnection == null)
                     {
                         if (!Directory.Exists(".\\Data\\")) Directory.CreateDirectory(".\\Data\\");
-                        if (!File.Exists(".\\Data\\" + instanceName + ".sdf")) File.Copy(".\\BotDatabase.sdf", ".\\Data\\" + instanceName + ".sdf");
+                        if (!File.Exists(".\\Data\\" + instanceName + ".s3db")) File.Copy(".\\BotDatabase.s3db", ".\\Data\\" + instanceName + ".s3db");
 
-                        database = new BotDatabaseEntities(ConfigurationManager.ConnectionStrings["BotDatabaseEntities"].ConnectionString.Replace(".\\BotDatabase.sdf", ".\\Data\\" + instanceName + ".sdf"));
-                        database.Connection.Open();
+                        databaseConnection = new SQLiteConnection(ConfigurationManager.ConnectionStrings["BotDatabase"].ConnectionString.Replace(".\\BotDatabase.s3db", ".\\Data\\" + instanceName + ".s3db"));
+                        databaseConnection.Open();
                     }
 
-                    return this.database;
+                    return this.databaseConnection;
                 }
             }
         }
@@ -124,15 +124,16 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
             {
                 try
                 {
-                    Database.Sticky.ToList().Where(m => m.Creation.AddMinutes(m.StickTime) < DateTime.UtcNow).ForEach(m => Database.Sticky.DeleteObject(m));
-                    Database.Vote.ToList().Where(m => m.Creation.AddHours(1) < DateTime.UtcNow).ForEach(m => Database.Vote.DeleteObject(m));
-                    try
+                    using (var command = new SQLiteCommand(this.DatabaseConnection))
                     {
-                        Database.SaveChanges();
+                        command.CommandText = "DELETE FROM Sticky WHERE CreationDate + (StickMinutes * 60) < " + DateTime.UtcNow.ToTimeStamp();
+                        command.ExecuteNonQuery();
                     }
-                    catch (UpdateException exception)
+
+                    using (var command = new SQLiteCommand(this.DatabaseConnection))
                     {
-                        throw new Exception("Error while saving database. DEBUG: " + string.Join(", ", exception.StateEntries.Select(m => m.EntitySet.Name + ":" + m.EntityKey + m.State)), exception);
+                        command.CommandText = "DELETE FROM Vote WHERE CreationDate + (1 * 60 * 60) < " + DateTime.UtcNow.ToTimeStamp();
+                        command.ExecuteNonQuery();
                     }
                 }
                 catch (Exception exception)
@@ -160,7 +161,8 @@ namespace DirkSarodnick.TS3_Bot.Core.Repository
             if (disposed) return;
             disposed = true;
 
-            Database.Dispose();
+            DatabaseConnection.Close();
+            DatabaseConnection.Dispose();
             ClientList = null;
             ClientInfoList = null;
             ChannelList = null;

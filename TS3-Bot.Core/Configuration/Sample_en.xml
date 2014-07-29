@@ -42,13 +42,13 @@
     <!-- Enabled: true/false    | Enables/Disables the Away-Channel. -->
     <!-- LogEnabled: true/false | Enables/Disables the Logging of this feature. -->
     <Away Enabled="true">
-        <!-- The ID of the away channel, where someone will be moved, when he/she is away. An empty Value will also disable this. -->
+        <!-- The ID of the away channel, where someone will be moved, when he/she is away. Remove this node to disable this. -->
         <Channel>2</Channel>
     
-        <!-- The ID of the away channel, where someone will be moved, when he/she mutes his/her headphones. An empty Value will also disable this. -->
+        <!-- The ID of the away channel, where someone will be moved, when he/she mutes his/her headphones. Remove this node to disable this. -->
         <MuteHeadphoneChannel>3</MuteHeadphoneChannel>
     
-        <!-- The ID of the away channel, where someone will be moved, when he/she mutes his/her microphone. An empty Value will also disable this. -->
+        <!-- The ID of the away channel, where someone will be moved, when he/she mutes his/her microphone. Remove this node to disable this. -->
         <MuteMicrophoneChannel>4</MuteMicrophoneChannel>
 
         <!-- This Message will be sent, when the client comes back from away state. -->

@@ -6,8 +6,15 @@
     /// Defines the StickyClientEntity struct.
     /// </summary>
     [Serializable]
-    public struct StickyClientEntity
+    public class StickyClientEntity
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StickyClientEntity"/> class.
+        /// </summary>
+        public StickyClientEntity()
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="StickyClientEntity"/> class.
         /// </summary>

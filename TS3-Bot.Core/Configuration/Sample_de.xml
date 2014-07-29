@@ -42,13 +42,13 @@
     <!-- Enabled: true/false    | Aktiviert/Deaktiviert den Away-Channel. -->
     <!-- LogEnabled: true/false | Aktiviert/Deaktiviert das Logging dieses Features. -->
     <Away Enabled="true">
-        <!-- Die ID des Away-Channels, in welchen ein Nutzer verschoben wird, wenn er Away ist. Ein leerer Wert deaktiviert diesen Teil. -->
+        <!-- Die ID des Away-Channels, in welchen ein Nutzer verschoben wird, wenn er Away ist. Entferne die Zeile um diesen Teil zu deaktivieren. -->
         <Channel>2</Channel>
         
-        <!-- Die ID des Away-Channels, in welchen ein Nutzer verschoben wird, wenn er seine Kopfhörer stumm schaltet. Ein leerer Wert deaktiviert diesen Teil. -->
+        <!-- Die ID des Away-Channels, in welchen ein Nutzer verschoben wird, wenn er seine Kopfhörer stumm schaltet. Entferne die Zeile um diesen Teil zu deaktivieren. -->
         <MuteHeadphoneChannel>3</MuteHeadphoneChannel>
         
-        <!-- Die ID des Away-Channels, in welchen ein Nutzer verschoben wird, wenn er sein Mikrofon stumm schaltet. Ein leerer Wert deaktiviert diesen Teil. -->
+        <!-- Die ID des Away-Channels, in welchen ein Nutzer verschoben wird, wenn er sein Mikrofon stumm schaltet. Entferne die Zeile um diesen Teil zu deaktivieren. -->
         <MuteMicrophoneChannel>4</MuteMicrophoneChannel>
 
         <!-- Diese Nachricht wird gesendet, wenn der Nutzer aus seinem Away-Status zurückkehrt. -->

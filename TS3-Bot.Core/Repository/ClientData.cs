@@ -10,6 +10,7 @@
     using TS3QueryLib.Core.CommandHandling;
     using TS3QueryLib.Core.Server.Entities;
     using TS3QueryLib.Core.Server.Responses;
+    using System.Data.SQLite;
 
     /// <summary>
     /// Defines the ClientData class.
@@ -233,8 +234,15 @@
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    var entity = Repository.Container.Database.Seen.FirstOrDefault(c => c.ClientDatabaseId == clientDatabaseId);
-                    return entity == null ? default(DateTime) : entity.LastSeen;
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
+                    {
+                        command.CommandText = string.Format("SELECT LastSeen FROM Seen WHERE ClientDatabaseId = {0}", clientDatabaseId);
+                        var result = command.ExecuteScalar();
+                        if (result is Int32 && (Int32)result > 0) return ((Int32)result).ToDateTime();
+                        if (result is Int64 && (Int64)result > 0) return ((Int64)result).ToDateTime();
+                    }
+
+                    return default(DateTime);
                 }
             }
         }
@@ -249,20 +257,30 @@
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    var entity = Repository.Container.Database.Seen.FirstOrDefault(c => c.ClientDatabaseId == clientDatabaseId);
-                    if (entity != null)
+                    bool exists = false;
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                     {
-                        entity.LastSeen = Repository.Static.Now;
+                        command.CommandText = string.Format("SELECT COUNT(*) FROM Seen WHERE ClientDatabaseId = {0}", clientDatabaseId);
+                        var result = command.ExecuteScalar();
+                        if (result is Int32 && (Int32)result > 0) exists = true;
+                        if (result is Int64 && (Int64)result > 0) exists = true;
+                    }
+
+                    if (exists)
+                    {
+                        using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
+                        {
+                            command.CommandText = string.Format("UPDATE Seen SET LastSeen = {0}", Repository.Static.Now.ToTimeStamp());
+                            command.ExecuteNonQuery();
+                        }
                     }
                     else
                     {
-                        Repository.Container.Database.Seen.AddObject(new Seen
+                        using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                         {
-                            Id = Guid.NewGuid(),
-                            ClientDatabaseId = (int)clientDatabaseId,
-                            LastSeen = Repository.Static.Now
-                        });
-                        Repository.Container.Database.SaveChanges();
+                            command.CommandText = string.Format("INSERT INTO Seen(ClientDatabaseId, LastSeen) VALUES({0}, {1})", clientDatabaseId, Repository.Static.Now.ToTimeStamp());
+                            command.ExecuteNonQuery();
+                        }
                     }
                 }
             }
@@ -293,7 +311,14 @@
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    return Repository.Container.Database.Away.Any(m => m.ClientDatabaseId == clientDatabaseId);
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
+                    {
+                        command.CommandText = string.Format("SELECT COUNT(*) FROM Away WHERE ClientDatabaseId = {0}", clientDatabaseId);
+                        var result = command.ExecuteScalar();
+                        if (result is Int32 && (Int32)result > 0) return true;
+                        if (result is Int64 && (Int64)result > 0) return true;
+                    }
+                    return false;
                 }
             }
         }
@@ -303,13 +328,31 @@
         /// </summary>
         /// <param name="clientDatabaseId">The client database id.</param>
         /// <returns></returns>
-        public Away GetLastChannelByClientId(uint clientDatabaseId)
+        public AwayClientEntity GetLastChannelByClientId(uint clientDatabaseId)
         {
             lock (Container.lockClientLastChannelList)
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    return Repository.Container.Database.Away.FirstOrDefault(m => m.ClientDatabaseId == clientDatabaseId);
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
+                    {
+                        command.CommandText = string.Format("SELECT ClientDatabaseId, LastChannelId, CreationDate FROM Away WHERE ClientDatabaseId = {0}", clientDatabaseId);
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.HasRows && reader.Read())
+                            {
+                                return new AwayClientEntity
+                                {
+                                    LastChannelId = (uint)reader.GetInt32(1),
+                                    ClientDatabaseId = (uint)reader.GetInt32(0),
+                                    Creation = reader.GetInt64(2).ToDateTime()
+                                };
+                            }
+                        }
+                    }
+
+                    return default(AwayClientEntity);
                 }
             }
         }
@@ -325,16 +368,22 @@
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    if (!Repository.Container.Database.Away.Any(m => m.ClientDatabaseId == clientDatabaseId))
+                    bool exists = false;
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                     {
-                        Repository.Container.Database.Away.AddObject(new Away
+                        command.CommandText = string.Format("SELECT COUNT(*) FROM Away WHERE ClientDatabaseId = {0}", clientDatabaseId);
+                        var result = command.ExecuteScalar();
+                        if (result is Int32 && (Int32)result > 0) exists = true;
+                        if (result is Int64 && (Int64)result > 0) exists = true;
+                    }
+
+                    if (!exists)
+                    {
+                        using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                         {
-                            Id = Guid.NewGuid(),
-                            ClientDatabaseId = (int)clientDatabaseId,
-                            LastChannelId = (int)channelId,
-                            Creation = Repository.Static.Now
-                        });
-                        Repository.Container.Database.SaveChanges();
+                            command.CommandText = string.Format("INSERT INTO Away(ClientDatabaseId, LastChannelId, CreationDate) VALUES({0}, {1}, {2})", clientDatabaseId, channelId, Repository.Static.Now.ToTimeStamp());
+                            command.ExecuteNonQuery();
+                        }
                     }
                 }
             }
@@ -350,8 +399,11 @@
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    Repository.Container.Database.Away.Where(m => m.ClientDatabaseId == clientDatabaseId).ToList().ForEach(m => Repository.Container.Database.Away.DeleteObject(m));
-                    Repository.Container.Database.SaveChanges();
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
+                    {
+                        command.CommandText = string.Format("DELETE FROM Away WHERE ClientDatabaseId = {0}", clientDatabaseId);
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
         }
@@ -441,14 +493,11 @@
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    Repository.Container.Database.Vote.AddObject(new Vote
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                     {
-                        Id = Guid.NewGuid(),
-                        ClientDatabaseId = (int)votedClient.ClientDatabaseId,
-                        ChannelId = (int?)votedClient.ChannelId,
-                        Creation = Repository.Static.Now
-                    });
-                    Repository.Container.Database.SaveChanges();
+                        command.CommandText = string.Format("INSERT INTO Vote(ClientDatabaseId, ChannelId, CreationDate) VALUES({0}, {1}, {2})", votedClient.ClientDatabaseId, votedClient.ChannelId, votedClient.Creation.ToTimeStamp());
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
         }
@@ -463,8 +512,11 @@
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    Repository.Container.Database.Vote.Where(m => m.ClientDatabaseId == clientDatabaseId).ToList().ForEach(m => Repository.Container.Database.Vote.DeleteObject(m));
-                    Repository.Container.Database.SaveChanges();
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
+                    {
+                        command.CommandText = string.Format("DELETE FROM Vote WHERE ClientDatabaseId = {0}", clientDatabaseId);
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
         }
@@ -482,7 +534,14 @@
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    return Repository.Container.Database.Vote.Any(m => m.ClientDatabaseId == clientDatabaseId);
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
+                    {
+                        command.CommandText = string.Format("SELECT COUNT(*) FROM Vote WHERE ClientDatabaseId = {0}", clientDatabaseId);
+                        var result = command.ExecuteScalar();
+                        if (result is Int32 && (Int32)result > 0) return true;
+                        if (result is Int64 && (Int64)result > 0) return true;
+                    }
+                    return false;
                 }
             }
         }
@@ -492,13 +551,31 @@
         /// </summary>
         /// <param name="clientDatabaseId">The client database id.</param>
         /// <returns>voted client.</returns>
-        public Vote GetClientVoted(uint clientDatabaseId)
+        public VotedClientEntity GetClientVoted(uint clientDatabaseId)
         {
             lock (Container.lockVotedClientList)
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    return Repository.Container.Database.Vote.FirstOrDefault(m => m.ClientDatabaseId == clientDatabaseId);
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
+                    {
+                        command.CommandText = string.Format("SELECT ClientDatabaseId, ChannelId, CreationDate FROM Vote WHERE ClientDatabaseId = {0}", clientDatabaseId);
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.HasRows && reader.Read())
+                            {
+                                return new VotedClientEntity
+                                {
+                                    ChannelId = (uint)reader.GetInt32(1),
+                                    ClientDatabaseId = (uint)reader.GetInt32(0),
+                                    Creation = reader.GetInt64(2).ToDateTime()
+                                };
+                            }
+                        }
+                    }
+
+                    return default(VotedClientEntity);
                 }
             }
         }
@@ -518,7 +595,13 @@
                 var lastModerated = DateTime.MinValue;
                 lock (Repository.Container.lockDatabase)
                 {
-                    if (Repository.Container.Database.Moderate.Any()) lastModerated = Repository.Container.Database.Moderate.Max(m => m.Creation);
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
+                    {
+                        command.CommandText = "SELECT MAX(CreationDate) FROM Moderate";
+                        var result = command.ExecuteScalar();
+                        if (result is Int32 && (Int32)result > 0) lastModerated = ((Int32)result).ToDateTime();
+                        if (result is Int64 && (Int64)result > 0) lastModerated = ((Int64)result).ToDateTime();
+                    }
                 }
                 if (lastModerated == DateTime.MinValue) LogService.Debug("Start capturing previous Moderation data. This may take some time...");
 
@@ -547,16 +630,11 @@
                     {
                         lock (Repository.Container.lockDatabase)
                         {
-                            Repository.Container.Database.Moderate.AddObject(new Moderate
+                            using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                             {
-                                Id = Guid.NewGuid(),
-                                ClientDatabaseId = (int)entity.Value.User,
-                                ModeratorDatabaseId = (int)entity.Value.Moderator,
-                                Creation = entity.Value.Moderated,
-                                ServerGroup = (int)entity.Value.ServerGroup,
-                                Type = (byte)entity.Value.Type
-                            });
-                            Repository.Container.Database.SaveChanges();
+                                command.CommandText = string.Format("INSERT INTO Moderate(ClientDatabaseId, ModeratorDatabaseId, ServerGroupId, Type, CreationDate) VALUES({0}, {1}, {2}, {3}, {4})", entity.Value.User, entity.Value.Moderator, entity.Value.ServerGroup, (int)entity.Value.Type, entity.Value.Moderated.ToTimeStamp());
+                                command.ExecuteNonQuery();
+                            }
                         }
                     }
                 }
@@ -578,16 +656,11 @@
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    Repository.Container.Database.Moderate.AddObject(new Moderate
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                     {
-                        Id = Guid.NewGuid(),
-                        ClientDatabaseId = (int)clientDatabaseId,
-                        ModeratorDatabaseId = (int)moderatorDatabaseId,
-                        Creation = DateTime.UtcNow,
-                        ServerGroup = (int)serverGroupId,
-                        Type = (byte)type
-                    });
-                    Repository.Container.Database.SaveChanges();
+                        command.CommandText = string.Format("INSERT INTO Moderate(ClientDatabaseId, ModeratorDatabaseId, ServerGroupId, Type, CreationDate) VALUES({0}, {1}, {2}, {3}, {4})", clientDatabaseId, moderatorDatabaseId, serverGroupId, (int)type, DateTime.UtcNow.ToTimeStamp());
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
         }
@@ -599,26 +672,35 @@
         /// <param name="fromDate">From date.</param>
         /// <param name="toDate">To date.</param>
         /// <returns></returns>
-        public IEnumerable<Moderate> GetModeration(ModerationType type, DateTime? fromDate, DateTime? toDate)
+        public IEnumerable<ModeratedClientEntity> GetModeration(ModerationType type, DateTime? fromDate, DateTime? toDate)
         {
             lock (Container.lockModeratedClientList)
             {
-                var moderationType = (byte)type;
                 lock (Repository.Container.lockDatabase)
                 {
-                    var entities = Repository.Container.Database.Moderate.Where(m => m.Type == moderationType);
-
-                    if (fromDate.HasValue)
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                     {
-                        entities = entities.Where(m => m.Creation > fromDate);
-                    }
+                        command.CommandText = string.Format("SELECT ClientDatabaseId, ModeratorDatabaseId, ServerGroupId, Type, CreationDate FROM Moderate WHERE Type = {0}", (int)type);
+                        if (fromDate.HasValue) command.CommandText += string.Format(" AND CreationDate > {0}", fromDate.Value.ToTimeStamp());
+                        if (toDate.HasValue) command.CommandText += string.Format(" AND CreationDate < {0}", toDate.Value.ToTimeStamp());
 
-                    if (toDate.HasValue)
-                    {
-                        entities = entities.Where(m => m.Creation < toDate);
+                        var result = new List<ModeratedClientEntity>();
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.HasRows && reader.Read())
+                            {
+                                result.Add(new ModeratedClientEntity
+                                {
+                                    User = (uint)reader.GetInt32(0),
+                                    Moderator = (uint)reader.GetInt32(1),
+                                    ServerGroup = (uint)reader.GetInt32(2),
+                                    Type = type,
+                                    Moderated = reader.GetInt64(4).ToDateTime()
+                                });
+                            }
+                        }
+                        return result;
                     }
-
-                    return entities.ToList();
                 }
             }
         }
@@ -633,12 +715,24 @@
         {
             lock (Container.lockModeratedClientList)
             {
-                const byte moderationType = (byte)ModerationType.Added;
+                const byte moderationType = (int)ModerationType.Added;
                 lock (Repository.Container.lockDatabase)
                 {
-                    var joins = Repository.Container.Database.Moderate.Where(m => m.Type == moderationType && m.ServerGroup == serverGroupId && m.ClientDatabaseId == clientDatabaseId);
-                    if (joins.Any()) return joins.Max(m => m.Creation);
-                    if (Repository.Container.Database.Moderate.Any()) return Repository.Container.Database.Moderate.Where(m => m.Type == moderationType && m.ServerGroup == serverGroupId).Min(m => m.Creation);
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
+                    {
+                        command.CommandText = string.Format("SELECT MAX(CreationDate) FROM Moderate WHERE Type = {0} AND ServerGroupId = {1} AND ClientDatabaseId = {2}", moderationType, serverGroupId, clientDatabaseId);
+                        var result = command.ExecuteScalar();
+                        if (result is Int32 && (Int32)result > 0) return ((Int32)result).ToDateTime();
+                        if (result is Int64 && (Int64)result > 0) return ((Int64)result).ToDateTime();
+                    }
+
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
+                    {
+                        command.CommandText = string.Format("SELECT MIN(CreationDate) FROM Moderate WHERE Type = {0} AND ServerGroupId = {1}", moderationType, serverGroupId);
+                        var result = command.ExecuteScalar();
+                        if (result is Int32 && (Int32)result > 0) return ((Int32)result).ToDateTime();
+                        if (result is Int64 && (Int64)result > 0) return ((Int64)result).ToDateTime();
+                    }
                 }
                 return DateTime.MinValue;
             }
@@ -675,24 +769,31 @@
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    var entity = Repository.Container.Database.Time.FirstOrDefault(c => c.ClientDatabaseId == clientDatabaseId && c.Joined == lastConnected);
-                    if (entity != null)
+                    bool exists = false;
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                     {
-                        entity.Disconnected = disconnected ?? Repository.Static.Now;
-                        entity.TotalMinutes = ((disconnected ?? Repository.Static.Now) - lastConnected).TotalMinutes;
+                        command.CommandText = string.Format("SELECT COUNT(*) FROM Time WHERE ClientDatabaseId = {0}", clientDatabaseId);
+                        var result = command.ExecuteScalar();
+                        if (result is Int32 && (Int32)result > 0) exists = true;
+                        if (result is Int64 && (Int64)result > 0) exists = true;
+                    }
+
+                    if (exists)
+                    {
+                        using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
+                        {
+                            command.CommandText = string.Format("UPDATE Time SET Disconnected = {0}, TotalMinutes = {1}", (disconnected ?? Repository.Static.Now).ToTimeStamp(), (int)((disconnected ?? Repository.Static.Now) - lastConnected).TotalMinutes);
+                            command.ExecuteNonQuery();
+                        }
                     }
                     else
                     {
-                        Repository.Container.Database.Time.AddObject(new Time
+                        using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                         {
-                            Id = Guid.NewGuid(),
-                            ClientDatabaseId = (int)clientDatabaseId,
-                            Joined = lastConnected,
-                            Disconnected = disconnected ?? Repository.Static.Now,
-                            TotalMinutes = ((disconnected ?? Repository.Static.Now) - lastConnected).TotalMinutes
-                        });
+                            command.CommandText = string.Format("INSERT INTO Time(ClientDatabaseId, Joined, Disconnected, TotalMinutes) VALUES({0}, {1}, {2}, {3})", clientDatabaseId, lastConnected.ToTimeStamp(), (disconnected ?? Repository.Static.Now).ToTimeStamp(), (int)((disconnected ?? Repository.Static.Now) - lastConnected).TotalMinutes);
+                            command.ExecuteNonQuery();
+                        }
                     }
-                    Repository.Container.Database.SaveChanges();
                 }
             }
         }
@@ -709,19 +810,29 @@
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    var times = Repository.Container.Database.Time.AsQueryable();
-
-                    if (fromTime.HasValue)
+                    var times = new List<TimeClientEntity>();
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                     {
-                        times = times.Where(c => c.Disconnected > fromTime);
+                        command.CommandText = "SELECT ClientDatabaseId, Joined, Disconnected, TotalMinutes FROM Time WHERE 1 = 1";
+                        if (fromTime.HasValue) command.CommandText += string.Format(" AND Disconnected > {0}", fromTime.Value.ToTimeStamp());
+                        if (toTime.HasValue) command.CommandText += string.Format(" AND Joined < {0}", toTime.Value.ToTimeStamp());
+                        
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.HasRows && reader.Read())
+                            {
+                                times.Add(new TimeClientEntity
+                                {
+                                    User = (uint)reader.GetInt32(0),
+                                    Joined = reader.GetInt32(1).ToDateTime(),
+                                    Disconnected = reader.GetInt32(2).ToDateTime(),
+                                    TotalMinutes = reader.GetInt32(3)
+                                });
+                            }
+                        }
                     }
 
-                    if (toTime.HasValue)
-                    {
-                        times = times.Where(m => m.Joined < toTime);
-                    }
-
-                    return times.GroupBy(m => m.ClientDatabaseId).ToList().ToDictionary(g => (uint)g.Key, g => g.Sum(m => m.GetTime(fromTime, toTime)));
+                    return times.GroupBy(m => m.User).ToDictionary(g => (uint)g.Key, g => g.Sum(m => m.GetTime(fromTime, toTime)));
                 }
             }
         }
@@ -739,19 +850,29 @@
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    var times = Repository.Container.Database.Time.AsQueryable();
-
-                    if (fromTime.HasValue)
+                    var times = new List<TimeClientEntity>();
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                     {
-                        times = times.Where(c => c.Disconnected > fromTime);
+                        command.CommandText = string.Format("SELECT ClientDatabaseId, Joined, Disconnected, TotalMinutes FROM Time WHERE ClientDatabaseId IN ({0})", string.Join(", ", clientDatabaseIds));
+                        if (fromTime.HasValue) command.CommandText += string.Format(" AND Disconnected > {0}", fromTime.Value.ToTimeStamp());
+                        if (toTime.HasValue) command.CommandText += string.Format(" AND Joined < {0}", toTime.Value.ToTimeStamp());
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.HasRows && reader.Read())
+                            {
+                                times.Add(new TimeClientEntity
+                                {
+                                    User = (uint)reader.GetInt32(0),
+                                    Joined = reader.GetInt32(1).ToDateTime(),
+                                    Disconnected = reader.GetInt32(2).ToDateTime(),
+                                    TotalMinutes = reader.GetInt32(3)
+                                });
+                            }
+                        }
                     }
 
-                    if (toTime.HasValue)
-                    {
-                        times = times.Where(m => m.Joined < toTime);
-                    }
-
-                    return times.GroupBy(m => m.ClientDatabaseId).ToList().Where(m => clientDatabaseIds.Contains((uint)m.Key)).ToDictionary(g => (uint)g.Key, g => g.Sum(m => m.GetTime(fromTime, toTime)));
+                    return times.GroupBy(m => m.User).ToDictionary(g => (uint)g.Key, g => g.Sum(m => m.GetTime(fromTime, toTime)));
                 }
             }
         }
@@ -769,19 +890,29 @@
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    var times = Repository.Container.Database.Time.Where(c => c.ClientDatabaseId == clientDatabaseId);
-
-                    if (fromTime.HasValue)
+                    var times = new List<TimeClientEntity>();
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                     {
-                        times = times.Where(c => c.Disconnected > fromTime);
+                        command.CommandText = string.Format("SELECT ClientDatabaseId, Joined, Disconnected, TotalMinutes FROM Time WHERE ClientDatabaseId = {0}", clientDatabaseId);
+                        if (fromTime.HasValue) command.CommandText += string.Format(" AND Disconnected > {0}", fromTime.Value.ToTimeStamp());
+                        if (toTime.HasValue) command.CommandText += string.Format(" AND Joined < {0}", toTime.Value.ToTimeStamp());
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.HasRows && reader.Read())
+                            {
+                                times.Add(new TimeClientEntity
+                                {
+                                    User = (uint)reader.GetInt32(0),
+                                    Joined = reader.GetInt32(1).ToDateTime(),
+                                    Disconnected = reader.GetInt32(2).ToDateTime(),
+                                    TotalMinutes = reader.GetInt32(3)
+                                });
+                            }
+                        }
                     }
 
-                    if (toTime.HasValue)
-                    {
-                        times = times.Where(m => m.Joined < toTime);
-                    }
-
-                    return times.ToList().Sum(m => m.GetTime(fromTime, toTime));
+                    return times.Sum(m => m.GetTime(fromTime, toTime));
                 }
             }
         }
@@ -798,19 +929,23 @@
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    var users = Repository.Container.Database.Time.AsQueryable();
-
-                    if (fromTime.HasValue)
+                    var users = new List<uint>();
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                     {
-                        users = users.Where(c => c.Disconnected > fromTime);
+                        command.CommandText = "SELECT DISTINCT ClientDatabaseId FROM Time WHERE 1 = 1";
+                        if (fromTime.HasValue) command.CommandText += string.Format(" AND Disconnected > {0}", fromTime.Value.ToTimeStamp());
+                        if (toTime.HasValue) command.CommandText += string.Format(" AND Joined < {0}", toTime.Value.ToTimeStamp());
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.HasRows && reader.Read())
+                            {
+                                users.Add((uint)reader.GetInt32(0));
+                            }
+                        }
                     }
 
-                    if (toTime.HasValue)
-                    {
-                        users = users.Where(m => m.Joined < toTime);
-                    }
-
-                    return users.Select(m => m.ClientDatabaseId).Distinct().ToList().Cast<uint>().ToList();
+                    return users;
                 }
             }
         }
@@ -835,15 +970,12 @@
                 {
                     foreach (var currentGroup in currentGroups)
                     {
-                        Repository.Container.Database.PreviousServerGroup.AddObject(new PreviousServerGroup
+                        using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                         {
-                            Id = Guid.NewGuid(),
-                            ClientDatabaseId = (int)clientDatabaseId,
-                            ServerGroup = (int)currentGroup,
-                            Creation = Repository.Static.Now
-                        });
+                            command.CommandText = string.Format("INSERT INTO PreviousServerGroup(ClientDatabaseId, ServerGroup, CreationDate) VALUES({0}, {1}, {2})", clientDatabaseId, currentGroup, Repository.Static.Now.ToTimeStamp());
+                            command.ExecuteNonQuery();
+                        }
                     }
-                    Repository.Container.Database.SaveChanges();
                 }
             }
 
@@ -860,10 +992,27 @@
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    var serverGroups = Repository.Container.Database.PreviousServerGroup.Where(m => m.ClientDatabaseId == clientDatabaseId).ToList().Select(m => (uint)m.ServerGroup).ToList();
+                    var serverGroups = new List<uint>();
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
+                    {
+                        command.CommandText = string.Format("SELECT ServerGroup FROM PreviousServerGroup WHERE ClientDatabaseId = {0}", clientDatabaseId);
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.HasRows && reader.Read())
+                            {
+                                serverGroups.Add((uint)reader.GetInt32(0));
+                            }
+                        }
+                    }
+
                     Repository.Client.AddClientServerGroups(clientDatabaseId, serverGroups);
-                    Repository.Container.Database.PreviousServerGroup.Where(m => m.ClientDatabaseId == clientDatabaseId).ToList().ForEach(m => Repository.Container.Database.PreviousServerGroup.DeleteObject(m));
-                    Repository.Container.Database.SaveChanges();
+
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
+                    {
+                        command.CommandText = string.Format("DELETE FROM PreviousServerGroup WHERE ClientDatabaseId = {0}", clientDatabaseId);
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
         }

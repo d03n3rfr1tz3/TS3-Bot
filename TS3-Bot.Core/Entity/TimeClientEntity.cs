@@ -6,20 +6,26 @@
     /// Defines the TimeClientEntity struct.
     /// </summary>
     [Serializable]
-    public struct TimeClientEntity
+    public class TimeClientEntity
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimeClientEntity"/> struct.
+        /// </summary>
+        public TimeClientEntity()
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TimeClientEntity"/> struct.
         /// </summary>
         /// <param name="userDatabaseId">The user database id.</param>
         /// <param name="joined">The joined.</param>
         /// <param name="disconnected">The disconnected.</param>
-        public TimeClientEntity(uint userDatabaseId, DateTime joined, DateTime? disconnected)
+        public TimeClientEntity(uint userDatabaseId, DateTime joined, DateTime? disconnected = null)
         {
             User = userDatabaseId;
             Joined = joined;
             Disconnected = disconnected ?? DateTime.UtcNow;
-            Time = Disconnected - joined;
         }
 
         /// <summary>
@@ -47,26 +53,22 @@
         public DateTime Disconnected;
 
         /// <summary>
-        /// Gets or sets the time.
+        /// Gets or sets the total minutes.
         /// </summary>
         /// <value>
-        /// The time.
+        /// The total minutes.
         /// </value>
-        public TimeSpan Time;
+        public int TotalMinutes;
 
-        /// <summary>
-        /// Gets the time.
-        /// </summary>
-        /// <param name="fromTime">From time.</param>
-        /// <param name="toTime">To time.</param>
-        /// <returns></returns>
-        public TimeSpan GetTime(DateTime? fromTime, DateTime? toTime)
+        public double GetTime(DateTime? fromTime, DateTime? toTime)
         {
+            if (Joined.Date == Disconnected.Date || (!fromTime.HasValue && !toTime.HasValue)) return TotalMinutes;
+
             var from = fromTime ?? DateTime.MinValue;
             var to = toTime ?? DateTime.MaxValue;
             var joined = Joined < from ? from : Joined;
             var disconnected = Disconnected > to ? to : Disconnected;
-            return disconnected - joined;
+            return (disconnected - joined).TotalMinutes;
         }
     }
 }

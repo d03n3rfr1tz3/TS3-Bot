@@ -150,7 +150,7 @@
                 if (!Repository.Channel.GetClientSticky(client.ClientDatabaseId).HasValue)
                 {
                     var awayClient = Repository.Client.GetLastChannelByClientId(client.ClientDatabaseId);
-                    if (awayClient != null)
+                    if (awayClient != default(AwayClientEntity))
                     {
                         var channel = Repository.Channel.GetChannelListInfo((uint)awayClient.LastChannelId) ?? new ChannelListEntry();
                         QueryRunner.MoveClient(client.ClientId, (uint)awayClient.LastChannelId);
@@ -197,7 +197,7 @@
                 if (!Repository.Channel.GetClientSticky(client.ClientDatabaseId).HasValue)
                 {
                     var idleClient = Repository.Client.GetLastChannelByClientId(client.ClientDatabaseId);
-                    if (idleClient != null)
+                    if (idleClient != default(AwayClientEntity))
                     {
                         var channel = Repository.Channel.GetChannelListInfo((uint)idleClient.LastChannelId) ?? new ChannelListEntry();
                         QueryRunner.MoveClient(client.ClientId, (uint)idleClient.LastChannelId);

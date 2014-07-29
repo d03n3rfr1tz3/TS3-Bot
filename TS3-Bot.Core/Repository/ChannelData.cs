@@ -6,6 +6,9 @@
     using Base;
     using TS3QueryLib.Core.Server.Entities;
     using TS3QueryLib.Core.Server.Responses;
+    using DirkSarodnick.TS3_Bot.Core.Entity;
+    using DirkSarodnick.TS3_Bot.Core.Helper;
+    using System.Data.SQLite;
 
     /// <summary>
     /// Defines the ChannelData class.
@@ -76,13 +79,32 @@
         /// Gets the sticky clients.
         /// </summary>
         /// <returns></returns>
-        public List<Sticky> GetStickyClients()
+        public List<StickyClientEntity> GetStickyClients()
         {
             lock (Container.lockStickyClientList)
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    return Repository.Container.Database.Sticky.ToList();
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
+                    {
+                        command.CommandText = "SELECT ClientDatabaseId, ChannelId, StickMinutes, CreationDate FROM Sticky";
+
+                        var result = new List<StickyClientEntity>();
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.HasRows && reader.Read())
+                            {
+                                result.Add(new StickyClientEntity
+                                {
+                                    ChannelId = (uint)reader.GetInt32(1),
+                                    ClientDatabaseId = (uint)reader.GetInt32(0),
+                                    StickTime = (uint)reader.GetInt32(2),
+                                    Creation = reader.GetInt64(3).ToDateTime()
+                                });
+                            }
+                        }
+                        return result;
+                    }
                 }
             }
         }
@@ -99,16 +121,17 @@
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    Repository.Container.Database.Sticky.Where(c => c.ClientDatabaseId == clientDatabaseId && c.ChannelId == channelId).ToList().ForEach(c => Repository.Container.Database.Sticky.DeleteObject(c));
-                    Repository.Container.Database.Sticky.AddObject(new Sticky
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                     {
-                        Id = Guid.NewGuid(),
-                        ClientDatabaseId = (int)clientDatabaseId,
-                        ChannelId = (int)channelId,
-                        StickTime = (int)stickTime,
-                        Creation = Repository.Static.Now
-                    });
-                    Repository.Container.Database.SaveChanges();
+                        command.CommandText = string.Format("DELETE FROM Sticky WHERE ClientDatabaseId = {0} AND ChannelId = {1}", clientDatabaseId, channelId);
+                        command.ExecuteNonQuery();
+                    }
+
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
+                    {
+                        command.CommandText = string.Format("INSERT INTO Sticky(ClientDatabaseId, ChannelId, StickMinutes, CreationDate) VALUES({0}, {1}, {2}, {3})", clientDatabaseId, channelId, stickTime, Repository.Static.Now.ToTimeStamp());
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
         }
@@ -124,11 +147,22 @@
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    List<Sticky> entities = channelId.HasValue
-                                            ? Repository.Container.Database.Sticky.Where(m => m.ClientDatabaseId == clientDatabaseId && m.ChannelId == channelId.Value).ToList()
-                                            : Repository.Container.Database.Sticky.Where(m => m.ClientDatabaseId == clientDatabaseId).ToList();
-                    entities.ForEach(c => Repository.Container.Database.Sticky.DeleteObject(c));
-                    Repository.Container.Database.SaveChanges();
+                    if (channelId.HasValue)
+                    {
+                        using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
+                        {
+                            command.CommandText = string.Format("DELETE FROM Sticky WHERE ClientDatabaseId = {0} AND ChannelId = {1}", clientDatabaseId, channelId);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                    else
+                    {
+                        using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
+                        {
+                            command.CommandText = string.Format("DELETE FROM Sticky WHERE ClientDatabaseId = {0}", clientDatabaseId);
+                            command.ExecuteNonQuery();
+                        }
+                    }
                 }
             }
         }
@@ -144,14 +178,20 @@
             {
                 lock (Repository.Container.lockDatabase)
                 {
-                    if (Repository.Container.Database.Sticky.Any(m => m.ClientDatabaseId == clientDatabaseId && m.ChannelId == Repository.Settings.Sticky.Channel))
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                     {
-                        return Repository.Settings.Sticky.Channel;
+                        command.CommandText = string.Format("SELECT ChannelId FROM Sticky WHERE ClientDatabaseId = {0} AND ChannelId = {1}", clientDatabaseId, Repository.Settings.Sticky.Channel);
+                        var result = command.ExecuteScalar();
+                        if (result is Int32 && (Int32)result > 0) return (uint)(Int32)result;
+                        if (result is Int64 && (Int64)result > 0) return (uint)(Int64)result;
                     }
 
-                    if (Repository.Container.Database.Sticky.Any(m => m.ClientDatabaseId == clientDatabaseId))
+                    using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                     {
-                        return (uint?)Repository.Container.Database.Sticky.First(m => m.ClientDatabaseId == clientDatabaseId).ChannelId;
+                        command.CommandText = string.Format("SELECT ChannelId FROM Sticky WHERE ClientDatabaseId = {0}", clientDatabaseId);
+                        var result = command.ExecuteScalar();
+                        if (result is Int32 && (Int32)result > 0) return (uint)(Int32)result;
+                        if (result is Int64 && (Int64)result > 0) return (uint)(Int64)result;
                     }
                 }
             }
