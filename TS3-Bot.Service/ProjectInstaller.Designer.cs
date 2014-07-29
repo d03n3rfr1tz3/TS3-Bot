@@ -39,6 +39,7 @@
             // 
             // ServiceInstaller
             // 
+            this.ServiceInstaller.DelayedAutoStart = true;
             this.ServiceInstaller.DisplayName = "TeamSpeak 3 Bot - Dirk Sarodnick";
             this.ServiceInstaller.ServiceName = "TS3-Bot";
             this.ServiceInstaller.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
