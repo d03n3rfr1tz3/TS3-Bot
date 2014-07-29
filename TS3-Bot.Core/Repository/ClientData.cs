@@ -782,7 +782,7 @@
                     {
                         using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                         {
-                            command.CommandText = string.Format("UPDATE Time SET Disconnected = {0}, TotalMinutes = {1}", (disconnected ?? Repository.Static.Now).ToTimeStamp(), (int)((disconnected ?? Repository.Static.Now) - lastConnected).TotalMinutes);
+                            command.CommandText = string.Format("UPDATE Time SET Disconnected = {1}, TotalMinutes = {2} WHERE ClientDatabaseId = {0}", clientDatabaseId, (disconnected ?? Repository.Static.Now).ToTimeStamp(), (int)((disconnected ?? Repository.Static.Now) - lastConnected).TotalMinutes);
                             command.ExecuteNonQuery();
                         }
                     }
