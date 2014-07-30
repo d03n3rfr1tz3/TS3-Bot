@@ -40,13 +40,13 @@
         "Entry"
         {
         "MsmKey" = "8:_2E92BA1ED399253D0F00449E96A42EC8"
-        "OwnerKey" = "8:_4D53BB2B60094B97748E5AB17BA6C293"
+        "OwnerKey" = "8:_DF1E504F995D4B65AF4AAC7B0923B760"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_2E92BA1ED399253D0F00449E96A42EC8"
-        "OwnerKey" = "8:_DF1E504F995D4B65AF4AAC7B0923B760"
+        "OwnerKey" = "8:_4D53BB2B60094B97748E5AB17BA6C293"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -118,6 +118,12 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_33B9B4B69991410FA65242ACCA39E5C4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_4D53BB2B60094B97748E5AB17BA6C293"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -131,12 +137,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_6B88A71B4231C0CD0EC647EA9EA02DE7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_33B9B4B69991410FA65242ACCA39E5C4"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -372,7 +372,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:TS3-Bot.Core, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:TS3-Bot.Core, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_4D53BB2B60094B97748E5AB17BA6C293"
@@ -526,24 +526,24 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TeamSpeak 3 Bot"
-        "ProductCode" = "8:{15268B12-3D29-4749-93B0-EAF2B8B628D8}"
-        "PackageCode" = "8:{B22F8451-2C6C-4F98-950D-8791BF5A6B1E}"
+        "ProductCode" = "8:{DE53AEF7-B9FE-4AD9-B5AF-274B8D1CB754}"
+        "PackageCode" = "8:{DA81D0BA-9EF7-43B5-A1F2-E05578B10CC8}"
         "UpgradeCode" = "8:{01D6B1B4-F9ED-4B1A-963D-119DE514A665}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.15"
+        "ProductVersion" = "8:1.0.16"
         "Manufacturer" = "8:Dirk Sarodnick"
         "ARPHELPTELEPHONE" = "8:"
-        "ARPHELPLINK" = "8:http://www.d03n3r.de"
+        "ARPHELPLINK" = "8:http://www.dirk-sarodnick.de/"
         "Title" = "8:TeamSpeak 3 Bot - Dirk Sarodnick"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Dirk Sarodnick"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
-        "ARPURLINFOABOUT" = "8:http://www.d03n3r.de"
+        "ARPURLINFOABOUT" = "8:http://www.dirk-sarodnick.de/"
         "ARPPRODUCTICON" = "8:_33B9B4B69991410FA65242ACCA39E5C4"
         "ARPIconIndex" = "3:32512"
         "SearchPath" = "8:"

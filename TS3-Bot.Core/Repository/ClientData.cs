@@ -772,7 +772,7 @@
                     bool exists = false;
                     using (var command = new SQLiteCommand(this.Container.DatabaseConnection))
                     {
-                        command.CommandText = string.Format("SELECT COUNT(*) FROM Time WHERE ClientDatabaseId = {0}", clientDatabaseId);
+                        command.CommandText = string.Format("SELECT COUNT(*) FROM Time WHERE ClientDatabaseId = {0} AND Joined = {1}", clientDatabaseId, lastConnected.ToTimeStamp());
                         var result = command.ExecuteScalar();
                         if (result is Int32 && (Int32)result > 0) exists = true;
                         if (result is Int64 && (Int64)result > 0) exists = true;
